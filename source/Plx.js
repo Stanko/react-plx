@@ -78,7 +78,15 @@ export default class Plx extends Component {
   }
 
   getElementTop() {
-    return this.element.getBoundingClientRect().top + this.scrollPosition;
+    let top = 0;
+    let element = this.element;
+
+    do {
+      top += element.offsetTop || 0;
+      element = element.offsetParent;
+    } while (element);
+
+    return top;
   }
 
   getUnit(property, unit) {
