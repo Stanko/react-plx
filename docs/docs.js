@@ -86,8 +86,8 @@ const Example = class extends React.Component {
         <div className=''>
           <p>
             Three blocks translating and scaling at different speeds.
-            Offset is set <code>-200</code>, so animation starts when
-            elements get 200 pixels from viewport edge.
+            Offset is set to <code>-200</code>, so animation starts when
+            elements get at 200 pixels from viewport edge.
           </p>
 
           <div className='HorizontalDemo'>
