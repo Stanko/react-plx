@@ -2,6 +2,12 @@
 
 Lightweight and powerful React component, for creating on scroll effects aka. parallax.
 
+
+## Demo
+
+Check the [live demo](https://stanko.github.io/react-plx/).
+
+
 ## Quick start
 
 Get it from npm
@@ -29,11 +35,6 @@ class Example extends Component {
   }
 }
 ```
-
-## Demo
-
-Check the [live demo](https://stanko.github.io/react-plx/).
-
 
 ## Table of contents
 * [What is this?](#user-content-what-is-this)
