@@ -55,7 +55,7 @@ export default class Plx extends Component {
 
     this.state = {
       hasReceivedScrollEvent: false,
-      style: {},
+      plxStyle: {},
     };
   }
 
@@ -124,7 +124,7 @@ export default class Plx extends Component {
     } = this.props;
     const {
       hasReceivedScrollEvent,
-      style,
+      plxStyle,
     } = this.state;
     const {
       scrollPosition,
@@ -254,8 +254,8 @@ export default class Plx extends Component {
     newStyle.OTransform = newStyle.transform;
     newStyle.msTransform = newStyle.transform;
 
-    if (JSON.stringify(style) !== JSON.stringify(newStyle)) {
-      newState.style = newStyle;
+    if (JSON.stringify(plxStyle) !== JSON.stringify(newStyle)) {
+      newState.plxStyle = newStyle;
     }
 
     if (Object.keys(newState).length) {
@@ -267,12 +267,13 @@ export default class Plx extends Component {
 
   render() {
     const {
-      className,
       children,
+      className,
+      style,
     } = this.props;
     const {
       hasReceivedScrollEvent,
-      style,
+      plxStyle,
     } = this.state;
 
     return (
@@ -280,6 +281,7 @@ export default class Plx extends Component {
         className={ `Plx ${ className }` }
         style={ {
           ...style,
+          ...plxStyle,
           // TODO think more about how to solve this
           visibility: hasReceivedScrollEvent ? null : 'hidden',
         } }
@@ -314,9 +316,10 @@ const parallaxDataType = PropTypes.shape({
 
 Plx.propTypes = {
   children: PropTypes.any,
-  interval: PropTypes.number,
   className: PropTypes.string,
+  interval: PropTypes.number,
   parallaxData: PropTypes.arrayOf(parallaxDataType).isRequired,
+  style: PropTypes.Object,
 };
 
 Plx.defaultProps = {

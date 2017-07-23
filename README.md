@@ -57,6 +57,10 @@ It is made as ES module, so it will work with webpack and other module bundlers 
 
   CSS class name (it will be applied along with `Plx` class name).
 
+* **style** object
+
+  CSS style object, please note that properties used in parallax will be overridden by component.
+
 * **interval** number
 
   Interval in milliseconds, how often should interval check for scroll changes. Default 16 (60fps).
