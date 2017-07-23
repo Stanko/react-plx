@@ -327,7 +327,7 @@ Plx.propTypes = {
   className: PropTypes.string,
   interval: PropTypes.number,
   parallaxData: PropTypes.arrayOf(parallaxDataType).isRequired,
-  style: PropTypes.Object,
+  style: PropTypes.object,
 };
 
 Plx.defaultProps = {
