@@ -1,0 +1,131 @@
+$main-color: #E9463F;
+
+body {
+  background: #fdfdfd;
+  padding-bottom: 40px;
+}
+
+a,
+a:active,
+a:visited,
+a:focus {
+  color: $main-color;
+}
+
+a:hover {
+  color: darken($main-color, 20);
+}
+
+h2, h3, h4 {
+  margin-top: 50px;
+  color: $main-color;
+}
+
+.Header {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+  background: #fff;
+  padding: 20px 0;
+}
+
+.Content {
+  position: relative;
+  margin: 0 auto;
+  padding: 0 20px;
+  max-width: 840px;
+}
+
+// DEMOS
+
+.Content--demo {
+  min-height: 1500px;
+}
+
+.Footer {
+  padding: 20px;
+  width: 100%;
+}
+
+.FixedDemo-spacer {
+  height: 200px;
+}
+
+.FixedDemo-wrapper {
+  left: 0;
+  position: fixed;
+  width: 100%;
+  z-index: 10;
+}
+
+.FixedDemo {
+  position: relative;
+  padding: 0 20px;
+  width: 140px;
+}
+
+@media (min-width: 840px) {
+  .FixedDemo {
+    margin-left: calc(50% - 420px);
+  }
+}
+
+.HorizontalDemo {
+  height: 150px;
+  position: relative;
+  // margin-top: 200px;
+  margin-bottom: 50px;
+}
+
+.HorizontalDemo-content {
+}
+
+.HorizontalDemo-item {
+  height: 150px;
+  width: 150px;
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+  position: absolute;
+}
+
+.HorizontalDemo-item--one {
+  background: #345;
+}
+
+.HorizontalDemo-item--two {
+  background: #567;
+}
+
+.HorizontalDemo-item--three {
+  background: #9ab;
+}
+
+.ClockDemo {
+  position: relative;
+  height: 200px;
+  width: 200px;
+  border: 10px solid #123;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.ClockDemo-wrapper {
+
+}
+
+.ClockDemo-arm {
+  height: 100px;
+  width: 10px;
+  position: absolute;
+  top: 10px;
+  left: 85px;
+  background: black;
+  transform-origin: center 80px;
+}
+
+.ClockDemo-arm--small {
+  height: 70px;
+  top: 40px;
+  transform-origin: center 50px;
+  transform: rotate(30deg);
+}
