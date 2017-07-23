@@ -9,7 +9,7 @@
     "start": "webpack-dev-server",
     "build": "rm -rf ./lib && NODE_ENV=\"production\" babel ./source --out-dir ./lib",
     "build-docs": "rm -rf ./dist-docs && EXAMPLE=\"true\" NODE_ENV=\"production\" webpack",
-    "release-docs": "git subtree push --prefix dist-docs origin gh-pages",
+    "publish-docs": "sh publish-docs.sh",
     "lint-break-on-errors": "eslint ./source/js ./webpack.config.js -f table --ext .js --ext .jsx",
     "lint": "eslint ./source/js ./webpack.config.js -f table --ext .js --ext .jsx || true",
     "preview": "rm -rf ./dist && NODE_ENV=\"production\" webpack-dev-server",

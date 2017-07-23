@@ -6,7 +6,7 @@ import './docs.scss';
 const Example = class extends React.Component {
   render() {
     return (
-      <div className='Content Content--demo'>
+      <div className='Content'>
         <div className='FixedDemo-spacer'>
           <div className='FixedDemo-wrapper'>
             <Plx
