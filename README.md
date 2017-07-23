@@ -1,8 +1,6 @@
 # Plx - React Parallax component
 
-Work in progress! Not release to npm yet.
-
-Come back in a day or two :)
+Lightweight and powerful React component, for creating on scroll effects aka. parallax.
 
 ## Quick start
 
@@ -41,8 +39,8 @@ Check the [live demo](https://stanko.github.io/react-plx/).
 * [What is this?](#user-content-what-is-this)
 * [Props](#user-content-props)
 * [Example of props](#user-content-example-of-props)
-* [Browser support](#user-browser-support)
-* [License](#user-license)
+* [Browser support](#user-content-browser-support)
+* [License](#user-content-license)
 
 ## What is this?
 

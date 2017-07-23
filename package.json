@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": false,
   "license": "MIT",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "description": "React parallax (on scroll effects) component. Powerful and lightweight,",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server",
@@ -52,7 +53,6 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4"
   },
-  "description": "",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/Stanko/react-plx.git"
