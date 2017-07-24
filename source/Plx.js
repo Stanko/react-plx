@@ -16,6 +16,20 @@ const ANGLE_PROPERTIES = [
   'skewZ',
 ];
 
+// Color regexs
+
+// 0 - 199 | 200 - 249 | 250 - 255
+const REGEX_0_255 = '(1?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])';
+// 0.0 - 1.9999...
+const REGEX_0_1 = '([01](\\.\\d+)?)';
+// 00 - FF
+const REGEX_TWO_HEX_DIGITS = '([a-f\\d]{2})';
+
+const HEX_REGEX = new RegExp(`^#${ REGEX_TWO_HEX_DIGITS }${ REGEX_TWO_HEX_DIGITS }${ REGEX_TWO_HEX_DIGITS }$`, 'i');
+const RGB_REGEX = new RegExp(`^rgb\\(${ REGEX_0_255 },${ REGEX_0_255 },${ REGEX_0_255 }\\)$`, 'i');
+const RGBA_REGEX = new RegExp(`^rgba\\(${ REGEX_0_255 },${ REGEX_0_255 },${ REGEX_0_255 },${ REGEX_0_1 }\\)$`, 'i');
+
+// CSS transform map
 const TRANSFORM_MAP = {
   rotate: (value, unit: DEFAULT_ANGLE_UNIT) => `rotate(${ value }${ unit })`,
   rotateX: (value, unit: DEFAULT_ANGLE_UNIT) => `rotateX(${ value }${ unit })`,
@@ -34,6 +48,8 @@ const TRANSFORM_MAP = {
   translateZ: (value, unit: DEFAULT_UNIT) => `translateZ(${ value }${ unit })`,
 };
 
+// Order of CSS transforms matter
+// so custom order is used
 const ORDER_OF_TRANSFORMS = [
   'translateX',
   'translateY',
@@ -50,6 +66,17 @@ const ORDER_OF_TRANSFORMS = [
   'scaleX',
   'scaleY',
   'scaleZ',
+];
+
+// CSS properties that use color values
+const COLOR_PROPERTIES = [
+  'backgroundColor',
+  'color',
+  'borderColor',
+  'borderTopColor',
+  'borderBottomColor',
+  'borderLeftColor',
+  'borderRightColor',
 ];
 
 export default class Plx extends Component {
@@ -119,10 +146,91 @@ export default class Plx extends Component {
     this.timeoutID = setTimeout(this.handleResizeChange, RESIZE_DELAY);
   }
 
+  hexToObject(hex) {
+    // Convert #abc to #aabbcc
+    const color = hex.length === 4 ? `#${ hex[1] }${ hex[1] }${ hex[2] }${ hex[2] }${ hex[3] }${ hex[3] }` : hex;
+    const result = HEX_REGEX.exec(color);
+
+    // Safety check, if color is in the wrong format
+    if (!result) {
+      console.log(`Plx, ERROR: hex color is not in the right format: "${ hex }"`); // eslint-disable-line no-console
+      return null;
+    }
+
+    // All color functions are returning { r, g, b, a } object
+    return {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16),
+      a: 1,
+    };
+  }
+
+  rgbToObject(rgb) {
+    const isRgba = rgb.toLowerCase().indexOf('rgba') === 0;
+    const color = rgb.replace(/ /g, '');
+    const result = isRgba ? RGBA_REGEX.exec(color) : RGB_REGEX.exec(color);
+
+    // Safety check, if color is in the wrong format
+    if (!result) {
+      console.log(`Plx, ERROR: rgb or rgba color is not in the right format: "${ rgb }"`); // eslint-disable-line no-console
+      return null;
+    }
+
+    // All color functions are returning { r, g, b, a } object
+    return {
+      r: parseInt(result[1], 10),
+      g: parseInt(result[2], 10),
+      b: parseInt(result[3], 10),
+      a: isRgba ? parseFloat(result[4]) : 1,
+    };
+  }
+
+  colorParallax(scrollPosition, start, duration, startValue, endValue) {
+    let startObject = null;
+    let endObject = null;
+
+    if (startValue[0].toLowerCase() === 'r') {
+      startObject = this.rgbToObject(startValue);
+    } else {
+      startObject = this.hexToObject(startValue);
+    }
+
+    if (endValue[0].toLowerCase() === 'r') {
+      endObject = this.rgbToObject(endValue);
+    } else {
+      endObject = this.hexToObject(endValue);
+    }
+
+    if (startObject && endObject) {
+      const r = this.parallax(scrollPosition, start, duration, startObject.r, endObject.r);
+      const g = this.parallax(scrollPosition, start, duration, startObject.g, endObject.g);
+      const b = this.parallax(scrollPosition, start, duration, startObject.b, endObject.b);
+      const a = this.parallax(scrollPosition, start, duration, startObject.a, endObject.a);
+
+      return `rgba(${ parseInt(r, 10) }, ${ parseInt(g, 10) }, ${ parseInt(b, 10) }, ${ a })`;
+    }
+
+    return null;
+  }
+
   parallax(scrollPosition, start, duration, startValue, endValue) {
     let min = startValue;
     let max = endValue;
     const invert = startValue > endValue;
+
+
+    // Safety check, if "startValue" is in the wrong format
+    if (typeof startValue !== 'number') {
+      console.log(`Plx, ERROR: startValue is not a number, but "${ typeof endValue }": "${ endValue }"`); // eslint-disable-line no-console
+      return null;
+    }
+
+    // Safety check, if "endValue" is in the wrong format
+    if (typeof endValue !== 'number') {
+      console.log(`Plx, ERROR: endValue is not a number, but "${ typeof endValue }": "${ endValue }"`); // eslint-disable-line no-console
+      return null;
+    }
 
     if (invert) {
       min = endValue;
@@ -147,6 +255,7 @@ export default class Plx extends Component {
   }
 
   handleResizeChange() {
+    console.log('!!!');
     this.update(this.scrollManager.getWindowScrollTop(), this.props);
   }
 
@@ -191,10 +300,12 @@ export default class Plx extends Component {
       const parallaxDuration = duration === 'height' ? this.element.offsetHeight : duration;
       const endPosition = startPosition + parallaxDuration;
 
+      // If segment is bellow scroll position skip it
       if (scrollPosition < startPosition) {
         break;
       }
 
+      // If active segment exists, apply his properties
       if (scrollPosition >= startPosition && scrollPosition <= endPosition) {
         properties.forEach((propertyData) => {
           const {
@@ -205,18 +316,32 @@ export default class Plx extends Component {
           } = propertyData;
           appliedProperties.push(property);
 
+          // Get CSS unit
           const propertyUnit = this.getUnit(property, unit);
-          const value = this.parallax(
+
+          // Set default parallax method
+          let parallaxMethod = this.parallax.bind(this);
+
+          // If property is one of the color properties
+          // Use it's parallax method
+          if (COLOR_PROPERTIES.indexOf(property) > -1) {
+            parallaxMethod = this.colorParallax.bind(this);
+          }
+
+          // Get new CSS value
+          const value = parallaxMethod(
             scrollPosition,
             startPosition,
             parallaxDuration,
             startValue,
             endValue
           );
+
+          // Get transform function
           const transformMethod = TRANSFORM_MAP[property];
 
           if (transformMethod) {
-            // Transforms
+            // Transforms, apply value to transform function
             newStyle.transform[property] = transformMethod(value, propertyUnit);
           } else {
             // All other properties
@@ -224,6 +349,9 @@ export default class Plx extends Component {
           }
         });
       } else {
+        // Push non active segments above the scroll position to separate array
+        // This way "parallaxDuration" and "startPosition" are not calculated again
+        // and segments bellow scroll position are skipped in the next step
         segments.push({
           parallaxDuration,
           properties,
@@ -232,6 +360,7 @@ export default class Plx extends Component {
       }
     }
 
+    // These are only segments that are completly above scroll position
     segments.forEach(data => {
       const {
         properties,
@@ -252,18 +381,32 @@ export default class Plx extends Component {
           return;
         }
 
+        // Get CSS unit
         const propertyUnit = this.getUnit(property, unit);
-        const value = this.parallax(
+
+        // Set default parallax method
+        let parallaxMethod = this.parallax.bind(this);
+
+        // If property is one of the color properties
+        // Use it's parallax method
+        if (COLOR_PROPERTIES.indexOf(property) > -1) {
+          parallaxMethod = this.colorParallax.bind(this);
+        }
+
+        // Get new CSS value
+        const value = parallaxMethod(
           scrollPosition,
           startPosition,
           parallaxDuration,
           startValue,
           endValue
         );
+
+        // Get transform function
         const transformMethod = TRANSFORM_MAP[property];
 
         if (transformMethod) {
-          // Transforms
+          // Transforms, apply value to transform function
           newStyle.transform[property] = transformMethod(value, propertyUnit);
         } else {
           // All other properties
@@ -272,6 +415,7 @@ export default class Plx extends Component {
       });
     });
 
+    // Sort transforms by ORDER_OF_TRANSFORMS
     const transformsOrdered = [];
 
     ORDER_OF_TRANSFORMS.forEach(transformKey => {
@@ -280,12 +424,14 @@ export default class Plx extends Component {
       }
     });
 
+    // Concat transforms and add browser prefixes
     newStyle.transform = transformsOrdered.join(' ');
     newStyle.WebkitTransform = newStyle.transform;
     newStyle.MozTransform = newStyle.transform;
     newStyle.OTransform = newStyle.transform;
     newStyle.msTransform = newStyle.transform;
 
+    // "Stupid" check if style should be update
     if (JSON.stringify(plxStyle) !== JSON.stringify(newStyle)) {
       newState.plxStyle = newStyle;
     }
@@ -326,8 +472,14 @@ export default class Plx extends Component {
 }
 
 const propertiesItemType = PropTypes.shape({
-  startValue: PropTypes.number.isRequired,
-  endValue: PropTypes.number.isRequired,
+  startValue: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
+  endValue: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
   property: PropTypes.string.isRequired,
   unit: PropTypes.string,
 });

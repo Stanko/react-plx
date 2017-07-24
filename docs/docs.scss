@@ -38,7 +38,7 @@ h2, h3, h4 {
 // DEMOS
 
 .Demo {
-  min-height: 1700px;
+  min-height: 2000px;
 }
 
 .Footer {
@@ -103,6 +103,13 @@ h2, h3, h4 {
 
 .HorizontalDemo-item--three {
   background: #9ab;
+}
+
+.ColorDemo {
+  border: 5px solid #F14675;
+  border-radius: 20px;
+  padding: 20px;
+  color: #F14675;
 }
 
 .ClockDemo {

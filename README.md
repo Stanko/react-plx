@@ -125,15 +125,27 @@ Component is written as ES module, so it will work with webpack and other module
   * scaleY
   * scaleZ
 
+  Supported colors are:
+
+  * backgroundColor
+  * color
+  * borderColor
+  * borderTopColor
+  * borderBottomColor
+  * borderLeftColor
+  * borderRightColor
+
   To keep you parallax effects performant, I strongly advice not to use anything but opacity and transforms.
 
-* **startValue** number, *required*
+* **startValue** number (or string for color), *required*
 
   Start value for the effect. Property will have this value when scroll position equals `parallaxData.start`.
+  For colors supported formats are: `#123`, `#001122`, `rgb(0,0,255)` and `rgba(0,0,255,0.5)`.
 
-* **endValue** number, *required*
+* **endValue** number (or string for color), *required*
 
   End value for the effect. Property will have this value when scroll position equals `parallaxData.end`.
+  For colors supported formats are: `#123`, `#001122`, `rgb(0,0,255)` and `rgba(0,0,255,0.5)`.
 
   Between `parallaxData.start` and `parallaxData.end` value will transition relative to scroll position.
 

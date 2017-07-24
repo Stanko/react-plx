@@ -16,11 +16,11 @@ const Example = class extends React.Component {
                   start: 0,
                   duration: 300,
                   properties: [
-                    // {
-                    //   startValue: 1,
-                    //   endValue: 0.2,
-                    //   property: 'opacity',
-                    // },
+                    {
+                      startValue: 1,
+                      endValue: 0.2,
+                      property: 'opacity',
+                    },
                     {
                       startValue: 1,
                       endValue: 0.5,
@@ -167,6 +167,50 @@ const Example = class extends React.Component {
               ] }
             />
           </div>
+        </div>
+        <hr className='margin-y-50' />
+        <div className=''>
+          <Plx
+            className='ColorDemo'
+            parallaxData={ [
+              {
+                start: 'top',
+                offset: -500,
+                duration: 300,
+                properties: [
+                  {
+                    startValue: 'RGBA(239, 73, 118, 1)',
+                    endValue: 'rgb(63, 147, 194)',
+                    property: 'borderColor',
+                  },
+                  {
+                    startValue: '#F14675',
+                    endValue: '#3A92C4',
+                    property: 'color',
+                  },
+                ],
+              },
+              {
+                start: 'top',
+                offset: -200,
+                duration: 300,
+                properties: [
+                  {
+                    startValue: 'rgb(63, 147, 194)',
+                    endValue: 'RGBA(109, 223, 118, 1)',
+                    property: 'borderColor',
+                  },
+                  {
+                    startValue: '#3A92C4',
+                    endValue: '#71DD7B',
+                    property: 'color',
+                  },
+                ],
+              },
+            ] }
+          >
+            This block will change it&apos;s text and border color.
+          </Plx>
         </div>
         <hr className='margin-y-50' />
         <div className='ClockDemo--wrapper'>
