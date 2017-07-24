@@ -72,10 +72,9 @@ export default class Plx extends Component {
     window.addEventListener('plx-scroll', this.handleScrollChange);
   }
 
-  // TODO
-  // componentWillReceiveProps(nextProps) {
-  //
-  // }
+  componentWillReceiveProps(nextProps) {
+    this.update(this.scrollManager.getWindowScrollTop(), nextProps);
+  }
 
   componentWillUnmount() {
     window.removeEventListener('plx-scroll', this.handleScrollChange);
@@ -136,17 +135,17 @@ export default class Plx extends Component {
   }
 
   handleScrollChange(e) {
+    this.update(e.detail.scrollPosition, this.props);
+  }
+
+  update(scrollPosition, props) {
     const {
       parallaxData,
-    } = this.props;
+    } = props;
     const {
       hasReceivedScrollEvent,
       plxStyle,
     } = this.state;
-    const {
-      scrollPosition,
-    } = e.detail;
-
 
     this.scrollPosition = scrollPosition;
 
