@@ -61,6 +61,7 @@ export default class Plx extends Component {
 
     this.scrollManager = new ScrollManager(interval);
     this.handleScrollChange = this.handleScrollChange.bind(this);
+    this.handleResizeChange = this.handleResizeChange.bind(this);
 
     this.state = {
       hasReceivedScrollEvent: false,
@@ -70,6 +71,7 @@ export default class Plx extends Component {
 
   componentWillMount() {
     window.addEventListener('plx-scroll', this.handleScrollChange);
+    window.addEventListener('resize', this.handleResizeChange);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -78,6 +80,7 @@ export default class Plx extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('plx-scroll', this.handleScrollChange);
+    window.removeEventListener('resize', this.handleResizeChange);
 
     this.scrollManager.destroy();
     this.scrollManager = null;
@@ -132,6 +135,10 @@ export default class Plx extends Component {
     }
 
     return value.toFixed(2);
+  }
+
+  handleResizeChange() {
+    this.update(this.scrollManager.getWindowScrollTop(), this.props);
   }
 
   handleScrollChange(e) {
