@@ -4,7 +4,16 @@ import ScrollManager from './scroll-manager';
 
 const DEFAULT_UNIT = 'px';
 const DEFAULT_ANGLE_UNIT = 'deg';
-const ANGLE_PROPERTIES = ['rotate', 'rotateX', 'rotateY', 'rotateZ'];
+const ANGLE_PROPERTIES = [
+  'rotate',
+  'rotateX',
+  'rotateY',
+  'rotateZ',
+  'skew',
+  'skewX',
+  'skewY',
+  'skewZ',
+];
 
 const TRANSFORM_MAP = {
   rotate: (value, unit: DEFAULT_ANGLE_UNIT) => `rotate(${ value }${ unit })`,
@@ -123,7 +132,7 @@ export default class Plx extends Component {
       value = max;
     }
 
-    return value.toFixed(3);
+    return value.toFixed(2);
   }
 
   handleScrollChange(e) {
@@ -167,6 +176,10 @@ export default class Plx extends Component {
       const parallaxDuration = duration === 'height' ? this.element.offsetHeight : duration;
       const endPosition = startPosition + parallaxDuration;
 
+      if (scrollPosition < startPosition) {
+        break;
+      }
+
       if (scrollPosition >= startPosition && scrollPosition <= endPosition) {
         properties.forEach((propertyData) => {
           const {
@@ -201,10 +214,6 @@ export default class Plx extends Component {
           properties,
           startPosition,
         });
-      }
-
-      if (scrollPosition < startPosition) {
-        break;
       }
     }
 
@@ -332,5 +341,5 @@ Plx.propTypes = {
 
 Plx.defaultProps = {
   className: '',
-  interval: 30,
+  interval: 16,
 };

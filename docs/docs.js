@@ -16,11 +16,11 @@ const Example = class extends React.Component {
                   start: 0,
                   duration: 300,
                   properties: [
-                    {
-                      startValue: 1,
-                      endValue: 0.2,
-                      property: 'opacity',
-                    },
+                    // {
+                    //   startValue: 1,
+                    //   endValue: 0.2,
+                    //   property: 'opacity',
+                    // },
                     {
                       startValue: 1,
                       endValue: 0.5,
@@ -83,6 +83,15 @@ const Example = class extends React.Component {
             </Plx>
           </div>
         </div>
+        <ol>
+          <li>0 - 300px: it will rotate for 360deg, scale to 50% and fade to 0.2 opacity</li>
+          <li>350 - 650px: it will fade in to 1, scale to 150% and tranlsate to left 100%</li>
+          <li>
+            700-1000px: it will translate to the right 100%,
+            rotate from 360 to 0deg and scale back to 100%
+          </li>
+        </ol>
+        <hr className='margin-y-50' />
         <div className=''>
           <p>
             Three blocks translating and scaling at different speeds.
@@ -159,6 +168,7 @@ const Example = class extends React.Component {
             />
           </div>
         </div>
+        <hr className='margin-y-50' />
         <div className='ClockDemo--wrapper'>
           <p>
             Simple clock, with it&apos;s arms moving at relative speeds.

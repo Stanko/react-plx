@@ -1,6 +1,6 @@
 {
   "name": "react-plx",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "private": false,
   "license": "MIT",
   "main": "lib/index.js",
@@ -12,6 +12,7 @@
     "build-docs": "rm -rf ./dist-docs && EXAMPLE=\"true\" NODE_ENV=\"production\" webpack",
     "publish-to-npm": "npm run build && npm publish",
     "publish-docs": "sh publish-docs.sh",
+    "publish-all": "npm run publish-to-npm && npm run publish-docs",
     "lint-break-on-errors": "eslint ./source/js ./webpack.config.js -f table --ext .js --ext .jsx",
     "lint": "eslint ./source/js ./webpack.config.js -f table --ext .js --ext .jsx || true",
     "preview": "rm -rf ./dist && NODE_ENV=\"production\" webpack-dev-server",

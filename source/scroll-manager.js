@@ -5,7 +5,10 @@ const INTERVAL = 16;
 
 // CustomEvent polyfill
 if (typeof window.CustomEvent !== 'function') {
-  const CustomEvent = function (event, params = { bubbles: false, cancelable: false, detail: undefined }) {
+  const CustomEvent = function (
+    event,
+    params = { bubbles: false, cancelable: false, detail: undefined }
+  ) {
     const evt = document.createEvent('CustomEvent');
     evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
     return evt;

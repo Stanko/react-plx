@@ -38,7 +38,7 @@ h2, h3, h4 {
 // DEMOS
 
 .Demo {
-  min-height: 1500px;
+  min-height: 1700px;
 }
 
 .Footer {
@@ -61,6 +61,11 @@ h2, h3, h4 {
   position: relative;
   padding: 0 20px;
   width: 140px;
+}
+
+.FixedDemo img {
+  width: 100px;
+  height: 149px;
 }
 
 @media (min-width: 840px) {
