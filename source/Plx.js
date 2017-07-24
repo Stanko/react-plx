@@ -501,7 +501,7 @@ Plx.propTypes = {
   children: PropTypes.any,
   className: PropTypes.string,
   interval: PropTypes.number,
-  parallaxData: PropTypes.arrayOf(parallaxDataType).isRequired,
+  parallaxData: PropTypes.arrayOf(parallaxDataType).isRequired, // eslint-disable-line react/no-unused-prop-types
   style: PropTypes.object,
 };
 
