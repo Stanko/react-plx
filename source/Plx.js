@@ -99,10 +99,9 @@ export default class Plx extends Component {
     window.addEventListener('plx-scroll', this.handleScrollChange);
   }
 
-  // TODO
-  // componentWillReceiveProps(nextProps) {
-  //
-  // }
+  componentWillReceiveProps(nextProps) {
+    this.update(this.scrollManager.getWindowScrollTop(), nextProps);
+  }
 
   componentWillUnmount() {
     window.removeEventListener('plx-scroll', this.handleScrollChange);
@@ -162,7 +161,7 @@ export default class Plx extends Component {
 
     // Safety check, if color is in the wrong format
     if (!result) {
-      console.log(`Plx, ERROR: rgb or rgba color is not in the right format: "${ rgb }"`); // eslint-disable-line no-console
+      console.log(`Plx, ERROR: rgb or rgba color is not in the right format: "${ rgb }"`); // eslint-disable-line
       return null;
     }
 
@@ -211,13 +210,13 @@ export default class Plx extends Component {
 
     // Safety check, if "startValue" is in the wrong format
     if (typeof startValue !== 'number') {
-      console.log(`Plx, ERROR: startValue is not a number, but "${ typeof endValue }": "${ endValue }"`); // eslint-disable-line no-console
+      console.log(`Plx, ERROR: startValue is not a number, but "${ typeof endValue }": "${ endValue }"`); // eslint-disable-line
       return null;
     }
 
     // Safety check, if "endValue" is in the wrong format
     if (typeof endValue !== 'number') {
-      console.log(`Plx, ERROR: endValue is not a number, but "${ typeof endValue }": "${ endValue }"`); // eslint-disable-line no-console
+      console.log(`Plx, ERROR: endValue is not a number, but "${ typeof endValue }": "${ endValue }"`); // eslint-disable-line
       return null;
     }
 
@@ -244,17 +243,17 @@ export default class Plx extends Component {
   }
 
   handleScrollChange(e) {
+    this.update(e.detail.scrollPosition, this.props);
+  }
+
+  update(scrollPosition, props) {
     const {
       parallaxData,
-    } = this.props;
+    } = props;
     const {
       hasReceivedScrollEvent,
       plxStyle,
     } = this.state;
-    const {
-      scrollPosition,
-    } = e.detail;
-
 
     this.scrollPosition = scrollPosition;
 
@@ -486,7 +485,7 @@ Plx.propTypes = {
   children: PropTypes.any,
   className: PropTypes.string,
   interval: PropTypes.number,
-  parallaxData: PropTypes.arrayOf(parallaxDataType).isRequired,
+  parallaxData: PropTypes.arrayOf(parallaxDataType).isRequired, // eslint-disable-line react/no-unused-prop-types
   style: PropTypes.object,
 };
 
