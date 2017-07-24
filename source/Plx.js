@@ -255,7 +255,6 @@ export default class Plx extends Component {
   }
 
   handleResizeChange() {
-    console.log('!!!');
     this.update(this.scrollManager.getWindowScrollTop(), this.props);
   }
 
