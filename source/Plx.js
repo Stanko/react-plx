@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ScrollManager from './scroll-manager';
 
-const RESIZE_DELAY = 250;
 const DEFAULT_UNIT = 'px';
 const DEFAULT_ANGLE_UNIT = 'deg';
 const ANGLE_PROPERTIES = [
@@ -89,8 +88,6 @@ export default class Plx extends Component {
 
     this.scrollManager = new ScrollManager(interval);
     this.handleScrollChange = this.handleScrollChange.bind(this);
-    this.handleResizeChange = this.handleResizeChange.bind(this);
-    this.debounceWindowResize = this.debounceWindowResize.bind(this);
 
     this.state = {
       hasReceivedScrollEvent: false,
@@ -100,7 +97,6 @@ export default class Plx extends Component {
 
   componentWillMount() {
     window.addEventListener('plx-scroll', this.handleScrollChange);
-    window.addEventListener('resize', this.debounceWindowResize);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -109,9 +105,6 @@ export default class Plx extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('plx-scroll', this.handleScrollChange);
-    window.removeEventListener('resize', this.debounceWindowResize);
-    clearTimeout(this.timeoutID);
-    this.timeoutID = null;
 
     this.scrollManager.destroy();
     this.scrollManager = null;
@@ -168,7 +161,7 @@ export default class Plx extends Component {
 
     // Safety check, if color is in the wrong format
     if (!result) {
-      console.log(`Plx, ERROR: rgb or rgba color is not in the right format: "${ rgb }"`); // eslint-disable-line no-console
+      console.log(`Plx, ERROR: rgb or rgba color is not in the right format: "${ rgb }"`); // eslint-disable-line
       return null;
     }
 
@@ -217,13 +210,13 @@ export default class Plx extends Component {
 
     // Safety check, if "startValue" is in the wrong format
     if (typeof startValue !== 'number') {
-      console.log(`Plx, ERROR: startValue is not a number, but "${ typeof endValue }": "${ endValue }"`); // eslint-disable-line no-console
+      console.log(`Plx, ERROR: startValue is not a number, but "${ typeof endValue }": "${ endValue }"`); // eslint-disable-line
       return null;
     }
 
     // Safety check, if "endValue" is in the wrong format
     if (typeof endValue !== 'number') {
-      console.log(`Plx, ERROR: endValue is not a number, but "${ typeof endValue }": "${ endValue }"`); // eslint-disable-line no-console
+      console.log(`Plx, ERROR: endValue is not a number, but "${ typeof endValue }": "${ endValue }"`); // eslint-disable-line
       return null;
     }
 
@@ -247,15 +240,6 @@ export default class Plx extends Component {
     }
 
     return value.toFixed(2);
-  }
-
-  debounceWindowResize() {
-    clearTimeout(this.timeoutID);
-    this.timeoutID = setTimeout(this.handleResizeChange, RESIZE_DELAY);
-  }
-
-  handleResizeChange() {
-    this.update(this.scrollManager.getWindowScrollTop(), this.props);
   }
 
   handleScrollChange(e) {
