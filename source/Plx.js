@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ScrollManager from './scroll-manager';
 
+const RESIZE_DELAY = 250;
 const DEFAULT_UNIT = 'px';
 const DEFAULT_ANGLE_UNIT = 'deg';
 const ANGLE_PROPERTIES = [
@@ -88,6 +89,8 @@ export default class Plx extends Component {
 
     this.scrollManager = new ScrollManager(interval);
     this.handleScrollChange = this.handleScrollChange.bind(this);
+    this.handleResizeChange = this.handleResizeChange.bind(this);
+    this.debounceWindowResize = this.debounceWindowResize.bind(this);
 
     this.state = {
       hasReceivedScrollEvent: false,
@@ -97,15 +100,18 @@ export default class Plx extends Component {
 
   componentWillMount() {
     window.addEventListener('plx-scroll', this.handleScrollChange);
+    window.addEventListener('resize', this.debounceWindowResize);
   }
 
-  // TODO
-  // componentWillReceiveProps(nextProps) {
-  //
-  // }
+  componentWillReceiveProps(nextProps) {
+    this.update(this.scrollManager.getWindowScrollTop(), nextProps);
+  }
 
   componentWillUnmount() {
     window.removeEventListener('plx-scroll', this.handleScrollChange);
+    window.removeEventListener('resize', this.debounceWindowResize);
+    clearTimeout(this.timeoutID);
+    this.timeoutID = null;
 
     this.scrollManager.destroy();
     this.scrollManager = null;
@@ -243,18 +249,27 @@ export default class Plx extends Component {
     return value.toFixed(2);
   }
 
+  debounceWindowResize() {
+    clearTimeout(this.timeoutID);
+    this.timeoutID = setTimeout(this.handleResizeChange, RESIZE_DELAY);
+  }
+
+  handleResizeChange() {
+    this.update(this.scrollManager.getWindowScrollTop(), this.props);
+  }
+
   handleScrollChange(e) {
+    this.update(e.detail.scrollPosition, this.props);
+  }
+
+  update(scrollPosition, props) {
     const {
       parallaxData,
-    } = this.props;
+    } = props;
     const {
       hasReceivedScrollEvent,
       plxStyle,
     } = this.state;
-    const {
-      scrollPosition,
-    } = e.detail;
-
 
     this.scrollPosition = scrollPosition;
 
