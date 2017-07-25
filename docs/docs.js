@@ -11,6 +11,7 @@ const Example = class extends React.Component {
           <div className='FixedDemo-wrapper'>
             <Plx
               className='FixedDemo'
+              animateWhenNotInViewport={ true }
               parallaxData={ [
                 {
                   start: 0,

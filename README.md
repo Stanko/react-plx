@@ -49,7 +49,7 @@ This is React component which makes creating on scroll effects (aka parallax) ea
 
 It is lightweight, and beside `react`, `react-dom` and `prop-types` has no dependencies. As listening to scroll event is not performant, this component uses different approach. Interval is set (every 16ms to get 60fps) to check if scroll position is changed, and if it is, it broadcasts custom event. All of the `Plx` components are sharing the scroll manager singleton. Interval is set when the first component is created, and cleared when last one is unmounted. Interval time can be changed through the props, but it is shared across the components.
 
-Component also doesn't animate elements outside of viewport.
+Elements outside of viewport are not animated. This is done by using `getBoundingClientRect`, but there is a [known bug in iOS](https://openradar.appspot.com/radar?id=6668472289329152) with `getBoundingClientRect` and position `fixed`. If you get into the same problems, you can force rendering by passing `animateWhenNotInViewport={ true }`.
 
 Still you need to avoid common "don't dos" when making a parallax page:
 
@@ -82,7 +82,8 @@ Read more about how it works in [this blog post](https://stanko.github.io/plx-re
 
 * **animateWhenNotInViewport** bool, default `false`
 
-  If set to true element will be animated even when it is not in the viewport
+  If set to true element will be animated even when it is not in the viewport.
+  This is helpful with fixed elements in iOS due to [know bug with `getBoundingClientRect` in iOS](https://openradar.appspot.com/radar?id=6668472289329152).
 
 * **parallaxData** array of items (item structure described beneath), *required*
 
