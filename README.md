@@ -49,6 +49,8 @@ This is React component which makes creating on scroll effects (aka parallax) ea
 
 It is lightweight, and beside `react`, `react-dom` and `prop-types` has no dependencies. As listening to scroll event is not performant, this component uses different approach. Interval is set (every 16ms to get 60fps) to check if scroll position is changed, and if it is, it broadcasts custom event. All of the `Plx` components are sharing the scroll manager singleton. Interval is set when the first component is created, and cleared when last one is unmounted. Interval time can be changed through the props, but it is shared across the components.
 
+Component also doesn't animate elements outside of viewport.
+
 Still you need to avoid common "don't dos" when making a parallax page:
 
 * Avoid `background-size: cover`
@@ -62,6 +64,8 @@ Of course, you can break any of these rules, but test for performance to see if 
 
 Component is written as ES module, so it will work with webpack and other module bundlers (which is standard for React apps anyway). Tested with `react-create-app` and my boilerplate, [Marvin](https://github.com/workco/marvin).
 
+Read more about how it works in [this blog post](https://stanko.github.io/plx-react-parallax-component/).
+
 ## Props
 
 * **className** string
@@ -72,9 +76,13 @@ Component is written as ES module, so it will work with webpack and other module
 
   CSS style object, please note that properties used in parallax will be overridden by component.
 
-* **interval** number
+* **interval** number, default `16`
 
   Interval in milliseconds, how often should interval check for scroll changes. Default 16 (60fps).
+
+* **animateWhenNotInViewport** bool, default `false`
+
+  If set to true element will be animated even when it is not in the viewport
 
 * **parallaxData** array of items (item structure described beneath), *required*
 
@@ -87,6 +95,8 @@ Component is written as ES module, so it will work with webpack and other module
 
   Scroll position (in pixels) where parallax effect should start.
   If set to `top`, it will start from element's top offset.
+
+  PLEASE NOTE that `parallaxData` should be sorted by `start` value!
 
 * **duration** number or `height`, *required*
 

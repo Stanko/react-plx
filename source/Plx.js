@@ -28,6 +28,10 @@ const HEX_REGEX = new RegExp(`^#${ REGEX_TWO_HEX_DIGITS }${ REGEX_TWO_HEX_DIGITS
 const RGB_REGEX = new RegExp(`^rgb\\(${ REGEX_0_255 },${ REGEX_0_255 },${ REGEX_0_255 }\\)$`, 'i');
 const RGBA_REGEX = new RegExp(`^rgba\\(${ REGEX_0_255 },${ REGEX_0_255 },${ REGEX_0_255 },${ REGEX_0_1 }\\)$`, 'i');
 
+const SCROLL_OFFSET = 50;
+
+const RESIZE_DEBOUNCE_TIMEOUT = 150;
+
 // CSS transform map
 const TRANSFORM_MAP = {
   rotate: (value, unit: DEFAULT_ANGLE_UNIT) => `rotate(${ value }${ unit })`,
@@ -86,8 +90,12 @@ export default class Plx extends Component {
       interval,
     } = props;
 
+    // Get scroll manager singleton
     this.scrollManager = new ScrollManager(interval);
+
+    // Binding handlers
     this.handleScrollChange = this.handleScrollChange.bind(this);
+    this.handleResize = this.handleResize.bind(this);
 
     this.state = {
       hasReceivedScrollEvent: false,
@@ -97,6 +105,7 @@ export default class Plx extends Component {
 
   componentWillMount() {
     window.addEventListener('plx-scroll', this.handleScrollChange);
+    window.addEventListener('resize', this.handleResize);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -105,6 +114,10 @@ export default class Plx extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('plx-scroll', this.handleScrollChange);
+    window.removeEventListener('resize', this.handleResize);
+
+    clearTimeout(this.resizeDebounceTimeoutID);
+    this.resizeDebounceTimeoutID = null;
 
     this.scrollManager.destroy();
     this.scrollManager = null;
@@ -242,6 +255,14 @@ export default class Plx extends Component {
     return value.toFixed(2);
   }
 
+  handleResize() {
+    clearTimeout(this.resizeDebounceTimeoutID);
+
+    this.resizeDebounceTimeoutID = setTimeout(() => {
+      this.update(this.scrollManager.getWindowScrollTop(), this.props);
+    }, RESIZE_DEBOUNCE_TIMEOUT);
+  }
+
   handleScrollChange(e) {
     this.update(e.detail.scrollPosition, this.props);
   }
@@ -249,6 +270,7 @@ export default class Plx extends Component {
   update(scrollPosition, props) {
     const {
       parallaxData,
+      animateWhenNotInViewport,
     } = props;
     const {
       hasReceivedScrollEvent,
@@ -256,6 +278,18 @@ export default class Plx extends Component {
     } = this.state;
 
     this.scrollPosition = scrollPosition;
+
+    // Check if element is in viewport
+    // Small offset is added to prevent page jumping
+    if (!animateWhenNotInViewport) {
+      const rect = this.element.getBoundingClientRect();
+      const isTopAboveBottomEdge = rect.top < window.innerHeight + SCROLL_OFFSET;
+      const isBottomBellowTopEdge = rect.top + rect.height > -SCROLL_OFFSET;
+
+      if (!isTopAboveBottomEdge || !isBottomBellowTopEdge) {
+        return;
+      }
+    }
 
     const newState = {};
     const newStyle = {
@@ -482,6 +516,7 @@ const parallaxDataType = PropTypes.shape({
 
 
 Plx.propTypes = {
+  animateWhenNotInViewport: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
   children: PropTypes.any,
   className: PropTypes.string,
   interval: PropTypes.number,
@@ -492,4 +527,5 @@ Plx.propTypes = {
 Plx.defaultProps = {
   className: '',
   interval: 16,
+  animateWhenNotInViewport: false,
 };
