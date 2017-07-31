@@ -89,6 +89,7 @@ Read more about how it works in [this blog post](https://stanko.github.io/plx-re
 
   Main data, describes parallax segments.
 
+Any other props will be passed to the component (for example this is useful for `aria-*` props).
 
 ### parallaxData
 

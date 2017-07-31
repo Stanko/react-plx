@@ -515,6 +515,18 @@ export default class Plx extends Component {
     }
   }
 
+  omit(object, keysToOmit) {
+    const result = {};
+
+    Object.keys(object).forEach(key => {
+      if (keysToOmit.indexOf(key) === -1) {
+        result[key] = object[key];
+      }
+    });
+
+    return result;
+  }
+
   render() {
     const {
       children,
@@ -526,8 +538,18 @@ export default class Plx extends Component {
       plxStyle,
     } = this.state;
 
+    const propsToOmit = [
+      'animateWhenNotInViewport',
+      'children',
+      'className',
+      'interval',
+      'parallaxData',
+      'style',
+    ];
+
     return (
       <div
+        { ...this.omit(this.props, propsToOmit) }
         className={ `Plx ${ className }` }
         style={ {
           ...style,
