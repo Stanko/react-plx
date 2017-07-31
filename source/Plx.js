@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import BezierEasing from 'bezier-easing';
 import ScrollManager from './scroll-manager';
 
 const DEFAULT_UNIT = 'px';
@@ -14,6 +15,34 @@ const ANGLE_PROPERTIES = [
   'skewY',
   'skewZ',
 ];
+
+const EASINGS = {
+  ease: [0.25, 0.1, 0.25, 1.0],
+  easeIn: [0.42, 0.0, 1.00, 1.0],
+  easeOut: [0.00, 0.0, 0.58, 1.0],
+  easeInOut: [0.42, 0.0, 0.58, 1.0],
+  easeInSine: [0.47, 0, 0.745, 0.715],
+  easeOutSine: [0.39, 0.575, 0.565, 1],
+  easeInOutSine: [0.445, 0.05, 0.55, 0.95],
+  easeInQuad: [0.55, 0.085, 0.68, 0.53],
+  easeOutQuad: [0.25, 0.46, 0.45, 0.94],
+  easeInOutQuad: [0.455, 0.03, 0.515, 0.955],
+  easeInCubic: [0.55, 0.055, 0.675, 0.19],
+  easeOutCubic: [0.215, 0.61, 0.355, 1],
+  easeInOutCubic: [0.645, 0.045, 0.355, 1],
+  easeInQuart: [0.895, 0.03, 0.685, 0.22],
+  easeOutQuart: [0.165, 0.84, 0.44, 1],
+  easeInOutQuart: [0.77, 0, 0.175, 1],
+  easeInQuint: [0.755, 0.05, 0.855, 0.06],
+  easeOutQuint: [0.23, 1, 0.32, 1],
+  easeInOutQuint: [0.86, 0, 0.07, 1],
+  easeInExpo: [0.95, 0.05, 0.795, 0.035],
+  easeOutExpo: [0.19, 1, 0.22, 1],
+  easeInOutExpo: [1, 0, 0, 1],
+  easeInCirc: [0.6, 0.04, 0.98, 0.335],
+  easeOutCirc: [0.075, 0.82, 0.165, 1],
+  easeInOutCirc: [0.785, 0.135, 0.15, 0.86],
+};
 
 // Color regexs
 
@@ -187,7 +216,7 @@ export default class Plx extends Component {
     };
   }
 
-  colorParallax(scrollPosition, start, duration, startValue, endValue) {
+  colorParallax(scrollPosition, start, duration, startValue, endValue, easing) {
     let startObject = null;
     let endObject = null;
 
@@ -204,10 +233,10 @@ export default class Plx extends Component {
     }
 
     if (startObject && endObject) {
-      const r = this.parallax(scrollPosition, start, duration, startObject.r, endObject.r);
-      const g = this.parallax(scrollPosition, start, duration, startObject.g, endObject.g);
-      const b = this.parallax(scrollPosition, start, duration, startObject.b, endObject.b);
-      const a = this.parallax(scrollPosition, start, duration, startObject.a, endObject.a);
+      const r = this.parallax(scrollPosition, start, duration, startObject.r, endObject.r, easing);
+      const g = this.parallax(scrollPosition, start, duration, startObject.g, endObject.g, easing);
+      const b = this.parallax(scrollPosition, start, duration, startObject.b, endObject.b, easing);
+      const a = this.parallax(scrollPosition, start, duration, startObject.a, endObject.a, easing);
 
       return `rgba(${ parseInt(r, 10) }, ${ parseInt(g, 10) }, ${ parseInt(b, 10) }, ${ a })`;
     }
@@ -215,7 +244,7 @@ export default class Plx extends Component {
     return null;
   }
 
-  parallax(scrollPosition, start, duration, startValue, endValue) {
+  parallax(scrollPosition, start, duration, startValue, endValue, easing) {
     let min = startValue;
     let max = endValue;
     const invert = startValue > endValue;
@@ -238,18 +267,42 @@ export default class Plx extends Component {
       max = startValue;
     }
 
-    let value = ((scrollPosition - start) / duration) * (max - min);
+    let percentage = ((scrollPosition - start) / duration);
+
+    if (percentage > 1) {
+      percentage = 1;
+    } else if (percentage < 0) {
+      percentage = 0;
+    }
+
+    // Apply easing
+    if (easing) {
+      const easingPropType = typeof easing;
+      if (easingPropType === 'object' && easing.length === 4) {
+        percentage = BezierEasing(
+          easing[0],
+          easing[1],
+          easing[2],
+          easing[3]
+        )(percentage);
+      } else if (easingPropType === 'string' && EASINGS[easing]) {
+        percentage = BezierEasing(
+          EASINGS[easing][0],
+          EASINGS[easing][1],
+          EASINGS[easing][2],
+          EASINGS[easing][3]
+        )(percentage);
+      } else if (easingPropType === 'function') {
+        percentage = easing(percentage);
+      }
+    }
+
+    let value = percentage * (max - min);
 
     if (invert) {
       value = max - value;
     } else {
       value += min;
-    }
-
-    if (value < min) {
-      value = min;
-    } else if (value > max) {
-      value = max;
     }
 
     return value.toFixed(2);
@@ -309,6 +362,7 @@ export default class Plx extends Component {
         duration,
         offset,
         properties,
+        easing,
       } = parallaxData[i];
 
       const scrollOffset = offset || 0;
@@ -351,7 +405,8 @@ export default class Plx extends Component {
             startPosition,
             parallaxDuration,
             startValue,
-            endValue
+            endValue,
+            easing
           );
 
           // Get transform function
@@ -512,6 +567,11 @@ const parallaxDataType = PropTypes.shape({
   ]).isRequired,
   offset: PropTypes.number,
   properties: PropTypes.arrayOf(propertiesItemType).isRequired,
+  easing: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.array,
+    PropTypes.func,
+  ]),
 });
 
 
@@ -525,7 +585,7 @@ Plx.propTypes = {
 };
 
 Plx.defaultProps = {
+  animateWhenNotInViewport: false,
   className: '',
   interval: 16,
-  animateWhenNotInViewport: false,
 };

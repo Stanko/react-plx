@@ -1,6 +1,6 @@
 {
   "name": "react-plx",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "private": false,
   "license": "MIT",
   "main": "lib/index.js",
@@ -49,6 +49,7 @@
     "webpack-dev-server": "^2.2.1"
   },
   "dependencies": {
+    "bezier-easing": "^2.0.3",
     "prop-types": "^15.5.8"
   },
   "peerDependencies": {

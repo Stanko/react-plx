@@ -47,7 +47,7 @@ class Example extends Component {
 
 This is React component which makes creating on scroll effects (aka parallax) easy. If you are not sure what it does, [demo](https://stanko.github.io/react-plx/) should help.
 
-It is lightweight, and beside `react`, `react-dom` and `prop-types` has no dependencies. As listening to scroll event is not performant, this component uses different approach. Interval is set (every 16ms to get 60fps) to check if scroll position is changed, and if it is, it broadcasts custom event. All of the `Plx` components are sharing the scroll manager singleton. Interval is set when the first component is created, and cleared when last one is unmounted. Interval time can be changed through the props, but it is shared across the components.
+It is lightweight, and beside `react`, `react-dom` and `prop-types` ~~has no dependencies~~, now it has small `bezier-easing` package. As listening to scroll event is not performant, this component uses different approach. Interval is set (every 16ms to get 60fps) to check if scroll position is changed, and if it is, it broadcasts custom event. All of the `Plx` components are sharing the scroll manager singleton. Interval is set when the first component is created, and cleared when last one is unmounted. Interval time can be changed through the props, but it is shared across the components.
 
 Elements outside of viewport are not animated. This is done by using `getBoundingClientRect`, but there is a [known bug in iOS](https://openradar.appspot.com/radar?id=6668472289329152) with `getBoundingClientRect` and position `fixed`. If you get into the same problems, you can force rendering by passing `animateWhenNotInViewport={ true }`.
 
@@ -108,6 +108,55 @@ Read more about how it works in [this blog post](https://stanko.github.io/plx-re
 
   Start offset, useful when `duration={ 'height' }` is used
 
+* **easing** string, function or array, default: 'linear'
+
+  Easing function, you can pass the name (string) to choose one of the built-in functions.
+  Built-in easing functions are:
+
+  * ease
+  * easeIn
+  * easeOut
+  * easeInOut
+  * easeInSine
+  * easeOutSine
+  * easeInOutSine
+  * easeInQuad
+  * easeOutQuad
+  * easeInOutQuad
+  * easeInCubic
+  * easeOutCubic
+  * easeInOutCubic
+  * easeInQuart
+  * easeOutQuart
+  * easeInOutQuart
+  * easeInQuint
+  * easeOutQuint
+  * easeInOutQuint
+  * easeInExpo
+  * easeOutExpo
+  * easeInOutExpo
+  * easeInCirc
+  * easeOutCirc
+  * easeInOutCirc
+
+  Cubic beziers are supported, pass an array to it with four points of your custom bezier (you can copy CSS beziers).
+  ```
+  easing: [0.25, 0.1, 0.53, 3]
+  ```
+
+  You can even pass custom function which accepts one argument, which will be number from 0 to 1.
+  ```
+  // Define your custom easing
+  const myCustomEasing = (x) => {
+    return x * x;
+  }
+
+  ...
+
+  // and then pass it to Plx
+  easing: myCustomEasing
+  ```
+
 * **properties** array of items (item structure described beneath), *required*
 
   List of properties to be animated
@@ -166,11 +215,12 @@ Read more about how it works in [this blog post](https://stanko.github.io/plx-re
 
 ## Example of props
 
-These are the exact pros used in the demo
+These are the exact props used in the demo
 
 ```javascript
 <Plx
-  className='demo-1'
+  className='FixedDemo'
+  animateWhenNotInViewport={ true } // Because of iOS bug
   parallaxData={ [
     {
       start: 0,

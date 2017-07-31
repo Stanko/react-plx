@@ -99,6 +99,9 @@ const Example = class extends React.Component {
             Offset is set to <code>-200</code>, so animation starts when
             elements get at 200 pixels from viewport edge.
           </p>
+          <p>
+            Custom cubic bezier easing is applied <code>(0.25, 0.1, 0.53, 3)</code>
+          </p>
 
           <div className='HorizontalDemo'>
             <Plx
@@ -108,6 +111,7 @@ const Example = class extends React.Component {
                   start: 'top',
                   offset: -200,
                   duration: 'height',
+                  easing: [0.25, 0.1, 0.53, 3],
                   properties: [
                     {
                       startValue: 0,
@@ -130,6 +134,7 @@ const Example = class extends React.Component {
                   start: 'top',
                   offset: -200,
                   duration: 'height',
+                  easing: [0.25, 0.1, 0.53, 3],
                   properties: [
                     {
                       startValue: 0,
@@ -152,6 +157,7 @@ const Example = class extends React.Component {
                   start: 'top',
                   offset: -200,
                   duration: 'height',
+                  easing: [0.25, 0.1, 0.53, 3],
                   properties: [
                     {
                       startValue: 0,
