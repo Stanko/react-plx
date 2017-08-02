@@ -438,6 +438,7 @@ export default class Plx extends Component {
         properties,
         startPosition,
         parallaxDuration,
+        easing,
       } = data;
 
       properties.forEach((propertyData) => {
@@ -471,7 +472,8 @@ export default class Plx extends Component {
           startPosition,
           parallaxDuration,
           startValue,
-          endValue
+          endValue,
+          easing
         );
 
         // Get transform function
