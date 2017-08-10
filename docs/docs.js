@@ -14,7 +14,7 @@ const Example = class extends React.Component {
               animateWhenNotInViewport={ true }
               parallaxData={ [
                 {
-                  start: 0,
+                  start: 50,
                   duration: 300,
                   properties: [
                     {
@@ -92,6 +92,11 @@ const Example = class extends React.Component {
             rotate from 360 to 0deg and scale back to 100%
           </li>
         </ol>
+        <p>
+          You can also see in which state animation is, and this is updated via CSS
+          using Plx&apos;s animation state classes.
+          (In this case <code>::after</code> element is used.)
+        </p>
         <hr className='margin-y-50' />
         <div className=''>
           <p>

@@ -61,6 +61,37 @@ h2, h3, h4 {
   position: relative;
   padding: 0 20px;
   width: 140px;
+  transition: background 1s;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 200px;
+  }
+
+  &.Plx--above::after {
+    content: 'above';
+  }
+  &.Plx--in-0::after {
+    content: 'in 0';
+  }
+  &.Plx--between-0-and-1::after {
+    content: 'between 0 and 1';
+  }
+  &.Plx--in-1::after {
+    content: 'in 1';
+  }
+  &.Plx--between-1-and-2::after {
+    content: 'between 1 and 2';
+  }
+  &.Plx--in-2::after {
+    content: 'in 2';
+  }
+  &.Plx--bellow::after {
+    content: 'bellow';
+  }
 }
 
 .FixedDemo img {

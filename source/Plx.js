@@ -129,6 +129,7 @@ export default class Plx extends Component {
     this.state = {
       hasReceivedScrollEvent: false,
       plxStyle: {},
+      plxStateClasses: '',
     };
   }
 
@@ -150,8 +151,6 @@ export default class Plx extends Component {
 
     this.scrollManager.destroy();
     this.scrollManager = null;
-
-    this.scrollPosition = null;
   }
 
   getElementTop(el) {
@@ -328,9 +327,8 @@ export default class Plx extends Component {
     const {
       hasReceivedScrollEvent,
       plxStyle,
+      plxStateClasses,
     } = this.state;
-
-    this.scrollPosition = scrollPosition;
 
     // Check if element is in viewport
     // Small offset is added to prevent page jumping
@@ -355,6 +353,8 @@ export default class Plx extends Component {
 
     const appliedProperties = [];
     const segments = [];
+    let isInSegment = false;
+    let lastSegmentScrolledBy = null;
 
     for (let i = 0; i < parallaxData.length; i++) {
       const {
@@ -392,8 +392,16 @@ export default class Plx extends Component {
         break;
       }
 
+      const isScrolledByStart = scrollPosition >= startPosition;
+
+      if (isScrolledByStart) {
+        lastSegmentScrolledBy = i;
+      }
+
       // If active segment exists, apply his properties
       if (scrollPosition >= startPosition && scrollPosition <= endPosition) {
+        isInSegment = true;
+
         properties.forEach((propertyData) => {
           const {
             startValue,
@@ -526,6 +534,24 @@ export default class Plx extends Component {
       newState.plxStyle = newStyle;
     }
 
+    // Adding state class
+    let newPlxStateClasses = null;
+
+    if (lastSegmentScrolledBy === null) {
+      newPlxStateClasses = 'Plx--above';
+    } else if (lastSegmentScrolledBy === parallaxData.length - 1 && !isInSegment) {
+      newPlxStateClasses = 'Plx--bellow';
+    } else if (lastSegmentScrolledBy !== null && isInSegment) {
+      newPlxStateClasses = `Plx--active Plx--in Plx--in-${ lastSegmentScrolledBy }`;
+    } else if (lastSegmentScrolledBy !== null && !isInSegment) {
+      newPlxStateClasses =
+        `Plx--active Plx--between Plx--between-${ lastSegmentScrolledBy }-and-${ lastSegmentScrolledBy + 1 }`;
+    }
+
+    if (newPlxStateClasses !== plxStateClasses) {
+      newState.plxStateClasses = newPlxStateClasses;
+    }
+
     if (Object.keys(newState).length) {
       requestAnimationFrame(() => {
         this.setState(newState);
@@ -554,6 +580,7 @@ export default class Plx extends Component {
     const {
       hasReceivedScrollEvent,
       plxStyle,
+      plxStateClasses,
     } = this.state;
 
     const propsToOmit = [
@@ -568,7 +595,7 @@ export default class Plx extends Component {
     return (
       <div
         { ...this.omit(this.props, propsToOmit) }
-        className={ `Plx ${ className }` }
+        className={ `Plx ${ plxStateClasses } ${ className }` }
         style={ {
           ...style,
           ...plxStyle,

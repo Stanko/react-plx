@@ -244,7 +244,7 @@ These are the exact props used in the demo
   animateWhenNotInViewport={ true } // Because of iOS bug
   parallaxData={ [
     {
-      start: 0,
+      start: 50,
       duration: 300,
       properties: [
         {
@@ -314,12 +314,33 @@ These are the exact props used in the demo
 </Plx>
 ```
 
+## Current state CSS classes
+
+Component will also apply CSS classes that match current animation state.
+Classes are:
+
+* `Plx--above`
+  scroll position is above first start position (animation isn't started yet)
+
+* `Plx--above`
+  scroll position is below last end position (animation is finished)
+
+* `Plx--active`
+  scroll position is below first start and last end position (animation is in progress, including between states)
+
+* `Plx--in Plx--in-{n}`
+  scroll position is in `n`-th segment (`Plx--in-0`, `Plx--in-1`...)
+
+* `Plx--between Plx--between-{a}-and-{b}`
+  scroll position is between segments `a` and `b` (`Plx--between-0-and-1`, `Plx--between-1-and-2`...)
+
+`in` and `between` classes are applied along with `active` class.
 
 ## Browser support
 
 Modern browsers and IE10+.
 
-IE9 should work if polyfill `requestAnimationFrame`. But I'm not supporting IE9.
+IE9 should work if polyfill `requestAnimationFrame`. But Im not supporting IE9.
 
 
 ## License
