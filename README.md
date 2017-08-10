@@ -40,7 +40,7 @@ class Example extends Component {
 * [What is this?](#user-content-what-is-this)
 * [Props](#user-content-props)
 * [Example of props](#user-content-example-of-props)
-* [Animation state CSS classes](#user-animation-state-css-classes)
+* [Animation state CSS classes](#user-content-animation-state-css-classes)
 * [Browser support](#user-content-browser-support)
 * [License](#user-content-license)
 
@@ -178,14 +178,13 @@ Any other props will be passed to the component (for example this is useful for 
   // and then pass it to Plx
   easing: myCustomEasing
   ```
+* **name** string (without spaces)
+
+  Name used in [animation state CSS classes](#user-content-animation-state-css-classes)
 
 * **properties** array of items (item structure described beneath), *required*
 
   List of properties to be animated
-
-* **name** string (without spaces)
-
-  Name used in [animation state CSS classes](#user-animation-state-css-classes)
 
 ### properties
 
@@ -338,11 +337,11 @@ Classes are:
 
 * `Plx--in Plx--in-{n}`
   scroll position is in `n`-th segment (`Plx--in-0`, `Plx--in-1`...).
-  In `name` is passed it will be used instead of index (`Plx--in-superDuperName`).
+  If `name` prop is passed (see above) it will be used instead of index (`Plx--in-superDuperName`).
 
 * `Plx--between Plx--between-{a}-and-{b}`
   scroll position is between segments `a` and `b` (`Plx--between-0-and-1`, `Plx--between-1-and-2`...)
-  In `name` is passed it will be used instead of index (`Plx--between-superDuperName-and-anotherName`).
+  If `name` prop is passed (see above) it will be used instead of index (`Plx--between-superDuperName-and-anotherName`).
 
 `active` class is applied along with bot `in` and `between` classes.
 
