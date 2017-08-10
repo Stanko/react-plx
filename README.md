@@ -105,7 +105,7 @@ Any other props will be passed to the component (for example this is useful for 
   You can use `offset` prop to offset start.
 
   Example:
-  ```
+  ```js
   start={ 100 } // starts when scroll hits 100px
   start={ 'top' } // starts when plx element's top hits page top
   start={ '.MyCoolSelector' } // starts when .MyCoolSelector's top hits page top
@@ -120,7 +120,7 @@ Any other props will be passed to the component (for example this is useful for 
   (if `start` is a selector, that element's height will be used).
 
   Example:
-  ```
+  ```js
   duration={ 300 } // animation will last for 300px of scroll
   duration={ 'height' } // animation will last for element's height (depending on the element passed as `start`)
   ```
@@ -161,16 +161,16 @@ Any other props will be passed to the component (for example this is useful for 
   * easeInOutCirc
 
   Cubic beziers are supported, pass an array to it with four points of your custom bezier (you can copy CSS beziers).
-  ```
+  ```js
   easing: [0.25, 0.1, 0.53, 3]
   ```
 
   You can even pass custom function which accepts one argument, which will be number from 0 to 1.
-  ```
+  ```js
   // Define your custom easing
   const myCustomEasing = (x) => {
     return x * x;
-  }
+  };
 
   ...
 
