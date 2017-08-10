@@ -154,9 +154,9 @@ export default class Plx extends Component {
     this.scrollPosition = null;
   }
 
-  getElementTop() {
+  getElementTop(el) {
     let top = 0;
-    let element = this.element;
+    let element = el;
 
     do {
       top += element.offsetTop || 0;
@@ -367,8 +367,24 @@ export default class Plx extends Component {
 
       const scrollOffset = offset || 0;
 
-      const startPosition = (start === 'top' ? this.getElementTop() : start) + scrollOffset;
-      const parallaxDuration = duration === 'height' ? this.element.offsetHeight : duration;
+      let startPosition = start;
+      let element = this.element;
+
+      if (start === 'top') {
+        startPosition = this.getElementTop(this.element);
+      } else if (typeof start === 'string') {
+        element = document.querySelector(start);
+
+        if (!element) {
+          console.log(`Plx, ERROR: start selector matches no elements: "${ start }"`); // eslint-disable-line no-console
+          return;
+        }
+
+        startPosition = this.getElementTop(element);
+      }
+
+      startPosition += scrollOffset;
+      const parallaxDuration = duration === 'height' ? element.offsetHeight : duration;
       const endPosition = startPosition + parallaxDuration;
 
       // If segment is bellow scroll position skip it
@@ -582,7 +598,7 @@ const propertiesItemType = PropTypes.shape({
 
 const parallaxDataType = PropTypes.shape({
   start: PropTypes.oneOfType([
-    PropTypes.oneOf(['top']),
+    PropTypes.string,
     PropTypes.number,
   ]).isRequired,
   duration: PropTypes.oneOfType([

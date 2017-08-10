@@ -93,17 +93,37 @@ Any other props will be passed to the component (for example this is useful for 
 
 ### parallaxData
 
-* **start** number or `top`, *required*
+* **start** number, string or `top`, *required*
 
   Scroll position (in pixels) where parallax effect should start.
   If set to `top`, it will start from element's top offset.
+
+  Any other string will be considered CSS selector
+  and it will be used with `document.querySelector` and
+  it will start from that element's top offset.
+
+  You can use `offset` prop to offset start.
+
+  Example:
+  ```
+  start={ 100 } // starts when scroll hits 100px
+  start={ 'top' } // starts when plx element's top hits page top
+  start={ '.MyCoolSelector' } // starts when .MyCoolSelector's top hits page top
+  ```
 
   PLEASE NOTE that `parallaxData` should be sorted by `start` value!
 
 * **duration** number or `height`, *required*
 
   Value (in pixels) how long should effect last (it will finish when scroll position equals `start` + `duration`).
-  If set to `height`, element's height will be used instead.
+  If set to `height`, element's height will be used instead
+  (if `start` is a selector, that element's height will be used).
+
+  Example:
+  ```
+  duration={ 300 } // animation will last for 300px of scroll
+  duration={ 'height' } // animation will last for element's height (depending on the element passed as `start`)
+  ```
 
 * **offset** number
 

@@ -1,6 +1,6 @@
 {
   "name": "react-plx",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "private": false,
   "license": "MIT",
   "main": "lib/index.js",
