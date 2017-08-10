@@ -542,10 +542,14 @@ export default class Plx extends Component {
     } else if (lastSegmentScrolledBy === parallaxData.length - 1 && !isInSegment) {
       newPlxStateClasses = 'Plx--bellow';
     } else if (lastSegmentScrolledBy !== null && isInSegment) {
-      newPlxStateClasses = `Plx--active Plx--in Plx--in-${ lastSegmentScrolledBy }`;
+      const segmentName = parallaxData[lastSegmentScrolledBy].name || lastSegmentScrolledBy;
+
+      newPlxStateClasses = `Plx--active Plx--in Plx--in-${ segmentName }`;
     } else if (lastSegmentScrolledBy !== null && !isInSegment) {
-      newPlxStateClasses =
-        `Plx--active Plx--between Plx--between-${ lastSegmentScrolledBy }-and-${ lastSegmentScrolledBy + 1 }`;
+      const segmentName = parallaxData[lastSegmentScrolledBy].name || lastSegmentScrolledBy;
+      const nextSegmentName = parallaxData[lastSegmentScrolledBy + 1].name || lastSegmentScrolledBy;
+
+      newPlxStateClasses = `Plx--active Plx--between Plx--between-${ segmentName }-and-${ nextSegmentName }`;
     }
 
     if (newPlxStateClasses !== plxStateClasses) {
@@ -639,6 +643,7 @@ const parallaxDataType = PropTypes.shape({
     PropTypes.array,
     PropTypes.func,
   ]),
+  name: PropTypes.string,
 });
 
 

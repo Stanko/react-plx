@@ -16,6 +16,7 @@ const Example = class extends React.Component {
                 {
                   start: 50,
                   duration: 300,
+                  name: 'first',
                   properties: [
                     {
                       startValue: 1,
@@ -35,8 +36,9 @@ const Example = class extends React.Component {
                   ],
                 },
                 {
-                  start: 350,
+                  start: 400,
                   duration: 300,
+                  name: 'second',
                   properties: [
                     {
                       startValue: 0,
@@ -57,8 +59,9 @@ const Example = class extends React.Component {
                   ],
                 },
                 {
-                  start: 700,
+                  start: 750,
                   duration: 300,
+                  name: 'third',
                   properties: [
                     {
                       startValue: -100,
@@ -85,10 +88,10 @@ const Example = class extends React.Component {
           </div>
         </div>
         <ol>
-          <li>0 - 300px: it will rotate for 360deg, scale to 50% and fade to 0.2 opacity</li>
-          <li>350 - 650px: it will fade in to 1, scale to 150% and tranlsate to left 100%</li>
+          <li>50 - 350px: it will rotate for 360deg, scale to 50% and fade to 0.2 opacity</li>
+          <li>400 - 700px: it will fade in to 1, scale to 150% and tranlsate to left 100%</li>
           <li>
-            700-1000px: it will translate to the right 100%,
+            750-1050px: it will translate to the right 100%,
             rotate from 360 to 0deg and scale back to 100%
           </li>
         </ol>
