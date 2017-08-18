@@ -96,7 +96,8 @@ Any other props will be passed to the component (for example this is useful for 
 
 * **start** number, string or `top`, *required*
 
-  Scroll position (in pixels) where parallax effect should start.
+  Scroll position (in pixels or percentage of the total page scroll)
+  where parallax effect should start.
   If set to `top`, it will start from element's top offset.
 
   Any other string will be considered CSS selector
@@ -116,9 +117,15 @@ Any other props will be passed to the component (for example this is useful for 
 
 * **duration** number or `height`, *required*
 
-  Value (in pixels) how long should effect last (it will finish when scroll position equals `start` + `duration`).
-  If set to `height`, element's height will be used instead
-  (if `start` is a selector, that element's height will be used).
+  Value (in pixels or percentage of the total page scroll)  
+  how long should effect last
+  (it will finish when scroll position equals `start` + `duration`).
+
+  If set to `height`, element's height will be used instead.
+
+  Any other string will be considered CSS selector
+  and it will be used with `document.querySelector` and
+  it will use that element's height.
 
   Example:
   ```js
@@ -245,7 +252,7 @@ These are the exact props used in the demo
 ```javascript
 <Plx
   className='FixedDemo'
-  animateWhenNotInViewport={ true } // Because of iOS bug, see above
+  animateWhenNotInViewport={ true }
   parallaxData={ [
     {
       start: 50,
@@ -293,8 +300,8 @@ These are the exact props used in the demo
       ],
     },
     {
-      start: 750,
-      duration: 300,
+      start: '90%',
+      duration: '9%',
       name: 'third',
       properties: [
         {

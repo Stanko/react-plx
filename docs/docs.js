@@ -59,8 +59,8 @@ const Example = class extends React.Component {
                   ],
                 },
                 {
-                  start: 750,
-                  duration: 300,
+                  start: '90%',
+                  duration: '9%',
                   name: 'third',
                   properties: [
                     {
@@ -91,7 +91,7 @@ const Example = class extends React.Component {
           <li>50 - 350px: it will rotate for 360deg, scale to 50% and fade to 0.2 opacity</li>
           <li>400 - 700px: it will fade in to 1, scale to 150% and tranlsate to left 100%</li>
           <li>
-            750-1050px: it will translate to the right 100%,
+            90%-99% of the total page scroll: it will translate to the right 100%,
             rotate from 360 to 0deg and scale back to 100%
           </li>
         </ol>

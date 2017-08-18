@@ -372,6 +372,22 @@ export default class Plx extends Component {
 
       if (start === 'top') {
         startPosition = this.getElementTop(this.element);
+      } else if (
+        // Percentage start
+        typeof start === 'string' &&
+        start.search('%') === start.length - 1 &&
+        this.isNumber(start.substr(0, start.length - 1))
+      ) {
+        const percentageValue = parseFloat(start) / 100;
+        const maxScroll = Math.max(
+          document.body.scrollHeight,
+          document.body.offsetHeight,
+          document.documentElement.clientHeight,
+          document.documentElement.scrollHeight,
+          document.documentElement.offsetHeight
+        ) - window.innerHeight;
+
+        startPosition = maxScroll * percentageValue;
       } else if (typeof start === 'string') {
         element = document.querySelector(start);
 
@@ -384,7 +400,37 @@ export default class Plx extends Component {
       }
 
       startPosition += scrollOffset;
-      const parallaxDuration = duration === 'height' ? element.offsetHeight : duration;
+      let parallaxDuration = duration;
+
+      if (duration === 'height') {
+        parallaxDuration = element.offsetHeight;
+      } else if (
+        // Percentage duration
+        typeof duration === 'string' &&
+        duration.search('%') === duration.length - 1 &&
+        this.isNumber(duration.substr(0, duration.length - 1))
+      ) {
+        const percentageValue = parseFloat(duration) / 100;
+        const maxScroll = Math.max(
+          document.body.scrollHeight,
+          document.body.offsetHeight,
+          document.documentElement.clientHeight,
+          document.documentElement.scrollHeight,
+          document.documentElement.offsetHeight
+        ) - window.innerHeight;
+
+        parallaxDuration = maxScroll * percentageValue;
+      } else if (typeof duration === 'string') {
+        const durationElement = document.querySelector(duration);
+
+        if (!durationElement) {
+          console.log(`Plx, ERROR: duration selector matches no elements: "${ duration }"`); // eslint-disable-line
+          return;
+        }
+
+        parallaxDuration = this.getElementTop(durationElement);
+      }
+
       const endPosition = startPosition + parallaxDuration;
 
       // If segment is bellow scroll position skip it
@@ -563,6 +609,10 @@ export default class Plx extends Component {
     }
   }
 
+  isNumber(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+  }
+
   omit(object, keysToOmit) {
     const result = {};
 
@@ -633,7 +683,7 @@ const parallaxDataType = PropTypes.shape({
     PropTypes.number,
   ]).isRequired,
   duration: PropTypes.oneOfType([
-    PropTypes.oneOf(['height']),
+    PropTypes.string,
     PropTypes.number,
   ]).isRequired,
   offset: PropTypes.number,
