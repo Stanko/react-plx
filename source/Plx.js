@@ -699,11 +699,11 @@ const parallaxDataType = PropTypes.shape({
 
 Plx.propTypes = {
   animateWhenNotInViewport: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
-  children: PropTypes.any,
+  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   className: PropTypes.string,
   interval: PropTypes.number,
   parallaxData: PropTypes.arrayOf(parallaxDataType).isRequired, // eslint-disable-line react/no-unused-prop-types
-  style: PropTypes.object,
+  style: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]))
 };
 
 Plx.defaultProps = {
