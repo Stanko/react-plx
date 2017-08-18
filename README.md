@@ -7,6 +7,8 @@ Lightweight and powerful React component, for creating on scroll effects aka. pa
 
 Check the [live demo](https://stanko.github.io/react-plx/).
 
+I would really like to see what you people have built using `Plx` and create a showcase section. So please open an issue titled `Showcase: <your awesome stuff>` so it can be featured. Cheers!
+
 
 ## Quick start
 
