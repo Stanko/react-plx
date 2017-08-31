@@ -119,8 +119,11 @@ export default class Plx extends Component {
       interval,
     } = props;
 
-    // Get scroll manager singleton
-    this.scrollManager = new ScrollManager(interval);
+    // Check for universal apps
+    if (typeof window !== 'undefined') {
+      // Get scroll manager singleton
+      this.scrollManager = new ScrollManager(interval);
+    }
 
     // Binding handlers
     this.handleScrollChange = this.handleScrollChange.bind(this);
@@ -134,8 +137,11 @@ export default class Plx extends Component {
   }
 
   componentWillMount() {
-    window.addEventListener('plx-scroll', this.handleScrollChange);
-    window.addEventListener('resize', this.handleResize);
+    // Check for universal apps
+    if (typeof window !== 'undefined') {
+      window.addEventListener('plx-scroll', this.handleScrollChange);
+      window.addEventListener('resize', this.handleResize);
+    }
   }
 
   componentWillReceiveProps(nextProps) {

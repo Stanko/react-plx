@@ -4,7 +4,7 @@ let instancesCount = 0;
 const INTERVAL = 16;
 
 // CustomEvent polyfill
-if (typeof window.CustomEvent !== 'function') {
+if (typeof window !== 'undefined' && typeof window.CustomEvent !== 'function') {
   const CustomEvent = function (
     event,
     params = { bubbles: false, cancelable: false, detail: undefined }
