@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Plx from '../source/index';
+import keenImage from './keen.png';
 import './docs.scss';
 
 const Example = class extends React.Component {
@@ -83,7 +84,7 @@ const Example = class extends React.Component {
                 },
               ] }
             >
-              <img alt='' src='https://stanko.github.io/public/img/s.png' />
+              <img alt='' src={ keenImage } />
             </Plx>
           </div>
         </div>

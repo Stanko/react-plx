@@ -37,6 +37,7 @@
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.7.1",
     "extract-text-webpack-plugin": "^2.1.0",
+    "file-loader": "^0.11.2",
     "html-webpack-plugin": "^2.24.1",
     "node-sass": "^4.5.3",
     "postcss-loader": "^1.1.1",

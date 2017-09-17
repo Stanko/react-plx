@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const path = require('path');
-// const fs = require('fs');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -17,9 +16,6 @@ const sourcePath = path.join(__dirname, './source');
 const docsPath = path.join(__dirname, './docs');
 
 const outputDistPath = isExample ? exampleDistPath : distPath;
-
-// const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-// const componentName = packageJson.name;
 
 // Common plugins
 const plugins = [
@@ -41,11 +37,10 @@ const rules = [
       'babel-loader',
     ],
   },
-  // {
-  //   test: /\.(png|gif|jpg|svg)$/,
-  //   include: imgPath,
-  //   use: 'url-loader?limit=20480&name=assets/[name]-[hash].[ext]',
-  // },
+  {
+    test: /\.(png|gif|jpg|svg)$/,
+    use: 'file-loader?name=[name]-[hash].[ext]',
+  },
 ];
 
 if (isProduction) {
@@ -129,7 +124,6 @@ module.exports = {
   entry,
   output: {
     path: outputDistPath,
-    // publicPath: '/',
     filename: '[name].js',
   },
   module: {
