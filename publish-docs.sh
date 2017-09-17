@@ -7,6 +7,8 @@ git checkout gh-pages
 # Copy everything from build to root
 cp ./dist-docs/* ./
 # Commit with current time
+git add *.png *.jpg
+# Commit with current time
 git commit -a -m "Demo updated `date +'%Y-%m-%d %H:%M:%S'`"
 # Pull changes, if any
 git pull --rebase origin gh-pages
