@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import BezierEasing from 'bezier-easing';
 import ScrollManager from './scroll-manager';
 
-const DEFAULT_UNIT = 'px';
+const DEFAULT_UNIT = '';
+const DEFAULT_TRANSFORM_UNIT = 'px';
 const DEFAULT_ANGLE_UNIT = 'deg';
 const ANGLE_PROPERTIES = [
   'rotate',
@@ -71,13 +72,13 @@ const TRANSFORM_MAP = {
   scaleX: value => `scaleX(${ value })`,
   scaleY: value => `scaleY(${ value })`,
   scaleZ: value => `scaleZ(${ value })`,
-  skew: (value, unit: DEFAULT_UNIT) => `skew(${ value }${ unit })`,
-  skewX: (value, unit: DEFAULT_UNIT) => `skewX(${ value }${ unit })`,
-  skewY: (value, unit: DEFAULT_UNIT) => `skewY(${ value }${ unit })`,
-  skewZ: (value, unit: DEFAULT_UNIT) => `skewZ(${ value }${ unit })`,
-  translateX: (value, unit: DEFAULT_UNIT) => `translateX(${ value }${ unit })`,
-  translateY: (value, unit: DEFAULT_UNIT) => `translateY(${ value }${ unit })`,
-  translateZ: (value, unit: DEFAULT_UNIT) => `translateZ(${ value }${ unit })`,
+  skew: (value, unit: DEFAULT_TRANSFORM_UNIT) => `skew(${ value }${ unit })`,
+  skewX: (value, unit: DEFAULT_TRANSFORM_UNIT) => `skewX(${ value }${ unit })`,
+  skewY: (value, unit: DEFAULT_TRANSFORM_UNIT) => `skewY(${ value }${ unit })`,
+  skewZ: (value, unit: DEFAULT_TRANSFORM_UNIT) => `skewZ(${ value }${ unit })`,
+  translateX: (value, unit: DEFAULT_TRANSFORM_UNIT) => `translateX(${ value }${ unit })`,
+  translateY: (value, unit: DEFAULT_TRANSFORM_UNIT) => `translateY(${ value }${ unit })`,
+  translateZ: (value, unit: DEFAULT_TRANSFORM_UNIT) => `translateZ(${ value }${ unit })`,
 };
 
 // Order of CSS transforms matter
@@ -173,6 +174,10 @@ export default class Plx extends Component {
 
   getUnit(property, unit) {
     let propertyUnit = unit || DEFAULT_UNIT;
+
+    if (Object.getOwnPropertyNames(TRANSFORM_MAP).indexOf(property) > -1) {
+      propertyUnit = unit || DEFAULT_TRANSFORM_UNIT
+    }
 
     if (ANGLE_PROPERTIES.indexOf(property) > -1) {
       propertyUnit = unit || DEFAULT_ANGLE_UNIT;
@@ -493,7 +498,7 @@ export default class Plx extends Component {
             newStyle.transform[property] = transformMethod(value, propertyUnit);
           } else {
             // All other properties
-            newStyle[property] = value;
+            newStyle[property] = value.toString() + propertyUnit;
           }
         });
       } else {
@@ -560,7 +565,7 @@ export default class Plx extends Component {
           newStyle.transform[property] = transformMethod(value, propertyUnit);
         } else {
           // All other properties
-          newStyle[property] = value;
+          newStyle[property] = value.toString() + propertyUnit;
         }
       });
     });
