@@ -96,6 +96,7 @@ if (isProduction) {
 
   // Development plugins
   plugins.push(
+    new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: path.join(docsPath, 'index.html'),
@@ -140,7 +141,6 @@ module.exports = {
   devServer: {
     contentBase: isProduction ? distPath : sourcePath,
     historyApiFallback: true,
-    port: 3000,
     compress: isProduction,
     inline: !isProduction,
     hot: !isProduction,

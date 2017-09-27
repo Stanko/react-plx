@@ -88,19 +88,49 @@ const Example = class extends React.Component {
             </Plx>
           </div>
         </div>
-        <ol>
-          <li>50 - 350px: it will rotate for 360deg, scale to 50% and fade to 0.2 opacity</li>
-          <li>400 - 700px: it will fade in to 1, scale to 150% and tranlsate to left 100%</li>
-          <li>
-            90%-99% of the total page scroll: it will translate to the right 100%,
-            rotate from 360 to 0deg and scale back to 100%
-          </li>
-        </ol>
-        <p>
-          You can also see in which state animation is, and this is updated via CSS
-          using Plx&apos;s animation state classes.
-          (In this case <code>::after</code> element is used.)
-        </p>
+        <div className='BackgroundDemo-trigger'>
+          <ol>
+            <li>50 - 350px: it will rotate for 360deg, scale to 50% and fade to 0.2 opacity</li>
+            <li>400 - 700px: it will fade in to 1, scale to 150% and tranlsate to left 100%</li>
+            <li>
+              90%-99% of the total page scroll: it will translate to the right 100%,
+              rotate from 360 to 0deg and scale back to 100%
+            </li>
+          </ol>
+          <p>
+            You can also see in which state animation is, and this is updated via CSS
+            using Plx&apos;s animation state classes.
+            (In this case <code>::after</code> element is used.)
+          </p>
+        </div>
+        <hr className='margin-y-50' />
+        <div className=''>
+          <p>
+            Non transform properties - <code>background-position-x</code> and <code>top</code>.
+          </p>
+        </div>
+        <Plx
+          className='BackgroundDemo'
+          parallaxData={ [
+            {
+              start: '.BackgroundDemo-trigger',
+              duration: 'height',
+              name: 'bgdemo',
+              properties: [
+                {
+                  startValue: 0,
+                  endValue: 300,
+                  property: 'backgroundPositionX',
+                },
+                {
+                  startValue: 0,
+                  endValue: 50,
+                  property: 'top',
+                },
+              ],
+            },
+          ] }
+        />
         <hr className='margin-y-50' />
         <div className=''>
           <p>

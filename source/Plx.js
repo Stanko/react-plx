@@ -174,7 +174,7 @@ export default class Plx extends Component {
   getUnit(property, unit) {
     let propertyUnit = unit || DEFAULT_UNIT;
 
-    if (ANGLE_PROPERTIES.indexOf(property) > -1) {
+    if (ANGLE_PROPERTIES.indexOf(property) >= 0) {
       propertyUnit = unit || DEFAULT_ANGLE_UNIT;
     }
 
@@ -310,7 +310,7 @@ export default class Plx extends Component {
       value += min;
     }
 
-    return value.toFixed(2);
+    return parseFloat(value.toFixed(2));
   }
 
   handleResize() {
@@ -463,9 +463,6 @@ export default class Plx extends Component {
           } = propertyData;
           appliedProperties.push(property);
 
-          // Get CSS unit
-          const propertyUnit = this.getUnit(property, unit);
-
           // Set default parallax method
           let parallaxMethod = this.parallax.bind(this);
 
@@ -489,11 +486,18 @@ export default class Plx extends Component {
           const transformMethod = TRANSFORM_MAP[property];
 
           if (transformMethod) {
+            // Get CSS unit
+            const propertyUnit = this.getUnit(property, unit);
             // Transforms, apply value to transform function
             newStyle.transform[property] = transformMethod(value, propertyUnit);
           } else {
             // All other properties
             newStyle[property] = value;
+
+            // Add unit if it is passed
+            if (unit) {
+              newStyle[property] += unit;
+            }
           }
         });
       } else {
@@ -530,9 +534,6 @@ export default class Plx extends Component {
           return;
         }
 
-        // Get CSS unit
-        const propertyUnit = this.getUnit(property, unit);
-
         // Set default parallax method
         let parallaxMethod = this.parallax.bind(this);
 
@@ -556,11 +557,18 @@ export default class Plx extends Component {
         const transformMethod = TRANSFORM_MAP[property];
 
         if (transformMethod) {
+          // Get CSS unit
+          const propertyUnit = this.getUnit(property, unit);
           // Transforms, apply value to transform function
           newStyle.transform[property] = transformMethod(value, propertyUnit);
         } else {
           // All other properties
           newStyle[property] = value;
+
+          // Add unit if it is passed
+          if (unit) {
+            newStyle[property] += unit;
+          }
         }
       });
     });
@@ -709,7 +717,7 @@ Plx.propTypes = {
   className: PropTypes.string,
   interval: PropTypes.number,
   parallaxData: PropTypes.arrayOf(parallaxDataType).isRequired, // eslint-disable-line react/no-unused-prop-types
-  style: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]))
+  style: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object])),
 };
 
 Plx.defaultProps = {

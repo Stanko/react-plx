@@ -105,6 +105,14 @@ h2, h3, h4 {
   }
 }
 
+.BackgroundDemo {
+  background-image: url('./keen.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 150px;
+  position: relative;
+}
+
 .HorizontalDemo {
   height: 150px;
   position: relative;
