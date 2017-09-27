@@ -8,6 +8,7 @@ const Example = class extends React.Component {
   render() {
     return (
       <div className='Content'>
+
         <div className='FixedDemo-spacer'>
           <div className='FixedDemo-wrapper'>
             <Plx
@@ -101,6 +102,31 @@ const Example = class extends React.Component {
           using Plx&apos;s animation state classes.
           (In this case <code>::after</code> element is used.)
         </p>
+        <hr className='margin-y-50' />
+        <div className=''>
+          <p>
+            Manipulate Background Position
+          </p>
+        </div>
+        <Plx
+          className='bgDemo'
+          style={ {
+            backgroundImage: `url(${ keenImage })`,
+            height: 150,
+          } }
+          parallaxData={ [
+            {
+              start: '.title',
+              duration: 'height',
+              name: 'bgdemo',
+              properties: [{
+                startValue: 0,
+                endValue: 300,
+                property: 'backgroundPositionX',
+              }],
+            },
+          ] }
+        />
         <hr className='margin-y-50' />
         <div className=''>
           <p>
