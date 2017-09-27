@@ -395,14 +395,14 @@ export default class Plx extends Component {
 
         startPosition = maxScroll * percentageValue;
       } else if (typeof start === 'string') {
-        element = document.querySelector(start);
+        var startElement = document.querySelector(start);
 
-        if (!element) {
+        if (!startElement) {
           console.log(`Plx, ERROR: start selector matches no elements: "${ start }"`); // eslint-disable-line no-console
           return;
         }
 
-        startPosition = this.getElementTop(element);
+        startPosition = this.getElementTop(startElement);
       }
 
       startPosition += scrollOffset;
