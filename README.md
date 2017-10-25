@@ -1,5 +1,8 @@
 # Plx - React Parallax component
 
+[![npm version](https://img.shields.io/npm/v/react-plx.svg?style=flat-square)](https://www.npmjs.com/package/react-plx)
+[![npm downloads](https://img.shields.io/npm/dm/react-plx.svg?style=flat-square)](https://www.npmjs.com/package/react-plx)
+
 Lightweight and powerful React component, for creating on scroll effects aka. parallax.
 
 
