@@ -120,7 +120,7 @@ Any other props will be passed to the component (for example this is useful for 
 
   PLEASE NOTE that `parallaxData` should be sorted by `start` value!
 
-* **duration** number or `height`, *required*
+* **duration** number, string, `height`, *required*
 
   Value (in pixels or percentage of the total page scroll)  
   how long should effect last
@@ -129,8 +129,9 @@ Any other props will be passed to the component (for example this is useful for 
   If set to `height`, element's height will be used instead.
 
   Any other string will be considered CSS selector
-  and it will be used with `document.querySelector` and
-  it will use that element's height.
+  and it will be used with `document.querySelector`.
+  Animation will stop when animated element hits top
+  of the element passed as duration prop.
 
   Example:
   ```js

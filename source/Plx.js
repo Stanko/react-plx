@@ -434,7 +434,13 @@ export default class Plx extends Component {
           return;
         }
 
-        parallaxDuration = this.getElementTop(durationElement);
+        // Wehen element is used for duration, parallax will stop when
+        // animated element hits it
+        parallaxDuration =
+          this.getElementTop(durationElement)
+          - this.getElementTop(this.element)
+          - this.element.offsetHeight
+          - startPosition;
       }
 
       const endPosition = startPosition + parallaxDuration;
