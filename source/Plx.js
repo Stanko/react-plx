@@ -80,8 +80,7 @@ const TRANSFORM_MAP = {
   translateZ: (value, unit: DEFAULT_UNIT) => `translateZ(${ value }${ unit })`,
 };
 
-// Order of CSS transforms matter
-// so custom order is used
+// Order of CSS transforms matters
 const ORDER_OF_TRANSFORMS = [
   'translateX',
   'translateY',
@@ -179,6 +178,27 @@ export default class Plx extends Component {
     }
 
     return propertyUnit;
+  }
+
+  getClasses(lastSegmentScrolledBy, isInSegment, parallaxData) {
+    let cssClasses = null;
+
+    if (lastSegmentScrolledBy === null) {
+      cssClasses = 'Plx--above';
+    } else if (lastSegmentScrolledBy === parallaxData.length - 1 && !isInSegment) {
+      cssClasses = 'Plx--bellow';
+    } else if (lastSegmentScrolledBy !== null && isInSegment) {
+      const segmentName = parallaxData[lastSegmentScrolledBy].name || lastSegmentScrolledBy;
+
+      cssClasses = `Plx--active Plx--in Plx--in-${ segmentName }`;
+    } else if (lastSegmentScrolledBy !== null && !isInSegment) {
+      const segmentName = parallaxData[lastSegmentScrolledBy].name || lastSegmentScrolledBy;
+      const nextSegmentName = parallaxData[lastSegmentScrolledBy + 1].name || lastSegmentScrolledBy;
+
+      cssClasses = `Plx--active Plx--between Plx--between-${ segmentName }-and-${ nextSegmentName }`;
+    }
+
+    return cssClasses;
   }
 
   hexToObject(hex) {
@@ -325,6 +345,54 @@ export default class Plx extends Component {
     this.update(e.detail.scrollPosition, this.props);
   }
 
+  applyProperty(scrollPosition, propertyData, startPosition, parallaxDuration, style, easing) {
+    const {
+      startValue,
+      endValue,
+      property,
+      unit,
+    } = propertyData;
+
+
+    // If property is one of the color properties
+    // Use it's parallax method
+    const isColor = COLOR_PROPERTIES.indexOf(property) > -1;
+    const parallaxMethod = isColor ?
+      this.colorParallax.bind(this) :
+      this.parallax.bind(this);
+
+    // Get new CSS value
+    const value = parallaxMethod(
+      scrollPosition,
+      startPosition,
+      parallaxDuration,
+      startValue,
+      endValue,
+      easing
+    );
+
+    // Get transform function
+    const transformMethod = TRANSFORM_MAP[property];
+    const newStyle = style;
+
+    if (transformMethod) {
+      // Get CSS unit
+      const propertyUnit = this.getUnit(property, unit);
+      // Transforms, apply value to transform function
+      newStyle.transform[property] = transformMethod(value, propertyUnit);
+    } else {
+      // All other properties
+      newStyle[property] = value;
+
+      // Add unit if it is passed
+      if (unit) {
+        newStyle[property] += unit;
+      }
+    }
+
+    return newStyle;
+  }
+
   update(scrollPosition, props) {
     const {
       parallaxData,
@@ -349,7 +417,8 @@ export default class Plx extends Component {
     }
 
     const newState = {};
-    const newStyle = {
+    // Style to be applied to our element
+    let newStyle = {
       transform: {},
     };
 
@@ -361,6 +430,13 @@ export default class Plx extends Component {
     const segments = [];
     let isInSegment = false;
     let lastSegmentScrolledBy = null;
+    const maxScroll = Math.max(
+      document.body.scrollHeight,
+      document.body.offsetHeight,
+      document.documentElement.clientHeight,
+      document.documentElement.scrollHeight,
+      document.documentElement.offsetHeight
+    ) - window.innerHeight;
 
     for (let i = 0; i < parallaxData.length; i++) {
       const {
@@ -385,13 +461,6 @@ export default class Plx extends Component {
         this.isNumber(start.substr(0, start.length - 1))
       ) {
         const percentageValue = parseFloat(start) / 100;
-        const maxScroll = Math.max(
-          document.body.scrollHeight,
-          document.body.offsetHeight,
-          document.documentElement.clientHeight,
-          document.documentElement.scrollHeight,
-          document.documentElement.offsetHeight
-        ) - window.innerHeight;
 
         startPosition = maxScroll * percentageValue;
       } else if (typeof start === 'string') {
@@ -417,13 +486,6 @@ export default class Plx extends Component {
         this.isNumber(duration.substr(0, duration.length - 1))
       ) {
         const percentageValue = parseFloat(duration) / 100;
-        const maxScroll = Math.max(
-          document.body.scrollHeight,
-          document.body.offsetHeight,
-          document.documentElement.clientHeight,
-          document.documentElement.scrollHeight,
-          document.documentElement.offsetHeight
-        ) - window.innerHeight;
 
         parallaxDuration = maxScroll * percentageValue;
       } else if (typeof duration === 'string') {
@@ -460,57 +522,29 @@ export default class Plx extends Component {
       if (scrollPosition >= startPosition && scrollPosition <= endPosition) {
         isInSegment = true;
 
-        properties.forEach((propertyData) => {
-          const {
-            startValue,
-            endValue,
-            property,
-            unit,
-          } = propertyData;
+        properties.forEach(propertyData => { // eslint-disable-line no-loop-func
+          const { property } = propertyData;
+
+          // Save which properties are applied to the active segment
+          // So they are not re-applied for other segments
           appliedProperties.push(property);
 
-          // Set default parallax method
-          let parallaxMethod = this.parallax.bind(this);
-
-          // If property is one of the color properties
-          // Use it's parallax method
-          if (COLOR_PROPERTIES.indexOf(property) > -1) {
-            parallaxMethod = this.colorParallax.bind(this);
-          }
-
-          // Get new CSS value
-          const value = parallaxMethod(
+          // Apply property style
+          newStyle = this.applyProperty(
             scrollPosition,
+            propertyData,
             startPosition,
             parallaxDuration,
-            startValue,
-            endValue,
+            newStyle,
             easing
           );
-
-          // Get transform function
-          const transformMethod = TRANSFORM_MAP[property];
-
-          if (transformMethod) {
-            // Get CSS unit
-            const propertyUnit = this.getUnit(property, unit);
-            // Transforms, apply value to transform function
-            newStyle.transform[property] = transformMethod(value, propertyUnit);
-          } else {
-            // All other properties
-            newStyle[property] = value;
-
-            // Add unit if it is passed
-            if (unit) {
-              newStyle[property] += unit;
-            }
-          }
         });
       } else {
         // Push non active segments above the scroll position to separate array
         // This way "parallaxDuration" and "startPosition" are not calculated again
         // and segments bellow scroll position are skipped in the next step
         segments.push({
+          easing,
           parallaxDuration,
           properties,
           startPosition,
@@ -521,65 +555,35 @@ export default class Plx extends Component {
     // These are only segments that are completly above scroll position
     segments.forEach(data => {
       const {
+        easing,
+        parallaxDuration,
         properties,
         startPosition,
-        parallaxDuration,
-        easing,
       } = data;
 
       properties.forEach((propertyData) => {
-        const {
-          startValue,
-          endValue,
-          property,
-          unit,
-        } = propertyData;
+        const { property } = propertyData;
 
-        // Skip propery that was changed for current segment
+        // Skip propery that was changed for active segment
         if (appliedProperties.indexOf(property) > -1) {
           return;
         }
 
-        // Set default parallax method
-        let parallaxMethod = this.parallax.bind(this);
-
-        // If property is one of the color properties
-        // Use it's parallax method
-        if (COLOR_PROPERTIES.indexOf(property) > -1) {
-          parallaxMethod = this.colorParallax.bind(this);
-        }
-
-        // Get new CSS value
-        const value = parallaxMethod(
+        // These styles that are the ones changed by segments
+        // that are above active segment
+        newStyle = this.applyProperty(
           scrollPosition,
+          propertyData,
           startPosition,
           parallaxDuration,
-          startValue,
-          endValue,
+          newStyle,
           easing
         );
-
-        // Get transform function
-        const transformMethod = TRANSFORM_MAP[property];
-
-        if (transformMethod) {
-          // Get CSS unit
-          const propertyUnit = this.getUnit(property, unit);
-          // Transforms, apply value to transform function
-          newStyle.transform[property] = transformMethod(value, propertyUnit);
-        } else {
-          // All other properties
-          newStyle[property] = value;
-
-          // Add unit if it is passed
-          if (unit) {
-            newStyle[property] += unit;
-          }
-        }
       });
     });
 
     // Sort transforms by ORDER_OF_TRANSFORMS
+    // as order of CSS transforms matters
     const transformsOrdered = [];
 
     ORDER_OF_TRANSFORMS.forEach(transformKey => {
@@ -595,28 +599,13 @@ export default class Plx extends Component {
     newStyle.OTransform = newStyle.transform;
     newStyle.msTransform = newStyle.transform;
 
-    // "Stupid" check if style should be update
+    // "Stupid" check if style should be updated
     if (JSON.stringify(plxStyle) !== JSON.stringify(newStyle)) {
       newState.plxStyle = newStyle;
     }
 
     // Adding state class
-    let newPlxStateClasses = null;
-
-    if (lastSegmentScrolledBy === null) {
-      newPlxStateClasses = 'Plx--above';
-    } else if (lastSegmentScrolledBy === parallaxData.length - 1 && !isInSegment) {
-      newPlxStateClasses = 'Plx--bellow';
-    } else if (lastSegmentScrolledBy !== null && isInSegment) {
-      const segmentName = parallaxData[lastSegmentScrolledBy].name || lastSegmentScrolledBy;
-
-      newPlxStateClasses = `Plx--active Plx--in Plx--in-${ segmentName }`;
-    } else if (lastSegmentScrolledBy !== null && !isInSegment) {
-      const segmentName = parallaxData[lastSegmentScrolledBy].name || lastSegmentScrolledBy;
-      const nextSegmentName = parallaxData[lastSegmentScrolledBy + 1].name || lastSegmentScrolledBy;
-
-      newPlxStateClasses = `Plx--active Plx--between Plx--between-${ segmentName }-and-${ nextSegmentName }`;
-    }
+    const newPlxStateClasses = this.getClasses(lastSegmentScrolledBy, isInSegment, parallaxData);
 
     if (newPlxStateClasses !== plxStateClasses) {
       newState.plxStateClasses = newPlxStateClasses;

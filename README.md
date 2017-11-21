@@ -356,7 +356,7 @@ Classes are:
   scroll position is between segments `a` and `b` (`Plx--between-0-and-1`, `Plx--between-1-and-2`...)
   If `name` prop is passed (see above) it will be used instead of index (`Plx--between-superDuperName-and-anotherName`).
 
-`active` class is applied along with bot `in` and `between` classes.
+`active` class is applied along with both `in` and `between` classes.
 
 ## Browser support
 
