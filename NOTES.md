@@ -2,15 +2,20 @@
 
 Not really useful for anyone else
 
+* disabled - boolean
+
 * start
   * value (unit optional)
-  * element (when it hits the bottom of the viewport)
+  * selector (when it hits the bottom of the viewport)
+  * dom node
 * end
   * value (unit optional)
-  * element (when it leaves the viewport)
+  * selector (when it leaves the viewport)
+  * dom node
 * duration
   * value (unit optional)
-  * element (it's height)
+  * selector (it's height) ?
+  * dom node
 * offset
   * value (unit optional)
 

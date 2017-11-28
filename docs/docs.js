@@ -114,7 +114,7 @@ const Example = class extends React.Component {
           parallaxData={ [
             {
               start: '.BackgroundDemo-trigger',
-              duration: 'height',
+              duration: '.BackgroundDemo-trigger',
               name: 'bgdemo',
               properties: [
                 {
@@ -147,9 +147,9 @@ const Example = class extends React.Component {
               className='HorizontalDemo-item HorizontalDemo-item--one'
               parallaxData={ [
                 {
-                  start: 'top',
-                  offset: -200,
-                  duration: 'height',
+                  start: '.HorizontalDemo',
+                  offset: -250,
+                  duration: 200,
                   easing: [0.25, 0.1, 0.53, 3],
                   properties: [
                     {
@@ -170,9 +170,9 @@ const Example = class extends React.Component {
               className='HorizontalDemo-item HorizontalDemo-item--two'
               parallaxData={ [
                 {
-                  start: 'top',
-                  offset: -200,
-                  duration: 'height',
+                  start: '.HorizontalDemo',
+                  offset: -260,
+                  duration: 200,
                   easing: [0.25, 0.1, 0.53, 3],
                   properties: [
                     {
@@ -193,9 +193,10 @@ const Example = class extends React.Component {
               className='HorizontalDemo-item HorizontalDemo-item--three'
               parallaxData={ [
                 {
-                  start: 'top',
-                  offset: -200,
-                  duration: 'height',
+                  start: '.HorizontalDemo',
+                  // start: document.querySelector('.HorizontalDemo'),
+                  offset: -270,
+                  duration: 200,
                   easing: [0.25, 0.1, 0.53, 3],
                   properties: [
                     {
@@ -220,7 +221,7 @@ const Example = class extends React.Component {
             className='ColorDemo'
             parallaxData={ [
               {
-                start: 'top',
+                start: '.ColorDemo',
                 offset: -500,
                 duration: 300,
                 properties: [
@@ -237,7 +238,7 @@ const Example = class extends React.Component {
                 ],
               },
               {
-                start: 'top',
+                start: '.ColorDemo',
                 offset: -200,
                 duration: 300,
                 properties: [
@@ -269,7 +270,7 @@ const Example = class extends React.Component {
               parallaxData={ [
                 {
                   start: 0,
-                  duration: 2000,
+                  duration: '100%',
                   properties: [
                     {
                       startValue: 0,
@@ -285,7 +286,7 @@ const Example = class extends React.Component {
               parallaxData={ [
                 {
                   start: 0,
-                  duration: 2000,
+                  duration: '100%',
                   properties: [
                     {
                       startValue: 30,

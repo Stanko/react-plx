@@ -110,6 +110,8 @@ const COLOR_PROPERTIES = [
   'borderRightColor',
 ];
 
+const START_END_DURATION_REGEX = /^\d+(\.\d+)?(px|vh|%)?$/;
+
 export default class Plx extends Component {
   constructor(props) {
     super(props);
@@ -178,6 +180,42 @@ export default class Plx extends Component {
     }
 
     return propertyUnit;
+  }
+
+  getSegmentPosition(position, maxScroll, propName) {
+    let positionInPx = position;
+
+    if (typeof position === 'number') {
+      positionInPx = position;
+    } else if (START_END_DURATION_REGEX.test(position)) {
+      const value = parseFloat(position);
+      const unit = position.match(START_END_DURATION_REGEX)[2] || null;
+
+      switch (unit) {
+        case 'vh':
+          positionInPx = window.innerHeight / 100 * value;
+          break;
+        case '%':
+          positionInPx = maxScroll * value / 100;
+          break;
+        default:
+          positionInPx = value;
+      }
+    } else if (typeof position === 'string' && (position.charCodeAt(0) < 48 || position.charCodeAt(0) > 57)) {
+      const element = document.querySelector(position);
+
+      if (!element) {
+        console.log(`Plx, ERROR: ${ propName } selector matches no elements: "${ position }"`); // eslint-disable-line
+        return null;
+      }
+
+      positionInPx = this.getElementTop(element);
+    } else {
+      console.log(`Plx, ERROR: "${ position }" is not a valid ${ propName } value, check documenation`); // eslint-disable-line
+      return null;
+    }
+
+    return positionInPx;
   }
 
   getClasses(lastSegmentScrolledBy, isInSegment, parallaxData) {
@@ -345,7 +383,7 @@ export default class Plx extends Component {
     this.update(e.detail.scrollPosition, this.props);
   }
 
-  applyProperty(scrollPosition, propertyData, startPosition, parallaxDuration, style, easing) {
+  applyProperty(scrollPosition, propertyData, startPosition, durationInPx, style, easing) {
     const {
       startValue,
       endValue,
@@ -365,7 +403,7 @@ export default class Plx extends Component {
     const value = parallaxMethod(
       scrollPosition,
       startPosition,
-      parallaxDuration,
+      durationInPx,
       startValue,
       endValue,
       easing
@@ -449,77 +487,54 @@ export default class Plx extends Component {
 
       const scrollOffset = offset || 0;
 
-      let startPosition = start;
-      let element = this.element;
+      const startInPx = this.getSegmentPosition(start, maxScroll, 'start') + scrollOffset;
+      const durationInPx = this.getSegmentPosition(duration, maxScroll, 'duration');
 
-      if (start === 'top') {
-        startPosition = this.getElementTop(this.element);
-      } else if (
-        // Percentage start
-        typeof start === 'string' &&
-        start.search('%') === start.length - 1 &&
-        this.isNumber(start.substr(0, start.length - 1))
-      ) {
-        const percentageValue = parseFloat(start) / 100;
+      // let durationInPx = duration;
+      //
+      // if (duration === 'height') {
+      //   durationInPx = element.offsetHeight;
+      // } else if (
+      //   // Percentage duration
+      //   typeof duration === 'string' &&
+      //   duration.search('%') === duration.length - 1 &&
+      //   this.isNumber(duration.substr(0, duration.length - 1))
+      // ) {
+      //   const percentageValue = parseFloat(duration) / 100;
+      //
+      //   durationInPx = maxScroll * percentageValue;
+      // } else if (typeof duration === 'string') {
+      //   const durationElement = document.querySelector(duration);
+      //
+      //   if (!durationElement) {
+      //     console.log(`Plx, ERROR: duration selector matches no elements: "${ duration }"`); // eslint-disable-line
+      //     return;
+      //   }
+      //
+      //   // Wehen element is used for duration, parallax will stop when
+      //   // animated element hits it
+      //   durationInPx =
+      //     this.getElementTop(durationElement)
+      //     - this.getElementTop(this.element)
+      //     - this.element.offsetHeight
+      //     - startInPx;
+      // }
 
-        startPosition = maxScroll * percentageValue;
-      } else if (typeof start === 'string') {
-        element = document.querySelector(start);
-
-        if (!element) {
-          console.log(`Plx, ERROR: start selector matches no elements: "${ start }"`); // eslint-disable-line no-console
-          return;
-        }
-
-        startPosition = this.getElementTop(element);
-      }
-
-      startPosition += scrollOffset;
-      let parallaxDuration = duration;
-
-      if (duration === 'height') {
-        parallaxDuration = element.offsetHeight;
-      } else if (
-        // Percentage duration
-        typeof duration === 'string' &&
-        duration.search('%') === duration.length - 1 &&
-        this.isNumber(duration.substr(0, duration.length - 1))
-      ) {
-        const percentageValue = parseFloat(duration) / 100;
-
-        parallaxDuration = maxScroll * percentageValue;
-      } else if (typeof duration === 'string') {
-        const durationElement = document.querySelector(duration);
-
-        if (!durationElement) {
-          console.log(`Plx, ERROR: duration selector matches no elements: "${ duration }"`); // eslint-disable-line
-          return;
-        }
-
-        // Wehen element is used for duration, parallax will stop when
-        // animated element hits it
-        parallaxDuration =
-          this.getElementTop(durationElement)
-          - this.getElementTop(this.element)
-          - this.element.offsetHeight
-          - startPosition;
-      }
-
-      const endPosition = startPosition + parallaxDuration;
+      const endPosition = startInPx + durationInPx;
 
       // If segment is bellow scroll position skip it
-      if (scrollPosition < startPosition) {
+      if (scrollPosition < startInPx) {
         break;
       }
 
-      const isScrolledByStart = scrollPosition >= startPosition;
+      const isScrolledByStart = scrollPosition >= startInPx;
 
       if (isScrolledByStart) {
         lastSegmentScrolledBy = i;
       }
 
       // If active segment exists, apply his properties
-      if (scrollPosition >= startPosition && scrollPosition <= endPosition) {
+      if (scrollPosition >= startInPx && scrollPosition <= endPosition) {
         isInSegment = true;
 
         properties.forEach(propertyData => { // eslint-disable-line no-loop-func
@@ -533,21 +548,21 @@ export default class Plx extends Component {
           newStyle = this.applyProperty(
             scrollPosition,
             propertyData,
-            startPosition,
-            parallaxDuration,
+            startInPx,
+            durationInPx,
             newStyle,
             easing
           );
         });
       } else {
         // Push non active segments above the scroll position to separate array
-        // This way "parallaxDuration" and "startPosition" are not calculated again
+        // This way "durationInPx" and "startInPx" are not calculated again
         // and segments bellow scroll position are skipped in the next step
         segments.push({
           easing,
-          parallaxDuration,
+          durationInPx,
           properties,
-          startPosition,
+          startInPx,
         });
       }
     }
@@ -556,9 +571,9 @@ export default class Plx extends Component {
     segments.forEach(data => {
       const {
         easing,
-        parallaxDuration,
+        durationInPx,
         properties,
-        startPosition,
+        startInPx,
       } = data;
 
       properties.forEach((propertyData) => {
@@ -574,8 +589,8 @@ export default class Plx extends Component {
         newStyle = this.applyProperty(
           scrollPosition,
           propertyData,
-          startPosition,
-          parallaxDuration,
+          startInPx,
+          durationInPx,
           newStyle,
           easing
         );

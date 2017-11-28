@@ -28,6 +28,7 @@ rules:
   new-cap: 0
   no-plusplus: 0
   max-len: ["error", { "code": 120 }]
+  no-mixed-operators: 0
   no-return-assign: 0
   quote-props: 0
   template-curly-spacing: [2, "always"]
