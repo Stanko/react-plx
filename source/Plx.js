@@ -329,12 +329,15 @@ export default class Plx extends Component {
     const {
       parallaxData,
       animateWhenNotInViewport,
+      disabled,
     } = props;
     const {
       hasReceivedScrollEvent,
       plxStyle,
       plxStateClasses,
     } = this.state;
+
+    if (disabled && hasReceivedScrollEvent) return;
 
     // Check if element is in viewport
     // Small offset is added to prevent page jumping
@@ -661,6 +664,7 @@ export default class Plx extends Component {
       'animateWhenNotInViewport',
       'children',
       'className',
+      'disabled',
       'interval',
       'parallaxData',
       'style',
@@ -721,6 +725,7 @@ Plx.propTypes = {
   animateWhenNotInViewport: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   className: PropTypes.string,
+  disabled: PropTypes.bool,
   interval: PropTypes.number,
   parallaxData: PropTypes.arrayOf(parallaxDataType).isRequired, // eslint-disable-line react/no-unused-prop-types
   style: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object])),
@@ -729,5 +734,6 @@ Plx.propTypes = {
 Plx.defaultProps = {
   animateWhenNotInViewport: false,
   className: '',
+  disabled: false,
   interval: 16,
 };
