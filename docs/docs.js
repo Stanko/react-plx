@@ -5,6 +5,30 @@ import keenImage from './keen.png';
 import './docs.scss';
 
 const Example = class extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      scrollTick: false,
+    };
+    this.onScroll = this.onScroll.bind(this);
+  }
+
+  componentWillMount() {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', this.onScroll);
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.onScroll);
+  }
+
+  onScroll() {
+    this.setState({
+      scrollTick: !this.state.scrollTick,
+    });
+  }
+
   render() {
     return (
       <div className='Content'>
@@ -266,6 +290,47 @@ const Example = class extends React.Component {
           <div className='ClockDemo'>
             <Plx
               className='ClockDemo-arm'
+              parallaxData={ [
+                {
+                  start: 0,
+                  duration: 2000,
+                  properties: [
+                    {
+                      startValue: 0,
+                      endValue: 1440,
+                      property: 'rotate',
+                    },
+                  ],
+                },
+              ] }
+            />
+            <Plx
+              className='ClockDemo-arm ClockArm--small'
+              parallaxData={ [
+                {
+                  start: 0,
+                  duration: 2000,
+                  properties: [
+                    {
+                      startValue: 30,
+                      endValue: 150,
+                      property: 'rotate',
+                    },
+                  ],
+                },
+              ] }
+            />
+          </div>
+        </div>
+        <hr className='margin-y-50' />
+        <div className='ClockDemo--wrapper'>
+          <p>
+            Same clock, but big arm freezes at some point displaying use of disable property
+          </p>
+          <div className='ClockDemo'>
+            <Plx
+              className='ClockDemo-arm'
+              disabled={ window.pageYOffset > 1600 }
               parallaxData={ [
                 {
                   start: 0,
