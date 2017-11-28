@@ -91,6 +91,10 @@ Read more about how it works in [this blog post](https://stanko.github.io/plx-re
   If set to true element will be animated even when it is not in the viewport.
   This is helpful with fixed elements in iOS due to [know bug with `getBoundingClientRect` in iOS](https://openradar.appspot.com/radar?id=6668472289329152).
 
+* **disabled** bool, default `false`
+
+  If set to true element animation will be disabled.
+
 * **parallaxData** array of items (item structure described beneath), *required*
 
   Main data, describes parallax segments.
