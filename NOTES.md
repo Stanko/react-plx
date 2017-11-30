@@ -8,6 +8,7 @@ Not really useful for anyone else
   * value (unit optional)
   * selector (when it hits the bottom of the viewport)
   * dom node
+  * string "self"
 * end
   * value (unit optional)
   * selector (when it leaves the viewport)
@@ -16,6 +17,7 @@ Not really useful for anyone else
   * value (unit optional)
   * selector (it's height) ?
   * dom node
+  * string "self"
 * offset
   * value (unit optional)
 

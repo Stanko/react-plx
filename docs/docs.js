@@ -7,297 +7,48 @@ import './docs.scss';
 const Example = class extends React.Component {
   render() {
     return (
-      <div className='Content'>
-        <div className='FixedDemo-spacer'>
-          <div className='FixedDemo-wrapper'>
-            <Plx
-              className='FixedDemo'
-              animateWhenNotInViewport={ true }
-              parallaxData={ [
-                {
-                  start: 50,
-                  duration: 300,
-                  name: 'first',
-                  properties: [
-                    {
-                      startValue: 1,
-                      endValue: 0.2,
-                      property: 'opacity',
-                    },
-                    {
-                      startValue: 1,
-                      endValue: 0.5,
-                      property: 'scale',
-                    },
-                    {
-                      startValue: 0,
-                      endValue: 360,
-                      property: 'rotate',
-                    },
-                  ],
-                },
-                {
-                  start: 400,
-                  duration: 300,
-                  name: 'second',
-                  properties: [
-                    {
-                      startValue: 0,
-                      endValue: -100,
-                      unit: '%',
-                      property: 'translateX',
-                    },
-                    {
-                      startValue: 0.2,
-                      endValue: 1,
-                      property: 'opacity',
-                    },
-                    {
-                      startValue: 0.5,
-                      endValue: 1.5,
-                      property: 'scale',
-                    },
-                  ],
-                },
-                {
-                  start: '90%',
-                  duration: '9%',
-                  name: 'third',
-                  properties: [
-                    {
-                      startValue: -100,
-                      endValue: 100,
-                      unit: '%',
-                      property: 'translateX',
-                    },
-                    {
-                      startValue: 360,
-                      endValue: 0,
-                      property: 'rotate',
-                    },
-                    {
-                      startValue: 1.5,
-                      endValue: 1,
-                      property: 'scale',
-                    },
-                  ],
-                },
-              ] }
-            >
-              <img alt='' src={ keenImage } />
-            </Plx>
-          </div>
-        </div>
-        <div className='BackgroundDemo-trigger'>
-          <ol>
-            <li>50 - 350px: it will rotate for 360deg, scale to 50% and fade to 0.2 opacity</li>
-            <li>400 - 700px: it will fade in to 1, scale to 150% and tranlsate to left 100%</li>
-            <li>
-              90%-99% of the total page scroll: it will translate to the right 100%,
-              rotate from 360 to 0deg and scale back to 100%
-            </li>
-          </ol>
-          <p>
-            You can also see in which state animation is, and this is updated via CSS
-            using Plx&apos;s animation state classes.
-            (In this case <code>::after</code> element is used.)
-          </p>
-        </div>
-        <hr className='margin-y-50' />
-        <div className=''>
-          <p>
-            Non transform properties - <code>background-position-x</code> and <code>top</code>.
-          </p>
-        </div>
-        <Plx
-          className='BackgroundDemo'
-          parallaxData={ [
-            {
-              start: '.BackgroundDemo-trigger',
-              duration: '.BackgroundDemo-trigger',
-              name: 'bgdemo',
-              properties: [
-                {
-                  startValue: 0,
-                  endValue: 300,
-                  property: 'backgroundPositionX',
-                },
-                {
-                  startValue: 0,
-                  endValue: 50,
-                  property: 'top',
-                },
-              ],
-            },
-          ] }
-        />
-        <hr className='margin-y-50' />
-        <div className=''>
-          <p>
-            Three blocks translating and scaling at different speeds.
-            Offset is set to <code>-200</code>, so animation starts when
-            elements get at 200 pixels from viewport edge.
-          </p>
-          <p>
-            Custom cubic bezier easing is applied <code>(0.25, 0.1, 0.53, 3)</code>
-          </p>
-
-          <div className='HorizontalDemo'>
-            <Plx
-              className='HorizontalDemo-item HorizontalDemo-item--one'
-              parallaxData={ [
-                {
-                  start: '.HorizontalDemo',
-                  offset: -250,
-                  duration: 200,
-                  easing: [0.25, 0.1, 0.53, 3],
-                  properties: [
-                    {
-                      startValue: 0,
-                      endValue: 200,
-                      property: 'translateX',
-                    },
-                    {
-                      startValue: 1,
-                      endValue: 1.3,
-                      property: 'scale',
-                    },
-                  ],
-                },
-              ] }
-            />
-            <Plx
-              className='HorizontalDemo-item HorizontalDemo-item--two'
-              parallaxData={ [
-                {
-                  start: '.HorizontalDemo',
-                  offset: -260,
-                  duration: 200,
-                  easing: [0.25, 0.1, 0.53, 3],
-                  properties: [
-                    {
-                      startValue: 0,
-                      endValue: 250,
-                      property: 'translateX',
-                    },
-                    {
-                      startValue: 1,
-                      endValue: 1.2,
-                      property: 'scale',
-                    },
-                  ],
-                },
-              ] }
-            />
-            <Plx
-              className='HorizontalDemo-item HorizontalDemo-item--three'
-              parallaxData={ [
-                {
-                  start: '.HorizontalDemo',
-                  // start: document.querySelector('.HorizontalDemo'),
-                  offset: -270,
-                  duration: 200,
-                  easing: [0.25, 0.1, 0.53, 3],
-                  properties: [
-                    {
-                      startValue: 0,
-                      endValue: 300,
-                      property: 'translateX',
-                    },
-                    {
-                      startValue: 1,
-                      endValue: 1.1,
-                      property: 'scale',
-                    },
-                  ],
-                },
-              ] }
-            />
-          </div>
-        </div>
-        <hr className='margin-y-50' />
-        <div className=''>
+      <div>
+        <div style={ { height: 5000, position: 'relative' } }>
           <Plx
-            className='ColorDemo'
+            className='DemoOne'
             parallaxData={ [
               {
-                start: '.ColorDemo',
-                offset: -500,
-                duration: 300,
+                start: 200,
+                end: 400,
                 properties: [
                   {
-                    startValue: 'RGBA(239, 73, 118, 1)',
-                    endValue: 'rgb(63, 147, 194)',
-                    property: 'borderColor',
-                  },
-                  {
-                    startValue: '#F14675',
-                    endValue: '#3A92C4',
-                    property: 'color',
+                    startValue: 230,
+                    endValue: 0,
+                    property: 'translateY',
                   },
                 ],
               },
               {
-                start: '.ColorDemo',
-                offset: -200,
-                duration: 300,
+                start: 400,
+                end: '.Footer',
                 properties: [
                   {
-                    startValue: 'rgb(63, 147, 194)',
-                    endValue: 'RGBA(109, 223, 118, 1)',
-                    property: 'borderColor',
+                    startValue: 0,
+                    endValue: 360,
+                    property: 'rotate',
                   },
-                  {
-                    startValue: '#3A92C4',
-                    endValue: '#71DD7B',
-                    property: 'color',
-                  },
+                  // {
+                  //   startValue: 'rgba(255, 255, 255, 0)',
+                  //   endValue: 'rgba(255, 0, 255, 1)',
+                  //   property: 'backgroundColor',
+                  // },
                 ],
               },
             ] }
           >
-            This block will change it&apos;s text and border color.
+            <img src='//images.contentful.com/udx5f2jyw09i/2GcxvHO8mkg48Q2QQWsCOe/438fc6923b9215901c35873ffb2122ce/fab-text-en.svg' />
           </Plx>
-        </div>
-        <hr className='margin-y-50' />
-        <div className='ClockDemo--wrapper'>
-          <p>
-            Simple clock, with it&apos;s arms moving at relative speeds.
-          </p>
-          <div className='ClockDemo'>
-            <Plx
-              className='ClockDemo-arm'
-              parallaxData={ [
-                {
-                  start: 0,
-                  duration: '100%',
-                  properties: [
-                    {
-                      startValue: 0,
-                      endValue: 1440,
-                      property: 'rotate',
-                    },
-                  ],
-                },
-              ] }
-            />
-            <Plx
-              className='ClockDemo-arm ClockArm--small'
-              parallaxData={ [
-                {
-                  start: 0,
-                  duration: '100%',
-                  properties: [
-                    {
-                      startValue: 30,
-                      endValue: 150,
-                      property: 'rotate',
-                    },
-                  ],
-                },
-              ] }
-            />
+          <div className='Content'>
+            <h1>Hello!</h1>
           </div>
+        </div>
+        <div style={ { height: 1000, border: '1px solid blue' } } className='Footer'>
+          FOOTER
         </div>
       </div>
     );

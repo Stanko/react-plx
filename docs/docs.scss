@@ -37,146 +37,20 @@ h2, h3, h4 {
 
 // DEMOS
 
-.Demo {
-  min-height: 2500px;
-}
-
-.Footer {
-  padding: 20px;
-  width: 100%;
-}
-
-.FixedDemo-spacer {
-  height: 200px;
-}
-
-.FixedDemo-wrapper {
-  left: 0;
+.DemoOne {
   position: fixed;
-  width: 100%;
-  z-index: 10;
-}
+  right: 100px;
+  bottom: 100px;
+  transform: translateY(230px);
+  height: 130px;
+  width: 130px;
 
-.FixedDemo {
-  position: relative;
-  padding: 0 20px;
-  width: 140px;
-  transition: background 1s;
+  img {
+    height: 100%;
+    width: 100%;
+  }
 
-  &::after {
-    content: '';
+  &.Plx--bellow {
     position: absolute;
-    top: 0;
-    left: 100%;
-    width: 200px;
   }
-
-  &.Plx--above::after {
-    content: 'above';
-  }
-  &.Plx--in-first::after {
-    content: 'in first';
-  }
-  &.Plx--between-first-and-second::after {
-    content: 'between first and second';
-  }
-  &.Plx--in-second::after {
-    content: 'in second';
-  }
-  &.Plx--between-second-and-third::after {
-    content: 'between second and third';
-  }
-  &.Plx--in-third::after {
-    content: 'in third';
-  }
-  &.Plx--bellow::after {
-    content: 'bellow';
-  }
-}
-
-.FixedDemo img {
-  width: 100px;
-  height: 149px;
-}
-
-@media (min-width: 840px) {
-  .FixedDemo {
-    margin-left: calc(50% - 420px);
-  }
-}
-
-.BackgroundDemo {
-  background-image: url('./keen.png');
-  background-repeat: no-repeat;
-  background-size: contain;
-  height: 150px;
-  position: relative;
-}
-
-.HorizontalDemo {
-  height: 150px;
-  position: relative;
-  // margin-top: 200px;
-  margin-bottom: 50px;
-}
-
-.HorizontalDemo-content {
-}
-
-.HorizontalDemo-item {
-  height: 150px;
-  width: 150px;
-  opacity: 0.5;
-  top: 0;
-  left: 0;
-  position: absolute;
-}
-
-.HorizontalDemo-item--one {
-  background: #345;
-}
-
-.HorizontalDemo-item--two {
-  background: #567;
-}
-
-.HorizontalDemo-item--three {
-  background: #9ab;
-}
-
-.ColorDemo {
-  border: 5px solid #F14675;
-  border-radius: 20px;
-  padding: 20px;
-  color: #F14675;
-}
-
-.ClockDemo {
-  position: relative;
-  height: 200px;
-  width: 200px;
-  border: 10px solid #123;
-  border-radius: 50%;
-  background: #fff;
-}
-
-.ClockDemo-wrapper {
-
-}
-
-.ClockDemo-arm {
-  height: 100px;
-  width: 10px;
-  position: absolute;
-  top: 10px;
-  left: 85px;
-  background: black;
-  transform-origin: center 80px;
-}
-
-.ClockDemo-arm--small {
-  height: 70px;
-  top: 40px;
-  transform-origin: center 50px;
-  transform: rotate(30deg);
 }
