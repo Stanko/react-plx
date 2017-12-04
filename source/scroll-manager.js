@@ -34,7 +34,7 @@ export default class ScrollManager {
     this.intervalID = setInterval(this.handleInterval, interval);
   }
 
-  destroy() {
+  removeListener() {
     instancesCount--;
 
     if (instancesCount === 0) {
@@ -46,19 +46,19 @@ export default class ScrollManager {
     }
   }
 
-  getWindowScrollTop() {
+  getScrollPosition() {
     // Get scroll position, with IE fallback
     return window.pageYOffset || document.documentElement.scrollTop;
   }
 
   handleInterval() {
-    const newScrollPosition = this.getWindowScrollTop();
+    const newScrollPosition = this.getScrollPosition();
 
     // Fire the event only when scroll position is changed
     if (newScrollPosition !== this.scrollPosition) {
       this.scrollPosition = newScrollPosition;
 
-      const event = new CustomEvent('plx-scroll', {
+      const event = new CustomEvent('window-scroll', {
         detail: {
           scrollPosition: newScrollPosition,
         },

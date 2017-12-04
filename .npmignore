@@ -7,3 +7,4 @@ publish-docs.sh
 .module-cache
 *.log*
 _nogit
+NOTES.md

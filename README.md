@@ -3,7 +3,13 @@
 [![npm version](https://img.shields.io/npm/v/react-plx.svg?style=flat-square)](https://www.npmjs.com/package/react-plx)
 [![npm downloads](https://img.shields.io/npm/dm/react-plx.svg?style=flat-square)](https://www.npmjs.com/package/react-plx)
 
-Lightweight and powerful React component, for creating on scroll effects aka. parallax.
+React component, for creating on scroll effects aka. parallax.
+Lightweight, yet powerful.
+
+**v1.0.0 introduced breaking changes**
+
+`start` and `duration` are reworked, and `end` prop is introduced.
+Check updated [parallaxData](#user-content-parallaxdata) documentation.
 
 
 ## Demo
@@ -82,14 +88,18 @@ Read more about how it works in [this blog post](https://stanko.github.io/plx-re
 
   CSS style object, please note that properties used in parallax will be overridden by component.
 
-* **interval** number, default `16`
+* **tagName** string, default `div`
 
-  Interval in milliseconds, how often should interval check for scroll changes. Default 16 (60fps).
+  HTML tag to be used for wrapper element.
 
 * **animateWhenNotInViewport** bool, default `false`
 
   If set to true element will be animated even when it is not in the viewport.
   This is helpful with fixed elements in iOS due to [know bug with `getBoundingClientRect` in iOS](https://openradar.appspot.com/radar?id=6668472289329152).
+
+* **disabled** boolean
+
+  When `true` disabled animation completely.
 
 * **parallaxData** array of items (item structure described beneath), *required*
 
@@ -99,34 +109,65 @@ Any other props will be passed to the component (for example this is useful for 
 
 ### parallaxData
 
-* **start** number, string or `top`, *required*
+* **start** number, string, [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement), *required*
 
-  Scroll position (in pixels or percentage of the total page scroll)
-  where parallax effect should start.
-  If set to `top`, it will start from element's top offset.
+  Scroll position where parallax effect should start.
+  Can one of the following:
 
-  Any other string will be considered CSS selector
-  and it will be used with `document.querySelector` and
-  it will start from that element's top offset.
+  * Number - value in pixels
+  * String
+    * Value in px, vh or % (`50px`, `50%`, `25vh`). Percentage is calculated out of max page scroll.
+    * CSS Selector (`.my-element`, `#some-id`) to be used with `document.querySelector`.
+    * `"self"` component's element will be used
+  * `HTMLElement`, given element will be used.
 
-  You can use `offset` prop to offset start.
+  For element, selector and "self" animation will start when that element *enters* the viewport. You can use `startOffset` prop to offset start position.
 
   Example:
   ```js
-  start={ 100 } // starts when scroll hits 100px
-  start={ 'top' } // starts when plx element's top hits page top
-  start={ '.MyCoolSelector' } // starts when .MyCoolSelector's top hits page top
+  start: 100 // starts when scroll hits 100px
+  start: 'self' // starts when plx's element enters the viewport
+  start: '.start-element' // starts when .start-element enters the viewport
   ```
 
-  PLEASE NOTE that `parallaxData` should be sorted by `start` value!
+  **PLEASE NOTE** that `parallaxData` should be sorted by `start` value!
 
-* **duration** number, string, `height`, *required*
+* **end** number, string, [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement)
 
-  Value (in pixels or percentage of the total page scroll)  
-  how long should effect last
-  (it will finish when scroll position equals `start` + `duration`).
+  Scroll position where parallax effect should end.
+  It has higher priority than `duration`.
+  Can one of the following:
 
-  If set to `height`, element's height will be used instead.
+  * Number - value in pixels
+  * String
+    * Value in px, vh or % (`50px`, `50%`, `25vh`). Percentage is calculated out of max page scroll.
+    * CSS Selector (`.my-element`, `#some-id`) to be used with `document.querySelector`.
+    * `"self"` component's element will be used
+  * `HTMLElement`, given element will be used.
+
+  For element, selector and "self" animation will end when that element *enters* the viewport. You can use `endOffset` prop to offset end position.
+
+  Example:
+  ```js
+  end: 300 // ends when scroll hits 300px
+  end: 'self' // ends when plx's element enters the viewport
+  end: '.end-element' // ends when .end-element enters the viewport
+  ```
+
+* **duration** number, string, [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement)
+
+  How long should effect last (it will finish
+  when scroll position equals `start` + `duration`).
+  It will be used if `end` is not defined.
+  Can one of the following:
+
+  * Number - value in pixels
+  * String
+    * Value in px, vh or % (`50px`, `50%`, `25vh`). Percentage is calculated out of max page scroll.
+    * CSS Selector (`.my-element`, `#some-id`) to be used with `document.querySelector`.
+  * `HTMLElement`, given element will be used.
+
+  For element and selecto  animation will start when that element *enters* the viewport. You can use `startOffset` prop to offset start.
 
   Any other string will be considered CSS selector
   and it will be used with `document.querySelector`.
@@ -135,13 +176,17 @@ Any other props will be passed to the component (for example this is useful for 
 
   Example:
   ```js
-  duration={ 300 } // animation will last for 300px of scroll
-  duration={ 'height' } // animation will last for element's height (depending on the element passed as `start`)
+  duration: 300 // animation will last for 300px
+  duration: '.duration-element' // animation will last for .duration-element's height
   ```
 
-* **offset** number
+* **startOffset** number, string
 
-  Start offset, useful when `duration={ 'height' }` is used
+  Start offset, can be a number or string value in px, vh or % (`50px`, `50%`, `25vh`).
+
+* **endOffset** number, string
+
+  End offset, can be a number or string value in px, vh or % (`50px`, `50%`, `25vh`).
 
 * **easing** string, function or array, default: 'linear'
 
@@ -256,82 +301,7 @@ Any other props will be passed to the component (for example this is useful for 
 These are the exact props used in the demo
 
 ```javascript
-<Plx
-  className='FixedDemo'
-  animateWhenNotInViewport={ true }
-  parallaxData={ [
-    {
-      start: 50,
-      duration: 300,
-      name: 'first',
-      properties: [
-        {
-          startValue: 1,
-          endValue: 0.2,
-          property: 'opacity',
-        },
-        {
-          startValue: 1,
-          endValue: 0.5,
-          property: 'scale',
-        },
-        {
-          startValue: 0,
-          endValue: 360,
-          property: 'rotate',
-        },
-      ],
-    },
-    {
-      start: 400,
-      duration: 300,
-      name: 'second',
-      properties: [
-        {
-          startValue: 0,
-          endValue: -100,
-          unit: '%',
-          property: 'translateX',
-        },
-        {
-          startValue: 0.2,
-          endValue: 1,
-          property: 'opacity',
-        },
-        {
-          startValue: 0.5,
-          endValue: 1.5,
-          property: 'scale',
-        },
-      ],
-    },
-    {
-      start: '90%',
-      duration: '9%',
-      name: 'third',
-      properties: [
-        {
-          startValue: -100,
-          endValue: 100,
-          unit: '%',
-          property: 'translateX',
-        },
-        {
-          startValue: 360,
-          endValue: 0,
-          property: 'rotate',
-        },
-        {
-          startValue: 1.5,
-          endValue: 1,
-          property: 'scale',
-        },
-      ],
-    },
-  ] }
->
-  <img alt='' src='https://stanko.github.io/public/img/s.png' />
-</Plx>
+
 ```
 
 ## Animation state CSS classes
@@ -356,7 +326,7 @@ Classes are:
   scroll position is between segments `a` and `b` (`Plx--between-0-and-1`, `Plx--between-1-and-2`...)
   If `name` prop is passed (see above) it will be used instead of index (`Plx--between-superDuperName-and-anotherName`).
 
-`active` class is applied along with bot `in` and `between` classes.
+`active` class is applied along with both `in` and `between` classes.
 
 ## Browser support
 

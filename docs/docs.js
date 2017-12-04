@@ -1,301 +1,69 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import animateScroll from 'animated-scroll-to';
+import Explosion from './explosion';
+import Phone from './phone';
+import Links from './links';
+import StickyText from './sticky-text';
 import Plx from '../source/index';
-import keenImage from './keen.png';
 import './docs.scss';
 
+const titleData = [
+  {
+    start: 'self',
+    startOffset: 50,
+    duration: 200,
+    properties: [
+      {
+        startValue: 1,
+        endValue: -360,
+        property: 'rotate',
+      },
+      {
+        startValue: '#e34e47',
+        endValue: '#995eb2',
+        property: 'color',
+      },
+    ],
+  },
+];
+
 const Example = class extends React.Component {
+  handleScrollTop() {
+    animateScroll(0, { minDuration: 3000 });
+  }
+
   render() {
     return (
-      <div className='Content'>
-        <div className='FixedDemo-spacer'>
-          <div className='FixedDemo-wrapper'>
-            <Plx
-              className='FixedDemo'
-              animateWhenNotInViewport={ true }
-              parallaxData={ [
-                {
-                  start: 50,
-                  duration: 300,
-                  name: 'first',
-                  properties: [
-                    {
-                      startValue: 1,
-                      endValue: 0.2,
-                      property: 'opacity',
-                    },
-                    {
-                      startValue: 1,
-                      endValue: 0.5,
-                      property: 'scale',
-                    },
-                    {
-                      startValue: 0,
-                      endValue: 360,
-                      property: 'rotate',
-                    },
-                  ],
-                },
-                {
-                  start: 400,
-                  duration: 300,
-                  name: 'second',
-                  properties: [
-                    {
-                      startValue: 0,
-                      endValue: -100,
-                      unit: '%',
-                      property: 'translateX',
-                    },
-                    {
-                      startValue: 0.2,
-                      endValue: 1,
-                      property: 'opacity',
-                    },
-                    {
-                      startValue: 0.5,
-                      endValue: 1.5,
-                      property: 'scale',
-                    },
-                  ],
-                },
-                {
-                  start: '90%',
-                  duration: '9%',
-                  name: 'third',
-                  properties: [
-                    {
-                      startValue: -100,
-                      endValue: 100,
-                      unit: '%',
-                      property: 'translateX',
-                    },
-                    {
-                      startValue: 360,
-                      endValue: 0,
-                      property: 'rotate',
-                    },
-                    {
-                      startValue: 1.5,
-                      endValue: 1,
-                      property: 'scale',
-                    },
-                  ],
-                },
-              ] }
-            >
-              <img alt='' src={ keenImage } />
-            </Plx>
-          </div>
-        </div>
-        <div className='BackgroundDemo-trigger'>
-          <ol>
-            <li>50 - 350px: it will rotate for 360deg, scale to 50% and fade to 0.2 opacity</li>
-            <li>400 - 700px: it will fade in to 1, scale to 150% and tranlsate to left 100%</li>
-            <li>
-              90%-99% of the total page scroll: it will translate to the right 100%,
-              rotate from 360 to 0deg and scale back to 100%
-            </li>
-          </ol>
-          <p>
-            You can also see in which state animation is, and this is updated via CSS
-            using Plx&apos;s animation state classes.
-            (In this case <code>::after</code> element is used.)
-          </p>
-        </div>
-        <hr className='margin-y-50' />
-        <div className=''>
-          <p>
-            Non transform properties - <code>background-position-x</code> and <code>top</code>.
-          </p>
-        </div>
-        <Plx
-          className='BackgroundDemo'
-          parallaxData={ [
-            {
-              start: '.BackgroundDemo-trigger',
-              duration: 'height',
-              name: 'bgdemo',
-              properties: [
-                {
-                  startValue: 0,
-                  endValue: 300,
-                  property: 'backgroundPositionX',
-                },
-                {
-                  startValue: 0,
-                  endValue: 50,
-                  property: 'top',
-                },
-              ],
-            },
-          ] }
-        />
-        <hr className='margin-y-50' />
-        <div className=''>
-          <p>
-            Three blocks translating and scaling at different speeds.
-            Offset is set to <code>-200</code>, so animation starts when
-            elements get at 200 pixels from viewport edge.
-          </p>
-          <p>
-            Custom cubic bezier easing is applied <code>(0.25, 0.1, 0.53, 3)</code>
-          </p>
-
-          <div className='HorizontalDemo'>
-            <Plx
-              className='HorizontalDemo-item HorizontalDemo-item--one'
-              parallaxData={ [
-                {
-                  start: 'top',
-                  offset: -200,
-                  duration: 'height',
-                  easing: [0.25, 0.1, 0.53, 3],
-                  properties: [
-                    {
-                      startValue: 0,
-                      endValue: 200,
-                      property: 'translateX',
-                    },
-                    {
-                      startValue: 1,
-                      endValue: 1.3,
-                      property: 'scale',
-                    },
-                  ],
-                },
-              ] }
-            />
-            <Plx
-              className='HorizontalDemo-item HorizontalDemo-item--two'
-              parallaxData={ [
-                {
-                  start: 'top',
-                  offset: -200,
-                  duration: 'height',
-                  easing: [0.25, 0.1, 0.53, 3],
-                  properties: [
-                    {
-                      startValue: 0,
-                      endValue: 250,
-                      property: 'translateX',
-                    },
-                    {
-                      startValue: 1,
-                      endValue: 1.2,
-                      property: 'scale',
-                    },
-                  ],
-                },
-              ] }
-            />
-            <Plx
-              className='HorizontalDemo-item HorizontalDemo-item--three'
-              parallaxData={ [
-                {
-                  start: 'top',
-                  offset: -200,
-                  duration: 'height',
-                  easing: [0.25, 0.1, 0.53, 3],
-                  properties: [
-                    {
-                      startValue: 0,
-                      endValue: 300,
-                      property: 'translateX',
-                    },
-                    {
-                      startValue: 1,
-                      endValue: 1.1,
-                      property: 'scale',
-                    },
-                  ],
-                },
-              ] }
-            />
-          </div>
-        </div>
-        <hr className='margin-y-50' />
-        <div className=''>
+      <div className='Demo'>
+        <Links />
+        <div className='Content'>
           <Plx
-            className='ColorDemo'
-            parallaxData={ [
-              {
-                start: 'top',
-                offset: -500,
-                duration: 300,
-                properties: [
-                  {
-                    startValue: 'RGBA(239, 73, 118, 1)',
-                    endValue: 'rgb(63, 147, 194)',
-                    property: 'borderColor',
-                  },
-                  {
-                    startValue: '#F14675',
-                    endValue: '#3A92C4',
-                    property: 'color',
-                  },
-                ],
-              },
-              {
-                start: 'top',
-                offset: -200,
-                duration: 300,
-                properties: [
-                  {
-                    startValue: 'rgb(63, 147, 194)',
-                    endValue: 'RGBA(109, 223, 118, 1)',
-                    property: 'borderColor',
-                  },
-                  {
-                    startValue: '#3A92C4',
-                    endValue: '#71DD7B',
-                    property: 'color',
-                  },
-                ],
-              },
-            ] }
+            tagName='h1'
+            className='Examples'
+            parallaxData={ titleData }
           >
-            This block will change it&apos;s text and border color.
+            Examples
           </Plx>
+          <h3>Make things explode</h3>
+          <Explosion />
+          <h3>Animate nested elements</h3>
+          <Phone />
+          <div className='StickyText-trigger' />
+          <StickyText />
         </div>
-        <hr className='margin-y-50' />
-        <div className='ClockDemo--wrapper'>
-          <p>
-            Simple clock, with it&apos;s arms moving at relative speeds.
-          </p>
-          <div className='ClockDemo'>
-            <Plx
-              className='ClockDemo-arm'
-              parallaxData={ [
-                {
-                  start: 0,
-                  duration: 2000,
-                  properties: [
-                    {
-                      startValue: 0,
-                      endValue: 1440,
-                      property: 'rotate',
-                    },
-                  ],
-                },
-              ] }
-            />
-            <Plx
-              className='ClockDemo-arm ClockArm--small'
-              parallaxData={ [
-                {
-                  start: 0,
-                  duration: 2000,
-                  properties: [
-                    {
-                      startValue: 30,
-                      endValue: 150,
-                      property: 'rotate',
-                    },
-                  ],
-                },
-              ] }
-            />
+
+        <div className='Footer'>
+          <div className='Content'>
+            <h1>Plx</h1>
+            <h2>React Parallax component</h2>
+            <div>Awesome isn&#39;t it?</div>
+            <div className='Footer-links'>
+              <a href='https://stanko.github.io'>My blog</a>
+              <a href='https://www.npmjs.com/package/react-plx'>npm</a>
+              <a href='https://github.com/Stanko/react-plx'>GitHub</a>
+            </div>
+            <button onClick={ () => this.handleScrollTop() }>Back to top</button>
           </div>
         </div>
       </div>
