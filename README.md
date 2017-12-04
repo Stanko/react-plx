@@ -6,6 +6,11 @@
 React component, for creating on scroll effects aka. parallax.
 Lightweight, yet powerful.
 
+**v1.0.0 introduced breaking changes**
+
+`start` and `duration` are reworked, and `end` prop is introduced.
+Check updated [parallaxData](#user-content-parallaxdata) documentation.
+
 
 ## Demo
 
