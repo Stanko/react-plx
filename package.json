@@ -1,10 +1,10 @@
 {
   "name": "react-plx",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "private": false,
   "license": "MIT",
   "main": "lib/index.js",
-  "description": "React parallax (on scroll effects) component. Powerful and lightweight,",
+  "description": "React parallax (on scroll effects) component. Lightweight, yet powerful.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server",
@@ -15,11 +15,12 @@
     "publish-all": "npm run publish-to-npm && npm run publish-docs",
     "lint-break-on-errors": "eslint ./source/js ./webpack.config.js -f table --ext .js --ext .jsx",
     "lint": "eslint ./source/js ./webpack.config.js -f table --ext .js --ext .jsx || true",
-    "preview": "rm -rf ./dist && NODE_ENV=\"production\" webpack-dev-server",
+    "preview": "rm -rf ./dist && EXAMPLE=\"true\" NODE_ENV=\"production\" webpack-dev-server",
     "hook-add": "prepush install",
     "hook-remove": "prepush remove"
   },
   "devDependencies": {
+    "animated-scroll-to": "^1.1.7",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.7.2",
     "babel-eslint": "^7.1.0",
@@ -51,7 +52,8 @@
   },
   "dependencies": {
     "bezier-easing": "^2.0.3",
-    "prop-types": "^15.5.8"
+    "prop-types": "^15.5.8",
+    "window-scroll-manager": "^0.2.1"
   },
   "peerDependencies": {
     "react": ">=15.6.2",

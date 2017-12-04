@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import BezierEasing from 'bezier-easing';
-import ScrollManager from './scroll-manager';
+import ScrollManager from 'window-scroll-manager';
 
 // Regex that checks for numbers in string
 // formatted as "{number}{unit}" where unit is "px", "vh", "%" or none
@@ -321,7 +321,7 @@ function parallax(scrollPosition, start, duration, startValue, endValue, easing)
     value += min;
   }
 
-  return parseFloat(value.toFixed(2));
+  return parseFloat(value.toFixed(3));
 }
 
 // Calculates current value for color parallax
@@ -354,7 +354,7 @@ function colorParallax(scrollPosition, start, duration, startValue, endValue, ea
 }
 
 // Applies property parallax to the style object
-function applyProperty(scrollPosition, propertyData, startPosition, durationInPx, style, easing) {
+function applyProperty(scrollPosition, propertyData, startPosition, duration, style, easing) {
   const {
     startValue,
     endValue,
@@ -371,7 +371,7 @@ function applyProperty(scrollPosition, propertyData, startPosition, durationInPx
   const value = parallaxMethod(
     scrollPosition,
     startPosition,
-    durationInPx,
+    duration,
     startValue,
     endValue,
     easing
@@ -413,7 +413,7 @@ function getClasses(lastSegmentScrolledBy, isInSegment, parallaxData) {
     cssClasses = `Plx--active Plx--in Plx--in-${ segmentName }`;
   } else if (lastSegmentScrolledBy !== null && !isInSegment) {
     const segmentName = parallaxData[lastSegmentScrolledBy].name || lastSegmentScrolledBy;
-    const nextSegmentName = parallaxData[lastSegmentScrolledBy + 1].name || lastSegmentScrolledBy;
+    const nextSegmentName = parallaxData[lastSegmentScrolledBy + 1].name || lastSegmentScrolledBy + 1;
 
     cssClasses = `Plx--active Plx--between Plx--between-${ segmentName }-and-${ nextSegmentName }`;
   }
@@ -438,14 +438,10 @@ export default class Plx extends Component {
   constructor(props) {
     super(props);
 
-    const {
-      interval,
-    } = props;
-
     // Check for universal apps
     if (typeof window !== 'undefined') {
       // Get scroll manager singleton
-      this.scrollManager = new ScrollManager(interval);
+      this.scrollManager = new ScrollManager();
     }
 
     // Binding handlers
@@ -462,23 +458,27 @@ export default class Plx extends Component {
   componentWillMount() {
     // Check for universal apps
     if (typeof window !== 'undefined') {
-      window.addEventListener('plx-scroll', this.handleScrollChange);
+      window.addEventListener('window-scroll', this.handleScrollChange);
       window.addEventListener('resize', this.handleResize);
     }
   }
 
+  componentDidMount() {
+    this.update(this.scrollManager.getScrollPosition(), this.props);
+  }
+
   componentWillReceiveProps(nextProps) {
-    this.update(this.scrollManager.getWindowScrollTop(), nextProps);
+    this.update(this.scrollManager.getScrollPosition(), nextProps);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('plx-scroll', this.handleScrollChange);
+    window.removeEventListener('window-scroll', this.handleScrollChange);
     window.removeEventListener('resize', this.handleResize);
 
     clearTimeout(this.resizeDebounceTimeoutID);
     this.resizeDebounceTimeoutID = null;
 
-    this.scrollManager.destroy();
+    this.scrollManager.removeListener();
     this.scrollManager = null;
   }
 
@@ -486,7 +486,7 @@ export default class Plx extends Component {
     clearTimeout(this.resizeDebounceTimeoutID);
 
     this.resizeDebounceTimeoutID = setTimeout(() => {
-      this.update(this.scrollManager.getWindowScrollTop(), this.props);
+      this.update(this.scrollManager.getScrollPosition(), this.props);
     }, RESIZE_DEBOUNCE_TIMEOUT);
   }
 
@@ -680,6 +680,7 @@ export default class Plx extends Component {
       children,
       className,
       style,
+      tagName,
     } = this.props;
     const {
       hasReceivedScrollEvent,
@@ -691,13 +692,15 @@ export default class Plx extends Component {
       'animateWhenNotInViewport',
       'children',
       'className',
-      'interval',
       'parallaxData',
       'style',
+      'tagName',
     ];
 
+    const Tag = tagName;
+
     return (
-      <div
+      <Tag
         { ...omit(this.props, propsToOmit) }
         className={ `Plx ${ plxStateClasses } ${ className }` }
         style={ {
@@ -709,7 +712,7 @@ export default class Plx extends Component {
         ref={ el => this.element = el }
       >
         { children }
-      </div>
+      </Tag>
     );
   }
 }
@@ -758,13 +761,13 @@ Plx.propTypes = {
   animateWhenNotInViewport: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   className: PropTypes.string,
-  interval: PropTypes.number,
   parallaxData: PropTypes.arrayOf(parallaxDataType).isRequired, // eslint-disable-line react/no-unused-prop-types
   style: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object])),
+  tagName: PropTypes.string,
 };
 
 Plx.defaultProps = {
   animateWhenNotInViewport: false,
   className: '',
-  interval: 16,
+  tagName: 'div',
 };
