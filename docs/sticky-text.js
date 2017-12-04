@@ -5,7 +5,6 @@ const textData = [
   {
     start: '.StickyText-trigger',
     duration: '30vh',
-    // animateWhenNotInViewport: true,
     properties: [
       {
         startValue: 0,

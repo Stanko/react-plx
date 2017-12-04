@@ -496,14 +496,20 @@ export default class Plx extends Component {
 
   update(scrollPosition, props) {
     const {
-      parallaxData,
       animateWhenNotInViewport,
+      disabled,
+      parallaxData,
     } = props;
     const {
       hasReceivedScrollEvent,
       plxStyle,
       plxStateClasses,
     } = this.state;
+
+    // When disabled do nothing
+    if (disabled) {
+      return;
+    }
 
     // Check if element is in viewport
     // Small offset is added to prevent page jumping
@@ -679,6 +685,7 @@ export default class Plx extends Component {
     const {
       children,
       className,
+      disabled,
       style,
       tagName,
     } = this.props;
@@ -699,16 +706,22 @@ export default class Plx extends Component {
 
     const Tag = tagName;
 
+    let elementStyle = style;
+
+    if (!disabled) {
+      elementStyle = {
+        ...style,
+        ...plxStyle,
+        // TODO think more about how to solve this
+        visibility: hasReceivedScrollEvent ? null : 'hidden',
+      };
+    }
+
     return (
       <Tag
         { ...omit(this.props, propsToOmit) }
         className={ `Plx ${ plxStateClasses } ${ className }` }
-        style={ {
-          ...style,
-          ...plxStyle,
-          // TODO think more about how to solve this
-          visibility: hasReceivedScrollEvent ? null : 'hidden',
-        } }
+        style={ elementStyle }
         ref={ el => this.element = el }
       >
         { children }
@@ -736,6 +749,10 @@ const parallaxDataType = PropTypes.shape({
     PropTypes.number,
     PropTypes.instanceOf(HTMLElement),
   ]).isRequired,
+  startOffset: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
   duration: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
@@ -746,7 +763,10 @@ const parallaxDataType = PropTypes.shape({
     PropTypes.number,
     PropTypes.instanceOf(HTMLElement),
   ]),
-  offset: PropTypes.number,
+  endOffset: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
   properties: PropTypes.arrayOf(propertiesItemType).isRequired,
   easing: PropTypes.oneOfType([
     PropTypes.string,
@@ -761,6 +781,7 @@ Plx.propTypes = {
   animateWhenNotInViewport: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   className: PropTypes.string,
+  disabled: PropTypes.bool,
   parallaxData: PropTypes.arrayOf(parallaxDataType).isRequired, // eslint-disable-line react/no-unused-prop-types
   style: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object])),
   tagName: PropTypes.string,
@@ -770,4 +791,5 @@ Plx.defaultProps = {
   animateWhenNotInViewport: false,
   className: '',
   tagName: 'div',
+  parallaxData: [],
 };

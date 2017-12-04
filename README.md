@@ -92,6 +92,10 @@ Read more about how it works in [this blog post](https://stanko.github.io/plx-re
   If set to true element will be animated even when it is not in the viewport.
   This is helpful with fixed elements in iOS due to [know bug with `getBoundingClientRect` in iOS](https://openradar.appspot.com/radar?id=6668472289329152).
 
+* **disabled** boolean
+
+  When `true` disabled animation completely.
+
 * **parallaxData** array of items (item structure described beneath), *required*
 
   Main data, describes parallax segments.
@@ -123,9 +127,10 @@ Any other props will be passed to the component (for example this is useful for 
 
   **PLEASE NOTE** that `parallaxData` should be sorted by `start` value!
 
-* **end** number, string, [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement), *required*
+* **end** number, string, [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement)
 
   Scroll position where parallax effect should end.
+  It has higher priority than `duration`.
   Can one of the following:
 
   * Number - value in pixels
@@ -144,7 +149,7 @@ Any other props will be passed to the component (for example this is useful for 
   end: '.end-element' // ends when .end-element enters the viewport
   ```
 
-* **duration** number, string, [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement), *required*
+* **duration** number, string, [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement)
 
   How long should effect last (it will finish
   when scroll position equals `start` + `duration`).

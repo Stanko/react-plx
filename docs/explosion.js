@@ -24,12 +24,6 @@ const COLORS = [
   '#7f8c8d',
 ];
 
-// function getRandomInt(minimum, maximum) {
-//   const min = Math.ceil(minimum);
-//   const max = Math.floor(maximum);
-//   return Math.floor(Math.random() * (max - min)) + min;
-// }
-
 for (let i = 0; i < ROWS; i++) {
   BOXES.push([]);
   for (let j = 0; j < BOXES_PER_ROW; j++) {
@@ -42,10 +36,6 @@ for (let i = 0; i < ROWS; i++) {
     const start = inside ? 40 : 100;
     const offset = inside ? 40 : 100;
     const rotationFactor = Math.random() > 0.5 ? 180 : -180;
-    // const colorIndex = getRandomInt(0, COLORS.length);
-    // const color = COLORS[colorIndex];
-    //
-    // COLORS.splice(colorIndex, 1);
 
     const color = COLORS[i * ROWS + j];
 
@@ -102,6 +92,7 @@ export default class Explosion extends React.Component {
       row.forEach((box, boxIndex) => {
         boxes.push(
           <Plx
+            disabled
             key={ `${ index } ${ boxIndex }` }
             className='Explosion-box'
             parallaxData={ box.data }
