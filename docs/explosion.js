@@ -92,7 +92,6 @@ export default class Explosion extends React.Component {
       row.forEach((box, boxIndex) => {
         boxes.push(
           <Plx
-            disabled
             key={ `${ index } ${ boxIndex }` }
             className='Explosion-box'
             parallaxData={ box.data }
