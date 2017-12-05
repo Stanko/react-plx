@@ -507,8 +507,10 @@ export default class Plx extends Component {
       plxStateClasses,
     } = this.state;
 
-    // When freeze stop animating at current state
-    if (freeze && hasReceivedScrollEvent) return;
+    // Freeze animation at current state
+    if (freeze && hasReceivedScrollEvent) {
+      return;
+    }
 
     // When disabled do nothing
     if (disabled) {
