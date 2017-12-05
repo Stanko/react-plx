@@ -498,6 +498,7 @@ export default class Plx extends Component {
     const {
       animateWhenNotInViewport,
       disabled,
+      freeze,
       parallaxData,
     } = props;
     const {
@@ -505,6 +506,11 @@ export default class Plx extends Component {
       plxStyle,
       plxStateClasses,
     } = this.state;
+
+    // Freeze animation at current state
+    if (freeze && hasReceivedScrollEvent) {
+      return;
+    }
 
     // When disabled do nothing
     if (disabled) {
@@ -699,6 +705,7 @@ export default class Plx extends Component {
       'animateWhenNotInViewport',
       'children',
       'className',
+      'freeze',
       'parallaxData',
       'style',
       'tagName',
@@ -782,6 +789,7 @@ Plx.propTypes = {
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   className: PropTypes.string,
   disabled: PropTypes.bool,
+  freeze: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
   parallaxData: PropTypes.arrayOf(parallaxDataType).isRequired, // eslint-disable-line react/no-unused-prop-types
   style: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object])),
   tagName: PropTypes.string,
