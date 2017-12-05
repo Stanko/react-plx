@@ -103,7 +103,7 @@ Read more about how it works in [this blog post](https://stanko.github.io/plx-re
 
 * **freeze** bool, default `false`
 
-  When `true` animation will be stopped at current state when condition are met.
+  When `true` animation will be stopped at current state when condition is met.
 
 * **parallaxData** array of items (item structure described beneath), *required*
 
