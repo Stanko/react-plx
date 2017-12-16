@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import BezierEasing from 'bezier-easing';
 import ScrollManager from 'window-scroll-manager';
 
+// Check if code is running in the browser (important for universal rendering)
+const WINDOW_EXISTS = typeof window !== 'undefined';
+
 // Regex that checks for numbers in string
 // formatted as "{number}{unit}" where unit is "px", "vh", "%" or none
 const START_END_DURATION_REGEX = /^-?\d+(\.\d+)?(px|vh|%)?$/;
@@ -434,12 +437,13 @@ function omit(object, keysToOmit) {
   return result;
 }
 
+
 export default class Plx extends Component {
   constructor(props) {
     super(props);
 
     // Check for universal apps
-    if (typeof window !== 'undefined') {
+    if (WINDOW_EXISTS) {
       // Get scroll manager singleton
       this.scrollManager = new ScrollManager();
     }
@@ -457,7 +461,7 @@ export default class Plx extends Component {
 
   componentWillMount() {
     // Check for universal apps
-    if (typeof window !== 'undefined') {
+    if (WINDOW_EXISTS) {
       window.addEventListener('window-scroll', this.handleScrollChange);
       window.addEventListener('resize', this.handleResize);
     }
@@ -750,11 +754,16 @@ const propertiesItemType = PropTypes.shape({
   unit: PropTypes.string,
 });
 
+// Check for the universal rendering
+// HTMLElement in the proptypes breaks on server
+// https://github.com/Stanko/react-plx/issues/25
+const SafeHTMLElement = WINDOW_EXISTS ? window.HTMLElement : {};
+
 const parallaxDataType = PropTypes.shape({
   start: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
-    PropTypes.instanceOf(HTMLElement),
+    PropTypes.instanceOf(SafeHTMLElement),
   ]).isRequired,
   startOffset: PropTypes.oneOfType([
     PropTypes.string,
@@ -763,12 +772,12 @@ const parallaxDataType = PropTypes.shape({
   duration: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
-    PropTypes.instanceOf(HTMLElement),
+    PropTypes.instanceOf(SafeHTMLElement),
   ]),
   end: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
-    PropTypes.instanceOf(HTMLElement),
+    PropTypes.instanceOf(SafeHTMLElement),
   ]),
   endOffset: PropTypes.oneOfType([
     PropTypes.string,
