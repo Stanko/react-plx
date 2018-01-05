@@ -68,7 +68,7 @@ Still you need to avoid common "don't dos" when making a parallax page:
 * Avoid `background-size: cover`
 * Don’t animate massive images or dramatically resize them
 * Avoid animating 100 things at once
-* Only use properties that are cheap for browsers to animate - opacity and transform (scale, rotate, skew, scale)
+* Only use properties that are cheap for browsers to animate - opacity and transform (translate, rotate, skew, scale)
 
 Read this [great article](https://medium.com/@dhg/parallax-done-right-82ced812e61c) to find out more (that is where I got my initial inspiration).
 
