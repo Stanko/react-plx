@@ -184,7 +184,7 @@ function convertPropToPixels(propName, propValue, maxScroll, offset = 0) {
     const element = isElement ? propValue : document.querySelector(propValue);
 
     if (!element) {
-      console.log(`Plx, ERROR: ${ propName } selector matches no elements: "${ propValue }"`); // eslint-disable-line
+      console.warn(`Plx, ERROR: ${ propName } selector matches no elements: "${ propValue }"`); // eslint-disable-line
       return null;
     }
 
@@ -198,7 +198,7 @@ function convertPropToPixels(propName, propValue, maxScroll, offset = 0) {
       propValueInPx = element.offsetHeight;
     }
   } else {
-    console.log(`Plx, ERROR: "${ propValue }" is not a valid ${ propName } value, check documenation`); // eslint-disable-line
+    console.warn(`Plx, ERROR: "${ propValue }" is not a valid ${ propName } value, check documenation`); // eslint-disable-line
     return null;
   }
 
@@ -228,7 +228,7 @@ function hexToObject(hex) {
 
   // Safety check, if color is in the wrong format
   if (!result) {
-    console.log(`Plx, ERROR: hex color is not in the right format: "${ hex }"`); // eslint-disable-line no-console
+    console.warn(`Plx, ERROR: hex color is not in the right format: "${ hex }"`); // eslint-disable-line no-console
     return null;
   }
 
@@ -249,7 +249,7 @@ function rgbToObject(rgb) {
 
   // Safety check, if color is in the wrong format
   if (!result) {
-    console.log(`Plx, ERROR: rgb or rgba color is not in the right format: "${ rgb }"`); // eslint-disable-line
+    console.warn(`Plx, ERROR: rgb or rgba color is not in the right format: "${ rgb }"`); // eslint-disable-line
     return null;
   }
 
@@ -271,13 +271,19 @@ function parallax(scrollPosition, start, duration, startValue, endValue, easing)
 
   // Safety check, if "startValue" is in the wrong format
   if (typeof startValue !== 'number') {
-    console.log(`Plx, ERROR: startValue is not a number, but "${ typeof endValue }": "${ endValue }"`); // eslint-disable-line
+    console.warn(`Plx, ERROR: startValue is not a number (type: "${ typeof endValue }", value: "${ endValue }")`); // eslint-disable-line
     return null;
   }
 
   // Safety check, if "endValue" is in the wrong format
   if (typeof endValue !== 'number') {
-    console.log(`Plx, ERROR: endValue is not a number, but "${ typeof endValue }": "${ endValue }"`); // eslint-disable-line
+    console.warn(`Plx, ERROR: endValue is not a number (type: "${ typeof endValue }", value: "${ endValue }")`); // eslint-disable-line
+    return null;
+  }
+
+  // Safety check, if "duration" is in the wrong format
+  if (typeof duration !== 'number' || duration === 0) {
+    console.warn(`Plx, ERROR: duration is zero or not a number (type: "${ typeof duration }", value: "${ duration }")`); // eslint-disable-line
     return null;
   }
 
