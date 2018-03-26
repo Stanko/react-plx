@@ -6,10 +6,12 @@
 React component, for creating on scroll effects aka. parallax.
 Lightweight, yet powerful.
 
-**v1.0.0 introduced breaking changes**
 
-`start` and `duration` are reworked, and `end` prop is introduced.
-Check updated [parallaxData](#user-content-parallaxdata) documentation.
+* v1.1.0 brings CSS filter support kudos to @allesklarbeidir
+* **v1.0.0 introduced breaking changes**
+
+  `start` and `duration` are reworked, and `end` prop is introduced.
+  Check updated [parallaxData](#user-content-parallaxdata) documentation.
 
 
 ## Demo
@@ -253,7 +255,9 @@ Any other props will be passed to the component (for example this is useful for 
 * **property** string, *required*
 
   CSS property to be animated, works only on properties which accept numerical values (e.g. `opacity`, `height`...).
-  For `transform` use functions instead (e.g. `translateX`, `scale`, `rotate`...).
+  For `transform` use function names instead (e.g. `translateX`, `scale`, `rotate`...).
+  Same goes for filters.
+
   Supported transform functions are:
 
   * translateX
@@ -282,7 +286,20 @@ Any other props will be passed to the component (for example this is useful for 
   * borderLeftColor
   * borderRightColor
 
+  Supported CSS filters are:
+
+  * blur
+  * brightness
+  * contrast
+  * grayscale
+  * hueRotate
+  * invert
+  * opacityFilter (as it shares the same name as CSS `opacity`)
+  * saturate
+  * sepia
+
   To keep you parallax effects performant, I strongly advice not to use anything but opacity and transforms.
+  Some filters should be cheap as well, with `blur` being the most expensive out of supported filters.
 
 * **startValue** number (or string for color), *required*
 
@@ -366,6 +383,13 @@ const exampleParallaxData = [
         startValue: 90,
         endValue: 0,
         property: "rotate"
+      },
+      // Blur is not performant
+      // Used just as an example for CSS filters
+      {
+        startValue: 0,
+        endValue: 20,
+        property: "blur"
       }
     ]
   }

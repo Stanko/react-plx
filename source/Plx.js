@@ -21,7 +21,7 @@ const ANGLE_PROPERTIES = [
   'skewX',
   'skewY',
   'skewZ',
-  'filterHueRotate'
+  'hueRotate',
 ];
 
 const EASINGS = {
@@ -118,30 +118,43 @@ const COLOR_PROPERTIES = [
   'borderRightColor',
 ];
 
-// CSS filter map // blur() | brightness() | contrast() | drop-shadow() | grayscale() | hue-rotate() | invert() | opacity() | saturate() | sepia() | url()
+// CSS filter map
+// blur()
+// brightness()
+// contrast()
+// grayscale()
+// hue-rotate()
+// invert()
+// opacity() // use opacityFilter
+// saturate()
+// sepia()
+
+// Not supported
+// drop-shadow()
+// url()
 const FILTER_MAP = {
-  filterBlur: (value, unit: DEFAULT_UNIT) => `blur(${ value }${ unit })`,
-  filterBrightness: value => `brightness(${ value })`,
-  filterContrast: value => `contrast(${ value })`,
-  filterGrayscale: value => `grayscale(${ value })`,
-  filterHueRotate: (value, unit: DEFAULT_ANGLE_UNIT) => `hue-rotate(${ value }${ unit })`,
-  filterInvert: value => `invert(${ value })`,
-  filterOpacity: value => `opacity(${ value })`,
-  filterSaturate: value => `saturate(${ value })`,
-  filterSepia: value => `sepia(${ value })`
+  blur: (value, unit: DEFAULT_UNIT) => `blur(${ value }${ unit })`,
+  brightness: value => `brightness(${ value })`,
+  contrast: value => `contrast(${ value })`,
+  grayscale: value => `grayscale(${ value })`,
+  hueRotate: (value, unit: DEFAULT_ANGLE_UNIT) => `hue-rotate(${ value }${ unit })`,
+  invert: value => `invert(${ value })`,
+  opacityFilter: value => `opacity(${ value })`,
+  saturate: value => `saturate(${ value })`,
+  sepia: value => `sepia(${ value })`,
 };
 
 const FILTER_PROPERTIES = [
-  'filterBlur',
-  'filterBrightness',
-  'filterContrast',
-  'filterGrayscale',
-  'filterHueRotate',
-  'filterInvert',
-  'filterOpacity',
-  'filterSaturate',
-  'filterSepia'
-]
+  'blur',
+  'brightness',
+  'contrast',
+  'grayscale',
+  'hueRotate',
+  'invert',
+  'opacityFilter',
+  'saturate',
+  'sepia',
+];
 
 // Get element's top offset
 function getElementTop(el) {
@@ -422,7 +435,7 @@ function applyProperty(scrollPosition, propertyData, startPosition, duration, st
     const propertyUnit = getUnit(property, unit);
     // Transforms, apply value to transform function
     newStyle.transform[property] = transformMethod(value, propertyUnit);
-  } else if(filterMethod) {
+  } else if (filterMethod) {
     // Get CSS unit
     const propertyUnit = getUnit(property, unit);
     // Filters, apply value to filter function
@@ -713,8 +726,8 @@ export default class Plx extends Component {
 
     const filtersArray = [];
     FILTER_PROPERTIES.forEach(filterKey => {
-      if(newStyle.filter[filterKey]) {
-        filtersArray.push(newStyle.filter[filterKey])
+      if (newStyle.filter[filterKey]) {
+        filtersArray.push(newStyle.filter[filterKey]);
       }
     });
 
