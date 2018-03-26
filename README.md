@@ -319,7 +319,7 @@ Any other props will be passed to the component (for example this is useful for 
 
 ## Example of props
 
-These are the exact props used in [this example](https://codesandbox.io/embed/xqzqwoy8p).
+These are the exact props used in [this example](https://codesandbox.io/embed/m7mx5l9z9p).
 
 ```js
 const exampleParallaxData = [
