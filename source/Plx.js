@@ -21,6 +21,7 @@ const ANGLE_PROPERTIES = [
   'skewX',
   'skewY',
   'skewZ',
+  'filterHueRotate'
 ];
 
 const EASINGS = {
@@ -116,6 +117,31 @@ const COLOR_PROPERTIES = [
   'borderLeftColor',
   'borderRightColor',
 ];
+
+// CSS filter map // blur() | brightness() | contrast() | drop-shadow() | grayscale() | hue-rotate() | invert() | opacity() | saturate() | sepia() | url()
+const FILTER_MAP = {
+  filterBlur: (value, unit: DEFAULT_UNIT) => `blur(${ value }${ unit })`,
+  filterBrightness: value => `brightness(${ value })`,
+  filterContrast: value => `contrast(${ value })`,
+  filterGrayscale: value => `grayscale(${ value })`,
+  filterHueRotate: (value, unit: DEFAULT_ANGLE_UNIT) => `hue-rotate(${ value }${ unit })`,
+  filterInvert: value => `invert(${ value })`,
+  filterOpacity: value => `opacity(${ value })`,
+  filterSaturate: value => `saturate(${ value })`,
+  filterSepia: value => `sepia(${ value })`
+};
+
+const FILTER_PROPERTIES = [
+  'filterBlur',
+  'filterBrightness',
+  'filterContrast',
+  'filterGrayscale',
+  'filterHueRotate',
+  'filterInvert',
+  'filterOpacity',
+  'filterSaturate',
+  'filterSepia'
+]
 
 // Get element's top offset
 function getElementTop(el) {
@@ -388,6 +414,7 @@ function applyProperty(scrollPosition, propertyData, startPosition, duration, st
 
   // Get transform function
   const transformMethod = TRANSFORM_MAP[property];
+  const filterMethod = FILTER_MAP[property];
   const newStyle = style;
 
   if (transformMethod) {
@@ -395,6 +422,11 @@ function applyProperty(scrollPosition, propertyData, startPosition, duration, st
     const propertyUnit = getUnit(property, unit);
     // Transforms, apply value to transform function
     newStyle.transform[property] = transformMethod(value, propertyUnit);
+  } else if(filterMethod) {
+    // Get CSS unit
+    const propertyUnit = getUnit(property, unit);
+    // Filters, apply value to filter function
+    newStyle.filter[property] = filterMethod(value, propertyUnit);
   } else {
     // All other properties
     newStyle[property] = value;
@@ -543,6 +575,7 @@ export default class Plx extends Component {
     // Style to be applied to our element
     let newStyle = {
       transform: {},
+      filter: {},
     };
 
     if (!hasReceivedScrollEvent) {
@@ -677,6 +710,20 @@ export default class Plx extends Component {
     newStyle.MozTransform = newStyle.transform;
     newStyle.OTransform = newStyle.transform;
     newStyle.msTransform = newStyle.transform;
+
+    const filtersArray = [];
+    FILTER_PROPERTIES.forEach(filterKey => {
+      if(newStyle.filter[filterKey]) {
+        filtersArray.push(newStyle.filter[filterKey])
+      }
+    });
+
+    // Concat filters and add browser prefixes
+    newStyle.filter = filtersArray.join(' ');
+    newStyle.WebkitFilter = newStyle.filter;
+    newStyle.MozFilter = newStyle.filter;
+    newStyle.OFilter = newStyle.filter;
+    newStyle.msFilter = newStyle.filter;
 
     // "Stupid" check if style should be updated
     if (JSON.stringify(plxStyle) !== JSON.stringify(newStyle)) {
