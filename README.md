@@ -20,6 +20,11 @@ Check the [live demo](https://stanko.github.io/react-plx/).
 
 I would really like to see what you people have built using `Plx` and create a showcase section. So please open an issue titled `Showcase: <your awesome stuff>` so it can be featured. Cheers!
 
+Other sites using it:
+
+* [Whittle School & Studios](https://www.whittleschool.org/en/)
+* [Vapor Connoisseur](http://www.vaporconnoisseur.com/about)
+
 
 ## Quick start
 
