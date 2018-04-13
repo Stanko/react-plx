@@ -1,6 +1,6 @@
 {
   "name": "react-plx",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "private": false,
   "license": "MIT",
   "main": "lib/index.js",
@@ -50,7 +50,7 @@
   "dependencies": {
     "bezier-easing": "^2.0.3",
     "prop-types": "^15.5.8",
-    "window-scroll-manager": "^0.2.1"
+    "window-scroll-manager": "^0.2.2"
   },
   "peerDependencies": {
     "react": ">=15.6.2",
