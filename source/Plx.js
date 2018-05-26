@@ -156,6 +156,17 @@ const FILTER_PROPERTIES = [
   'sepia',
 ];
 
+// Props to be removed from passing directly to the component element
+const PROPS_TO_OMIT = [
+  'animateWhenNotInViewport',
+  'children',
+  'className',
+  'freeze',
+  'parallaxData',
+  'style',
+  'tagName',
+];
+
 // Get element's top offset
 function getElementTop(el) {
   let top = 0;
@@ -488,16 +499,9 @@ function omit(object, keysToOmit) {
   return result;
 }
 
-
 export default class Plx extends Component {
   constructor(props) {
     super(props);
-
-    // Check for universal apps
-    if (WINDOW_EXISTS) {
-      // Get scroll manager singleton
-      this.scrollManager = new ScrollManager();
-    }
 
     // Binding handlers
     this.handleScrollChange = this.handleScrollChange.bind(this);
@@ -510,20 +514,21 @@ export default class Plx extends Component {
     };
   }
 
-  componentWillMount() {
-    // Check for universal apps
-    if (WINDOW_EXISTS) {
-      window.addEventListener('window-scroll', this.handleScrollChange);
-      window.addEventListener('resize', this.handleResize);
-    }
-  }
-
   componentDidMount() {
+    // Get scroll manager singleton
+    this.scrollManager = new ScrollManager();
+    // Add listeners
+    window.addEventListener('window-scroll', this.handleScrollChange);
+    window.addEventListener('resize', this.handleResize);
+
     this.update(this.scrollManager.getScrollPosition(), this.props);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.update(this.scrollManager.getScrollPosition(), nextProps);
+  componentDidUpdate(prevProps) {
+    // Update only if props are changed
+    if (prevProps !== this.props) {
+      this.update(this.scrollManager.getScrollPosition(), this.props);
+    }
   }
 
   componentWillUnmount() {
@@ -767,16 +772,6 @@ export default class Plx extends Component {
       plxStateClasses,
     } = this.state;
 
-    const propsToOmit = [
-      'animateWhenNotInViewport',
-      'children',
-      'className',
-      'freeze',
-      'parallaxData',
-      'style',
-      'tagName',
-    ];
-
     const Tag = tagName;
 
     let elementStyle = style;
@@ -792,7 +787,7 @@ export default class Plx extends Component {
 
     return (
       <Tag
-        { ...omit(this.props, propsToOmit) }
+        { ...omit(this.props, PROPS_TO_OMIT) }
         className={ `Plx ${ plxStateClasses } ${ className }` }
         style={ elementStyle }
         ref={ el => this.element = el }
