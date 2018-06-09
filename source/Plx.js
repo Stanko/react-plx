@@ -116,6 +116,7 @@ const COLOR_PROPERTIES = [
   'borderBottomColor',
   'borderLeftColor',
   'borderRightColor',
+  'fill',
 ];
 
 // CSS filter map

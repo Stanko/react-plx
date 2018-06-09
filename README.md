@@ -290,6 +290,7 @@ Any other props will be passed to the component (for example this is useful for 
   * borderBottomColor
   * borderLeftColor
   * borderRightColor
+  * fill
 
   Supported CSS filters are:
 
