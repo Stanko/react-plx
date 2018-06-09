@@ -110,13 +110,14 @@ const ORDER_OF_TRANSFORMS = [
 // CSS properties that use color values
 const COLOR_PROPERTIES = [
   'backgroundColor',
-  'color',
-  'borderColor',
-  'borderTopColor',
   'borderBottomColor',
+  'borderColor',
   'borderLeftColor',
   'borderRightColor',
+  'borderTopColor',
+  'color',
   'fill',
+  'strokeColor',
 ];
 
 // CSS filter map

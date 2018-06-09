@@ -284,13 +284,14 @@ Any other props will be passed to the component (for example this is useful for 
   Supported colors are:
 
   * backgroundColor
-  * color
-  * borderColor
-  * borderTopColor
   * borderBottomColor
+  * borderColor
   * borderLeftColor
   * borderRightColor
+  * borderTopColor
+  * color
   * fill
+  * strokeColor
 
   Supported CSS filters are:
 

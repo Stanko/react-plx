@@ -1,5 +1,16 @@
 # Changelog
 
+### v1.2.2
+
+09.06.2018.
+
+**Added**
+
+* Added `fill` and `strokeColor` to the list of the color properties that can be animated.
+
+
+-----
+
 ### v1.2.0
 
 26.05.2018.
