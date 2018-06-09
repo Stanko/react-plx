@@ -501,6 +501,214 @@ function omit(object, keysToOmit) {
   return result;
 }
 
+// Main update function
+// Returns new state object based on props and scroll position
+function getNewState(scrollPosition, props, state, element) {
+  const {
+    animateWhenNotInViewport,
+    disabled,
+    freeze,
+    parallaxData,
+  } = props;
+  const {
+    showElement,
+    plxStyle,
+    plxStateClasses,
+  } = state;
+
+  // Do nothing if animation is disabled, frozen
+  // or if element is not rendered yet
+  if ((freeze && showElement) || !element || disabled) {
+    return null;
+  }
+
+  // Check if element is in viewport
+  // Small offset is added to prevent page jumping
+  if (!animateWhenNotInViewport) {
+    const rect = element.getBoundingClientRect();
+    const isTopAboveBottomEdge = rect.top < window.innerHeight + SCROLL_OFFSET;
+    const isBottomBellowTopEdge = rect.top + rect.height > -SCROLL_OFFSET;
+
+    if (!isTopAboveBottomEdge || !isBottomBellowTopEdge) {
+      return null;
+    }
+  }
+
+  const newState = {};
+
+  // Style to be applied to our element
+  let newStyle = {
+    transform: {},
+    filter: {},
+  };
+
+  // This means "componentDidMount" did happen and that we should show our element
+  if (!showElement) {
+    newState.showElement = true;
+  }
+
+  const appliedProperties = [];
+  const segments = [];
+  let isInSegment = false;
+  let lastSegmentScrolledBy = null;
+  const maxScroll = Math.max(
+    document.body.scrollHeight,
+    document.body.offsetHeight,
+    document.documentElement.clientHeight,
+    document.documentElement.scrollHeight,
+    document.documentElement.offsetHeight
+  ) - window.innerHeight;
+
+  for (let i = 0; i < parallaxData.length; i++) {
+    const {
+      duration,
+      easing,
+      endOffset,
+      properties,
+      startOffset,
+    } = parallaxData[i];
+
+    const start = parallaxData[i].start === 'self' ? element : parallaxData[i].start;
+    const end = parallaxData[i].end === 'self' ? element : parallaxData[i].end;
+
+    const startInPx = convertPropToPixels('start', start, maxScroll, startOffset);
+    let durationInPx = null;
+    let endInPx = null;
+
+    // End has higher priority than duration
+    if (typeof end !== 'undefined') {
+      endInPx = convertPropToPixels('end', end, maxScroll, endOffset);
+      durationInPx = endInPx - startInPx;
+    } else {
+      durationInPx = convertPropToPixels('duration', duration, maxScroll);
+      endInPx = startInPx + durationInPx;
+    }
+
+    // If segment is bellow scroll position skip it
+    if (scrollPosition < startInPx) {
+      break;
+    }
+
+    const isScrolledByStart = scrollPosition >= startInPx;
+
+    if (isScrolledByStart) {
+      lastSegmentScrolledBy = i;
+    }
+
+    // If active segment exists, apply his properties
+    if (scrollPosition >= startInPx && scrollPosition <= endInPx) {
+      isInSegment = true;
+
+      properties.forEach(propertyData => { // eslint-disable-line no-loop-func
+        const { property } = propertyData;
+
+        // Save which properties are applied to the active segment
+        // So they are not re-applied for other segments
+        appliedProperties.push(property);
+
+        // Apply property style
+        newStyle = applyProperty(
+          scrollPosition,
+          propertyData,
+          startInPx,
+          durationInPx,
+          newStyle,
+          easing
+        );
+      });
+    } else {
+      // Push non active segments above the scroll position to separate array
+      // This way "durationInPx" and "startInPx" are not calculated again
+      // and segments bellow scroll position are skipped in the next step
+      segments.push({
+        easing,
+        durationInPx,
+        properties,
+        startInPx,
+      });
+    }
+  }
+
+  // These are only segments that are completly above scroll position
+  segments.forEach(data => {
+    const {
+      easing,
+      durationInPx,
+      properties,
+      startInPx,
+    } = data;
+
+    properties.forEach((propertyData) => {
+      const { property } = propertyData;
+
+      // Skip propery that was changed for active segment
+      if (appliedProperties.indexOf(property) > -1) {
+        return;
+      }
+
+      // These styles that are the ones changed by segments
+      // that are above active segment
+      newStyle = applyProperty(
+        scrollPosition,
+        propertyData,
+        startInPx,
+        durationInPx,
+        newStyle,
+        easing
+      );
+    });
+  });
+
+  // Sort transforms by ORDER_OF_TRANSFORMS
+  // as order of CSS transforms matters
+  const transformsOrdered = [];
+
+  ORDER_OF_TRANSFORMS.forEach(transformKey => {
+    if (newStyle.transform[transformKey]) {
+      transformsOrdered.push(newStyle.transform[transformKey]);
+    }
+  });
+
+  // Concat transforms and add browser prefixes
+  newStyle.transform = transformsOrdered.join(' ');
+  newStyle.WebkitTransform = newStyle.transform;
+  newStyle.MozTransform = newStyle.transform;
+  newStyle.OTransform = newStyle.transform;
+  newStyle.msTransform = newStyle.transform;
+
+  const filtersArray = [];
+  FILTER_PROPERTIES.forEach(filterKey => {
+    if (newStyle.filter[filterKey]) {
+      filtersArray.push(newStyle.filter[filterKey]);
+    }
+  });
+
+  // Concat filters and add browser prefixes
+  newStyle.filter = filtersArray.join(' ');
+  newStyle.WebkitFilter = newStyle.filter;
+  newStyle.MozFilter = newStyle.filter;
+  newStyle.OFilter = newStyle.filter;
+  newStyle.msFilter = newStyle.filter;
+
+  // "Stupid" check if style should be updated
+  if (JSON.stringify(plxStyle) !== JSON.stringify(newStyle)) {
+    newState.plxStyle = newStyle;
+  }
+
+  // Adding state class
+  const newPlxStateClasses = getClasses(lastSegmentScrolledBy, isInSegment, parallaxData);
+
+  if (newPlxStateClasses !== plxStateClasses) {
+    newState.plxStateClasses = newPlxStateClasses;
+  }
+
+  if (Object.keys(newState).length) {
+    return newState;
+  }
+
+  return null;
+}
+
 export default class Plx extends Component {
   constructor(props) {
     super(props);
@@ -510,9 +718,10 @@ export default class Plx extends Component {
     this.handleResize = this.handleResize.bind(this);
 
     this.state = {
-      hasReceivedScrollEvent: false,
-      plxStyle: {},
+      element: null,
+      showElement: false,
       plxStateClasses: '',
+      plxStyle: {},
     };
   }
 
@@ -523,241 +732,50 @@ export default class Plx extends Component {
     window.addEventListener('window-scroll', this.handleScrollChange);
     window.addEventListener('resize', this.handleResize);
 
-    this.update(this.scrollManager.getScrollPosition(), this.props);
+    this.update();
   }
 
   componentDidUpdate(prevProps) {
-    // Update only if props are changed
     if (prevProps !== this.props) {
-      this.update(this.scrollManager.getScrollPosition(), this.props);
+      this.update();
     }
   }
 
   componentWillUnmount() {
+    const {
+      scrollManager,
+    } = this.state;
+
     window.removeEventListener('window-scroll', this.handleScrollChange);
     window.removeEventListener('resize', this.handleResize);
 
     clearTimeout(this.resizeDebounceTimeoutID);
     this.resizeDebounceTimeoutID = null;
 
-    this.scrollManager.removeListener();
-    this.scrollManager = null;
+    if (scrollManager) {
+      scrollManager.removeListener();
+    }
+  }
+
+  update(scrollPosition = null) {
+    const newState = getNewState(
+      scrollPosition || this.scrollManager.getScrollPosition(),
+      this.props,
+      this.state,
+      this.element
+    );
+    requestAnimationFrame(() => this.setState(newState));
   }
 
   handleResize() {
     clearTimeout(this.resizeDebounceTimeoutID);
-
     this.resizeDebounceTimeoutID = setTimeout(() => {
-      this.update(this.scrollManager.getScrollPosition(), this.props);
+      this.update();
     }, RESIZE_DEBOUNCE_TIMEOUT);
   }
 
   handleScrollChange(e) {
-    this.update(e.detail.scrollPosition, this.props);
-  }
-
-  update(scrollPosition, props) {
-    const {
-      animateWhenNotInViewport,
-      disabled,
-      freeze,
-      parallaxData,
-    } = props;
-    const {
-      hasReceivedScrollEvent,
-      plxStyle,
-      plxStateClasses,
-    } = this.state;
-
-    // Do nothing if animation is disabled, frozen
-    // or if element is not rendered yet
-    if ((freeze && hasReceivedScrollEvent) || !this.element || disabled) {
-      return;
-    }
-
-    // Check if element is in viewport
-    // Small offset is added to prevent page jumping
-    if (!animateWhenNotInViewport) {
-      const rect = this.element.getBoundingClientRect();
-      const isTopAboveBottomEdge = rect.top < window.innerHeight + SCROLL_OFFSET;
-      const isBottomBellowTopEdge = rect.top + rect.height > -SCROLL_OFFSET;
-
-      if (!isTopAboveBottomEdge || !isBottomBellowTopEdge) {
-        return;
-      }
-    }
-
-    const newState = {};
-    // Style to be applied to our element
-    let newStyle = {
-      transform: {},
-      filter: {},
-    };
-
-    if (!hasReceivedScrollEvent) {
-      newState.hasReceivedScrollEvent = true;
-    }
-
-    const appliedProperties = [];
-    const segments = [];
-    let isInSegment = false;
-    let lastSegmentScrolledBy = null;
-    const maxScroll = Math.max(
-      document.body.scrollHeight,
-      document.body.offsetHeight,
-      document.documentElement.clientHeight,
-      document.documentElement.scrollHeight,
-      document.documentElement.offsetHeight
-    ) - window.innerHeight;
-
-    for (let i = 0; i < parallaxData.length; i++) {
-      const {
-        duration,
-        easing,
-        endOffset,
-        properties,
-        startOffset,
-      } = parallaxData[i];
-
-      const start = parallaxData[i].start === 'self' ? this.element : parallaxData[i].start;
-      const end = parallaxData[i].end === 'self' ? this.element : parallaxData[i].end;
-
-      const startInPx = convertPropToPixels('start', start, maxScroll, startOffset);
-      let durationInPx = null;
-      let endInPx = null;
-
-      // End has higher priority than duration
-      if (typeof end !== 'undefined') {
-        endInPx = convertPropToPixels('end', end, maxScroll, endOffset);
-        durationInPx = endInPx - startInPx;
-      } else {
-        durationInPx = convertPropToPixels('duration', duration, maxScroll);
-        endInPx = startInPx + durationInPx;
-      }
-
-      // If segment is bellow scroll position skip it
-      if (scrollPosition < startInPx) {
-        break;
-      }
-
-      const isScrolledByStart = scrollPosition >= startInPx;
-
-      if (isScrolledByStart) {
-        lastSegmentScrolledBy = i;
-      }
-
-      // If active segment exists, apply his properties
-      if (scrollPosition >= startInPx && scrollPosition <= endInPx) {
-        isInSegment = true;
-
-        properties.forEach(propertyData => { // eslint-disable-line no-loop-func
-          const { property } = propertyData;
-
-          // Save which properties are applied to the active segment
-          // So they are not re-applied for other segments
-          appliedProperties.push(property);
-
-          // Apply property style
-          newStyle = applyProperty(
-            scrollPosition,
-            propertyData,
-            startInPx,
-            durationInPx,
-            newStyle,
-            easing
-          );
-        });
-      } else {
-        // Push non active segments above the scroll position to separate array
-        // This way "durationInPx" and "startInPx" are not calculated again
-        // and segments bellow scroll position are skipped in the next step
-        segments.push({
-          easing,
-          durationInPx,
-          properties,
-          startInPx,
-        });
-      }
-    }
-
-    // These are only segments that are completly above scroll position
-    segments.forEach(data => {
-      const {
-        easing,
-        durationInPx,
-        properties,
-        startInPx,
-      } = data;
-
-      properties.forEach((propertyData) => {
-        const { property } = propertyData;
-
-        // Skip propery that was changed for active segment
-        if (appliedProperties.indexOf(property) > -1) {
-          return;
-        }
-
-        // These styles that are the ones changed by segments
-        // that are above active segment
-        newStyle = applyProperty(
-          scrollPosition,
-          propertyData,
-          startInPx,
-          durationInPx,
-          newStyle,
-          easing
-        );
-      });
-    });
-
-    // Sort transforms by ORDER_OF_TRANSFORMS
-    // as order of CSS transforms matters
-    const transformsOrdered = [];
-
-    ORDER_OF_TRANSFORMS.forEach(transformKey => {
-      if (newStyle.transform[transformKey]) {
-        transformsOrdered.push(newStyle.transform[transformKey]);
-      }
-    });
-
-    // Concat transforms and add browser prefixes
-    newStyle.transform = transformsOrdered.join(' ');
-    newStyle.WebkitTransform = newStyle.transform;
-    newStyle.MozTransform = newStyle.transform;
-    newStyle.OTransform = newStyle.transform;
-    newStyle.msTransform = newStyle.transform;
-
-    const filtersArray = [];
-    FILTER_PROPERTIES.forEach(filterKey => {
-      if (newStyle.filter[filterKey]) {
-        filtersArray.push(newStyle.filter[filterKey]);
-      }
-    });
-
-    // Concat filters and add browser prefixes
-    newStyle.filter = filtersArray.join(' ');
-    newStyle.WebkitFilter = newStyle.filter;
-    newStyle.MozFilter = newStyle.filter;
-    newStyle.OFilter = newStyle.filter;
-    newStyle.msFilter = newStyle.filter;
-
-    // "Stupid" check if style should be updated
-    if (JSON.stringify(plxStyle) !== JSON.stringify(newStyle)) {
-      newState.plxStyle = newStyle;
-    }
-
-    // Adding state class
-    const newPlxStateClasses = getClasses(lastSegmentScrolledBy, isInSegment, parallaxData);
-
-    if (newPlxStateClasses !== plxStateClasses) {
-      newState.plxStateClasses = newPlxStateClasses;
-    }
-
-    if (Object.keys(newState).length) {
-      requestAnimationFrame(() => {
-        this.setState(newState);
-      });
-    }
+    this.update(e.detail.scrollPosition);
   }
 
   render() {
@@ -769,7 +787,7 @@ export default class Plx extends Component {
       tagName,
     } = this.props;
     const {
-      hasReceivedScrollEvent,
+      showElement,
       plxStyle,
       plxStateClasses,
     } = this.state;
@@ -782,8 +800,9 @@ export default class Plx extends Component {
       elementStyle = {
         ...style,
         ...plxStyle,
-        // TODO think more about how to solve this
-        visibility: hasReceivedScrollEvent ? null : 'hidden',
+        // Hide element before until it is rendered
+        // This prevents jumps if page is scrolled and then refreshed
+        visibility: showElement ? null : 'hidden',
       };
     }
 
@@ -853,19 +872,23 @@ const parallaxDataType = PropTypes.shape({
 
 
 Plx.propTypes = {
-  animateWhenNotInViewport: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
-  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  animateWhenNotInViewport: PropTypes.bool,
+  children: PropTypes.any,
   className: PropTypes.string,
   disabled: PropTypes.bool,
-  freeze: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
-  parallaxData: PropTypes.arrayOf(parallaxDataType).isRequired, // eslint-disable-line react/no-unused-prop-types
+  freeze: PropTypes.bool,
+  parallaxData: PropTypes.arrayOf(parallaxDataType),
   style: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object])),
   tagName: PropTypes.string,
 };
 
 Plx.defaultProps = {
   animateWhenNotInViewport: false,
+  children: null,
   className: '',
-  tagName: 'div',
+  disabled: false,
+  freeze: false,
   parallaxData: [],
+  style: {},
+  tagName: 'div',
 };

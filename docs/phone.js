@@ -4,7 +4,7 @@ import Plx from '../source/index';
 const phoneData = [
   {
     start: 'self',
-    startOffset: '30vh',
+    startOffset: 300,
     duration: 500,
     easing: [0.25, 0.1, 0.6, 1.5],
     properties: [
@@ -24,9 +24,9 @@ const phoneData = [
 
 const contentData = [
   {
-    start: 'self',
-    startOffset: 300,
-    duration: 500,
+    start: '.Phone',
+    startOffset: 400,
+    duration: 150,
     properties: [
       {
         startValue: 0,
@@ -70,9 +70,9 @@ export default class Phone extends React.Component {
             className='Phone-contentPlx'
             parallaxData={ contentData }
           >
-            <div className='Phone-contentSection' />
-            <div className='Phone-contentSection' />
-            <div className='Phone-contentSection' />
+            <div className='Phone-contentSection'>Plx</div>
+            <div className='Phone-contentSection'>says</div>
+            <div className='Phone-contentSection'>Hello!</div>
           </Plx>
         </div>
       </Plx>

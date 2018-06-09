@@ -146,7 +146,7 @@ h4 {
 
 .Explosion {
   height: 24rem;
-  margin: 0 auto;
+  margin: 0 auto 10rem;
   position: relative;
   width: 24rem;
 }
@@ -202,7 +202,7 @@ $phone-ratio: 2.01;
 .Phone-contentSection {
   background: $red;
   color: $white;
-  font-size: 6rem;
+  font-size: 3rem;
   font-weight: 300;
   height: 100%;
   padding-top: 75%;
@@ -211,6 +211,10 @@ $phone-ratio: 2.01;
 
   &:nth-child(2) { background: $blue; }
   &:nth-child(3) { background: $green; }
+
+  @include md {
+    font-size: 5rem;
+  }
 }
 
 .Links {
