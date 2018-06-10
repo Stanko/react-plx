@@ -431,7 +431,7 @@ Classes are:
 
 Modern browsers and IE10+.
 
-IE9 should work if polyfill `requestAnimationFrame`. But Im not supporting IE9.
+IE9 should work if you provide a polyfill for `requestAnimationFrame`. But I'm not supporting IE9.
 
 
 ## License

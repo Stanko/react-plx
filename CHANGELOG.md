@@ -1,5 +1,13 @@
 # Changelog
 
+### v1.3.0
+
+10.06.2018.
+
+**Refactored**
+
+* Moved main update method outside of the component class. Updated dependencies.
+
 ### v1.2.2
 
 09.06.2018.
