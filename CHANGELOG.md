@@ -1,5 +1,14 @@
 # Changelog
 
+### v1.3.2
+
+12.07.2018.
+
+**Updated**
+
+* Updated [window-scroll-manager](https://github.com/Stanko/window-scroll-manager) version
+* Added version git tags
+
 ### v1.3.0 and v1.3.1
 
 10.06.2018.
