@@ -9,11 +9,15 @@
 * Updated [window-scroll-manager](https://github.com/Stanko/window-scroll-manager) version.
 * Added version git tags
 
+-----
+
 ### v1.3.0 and v1.3.1
 
 10.06.2018.
 
 **Refactored**
+
+-----
 
 * Moved main update method outside of the component class. Updated dependencies.
 
