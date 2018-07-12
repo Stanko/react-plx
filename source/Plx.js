@@ -758,8 +758,11 @@ export default class Plx extends Component {
   }
 
   update(scrollPosition = null) {
+    const currentScrollPosition = scrollPosition === null ?
+      this.scrollManager.getScrollPosition().scrollPositionY : scrollPosition;
+
     const newState = getNewState(
-      scrollPosition || this.scrollManager.getScrollPosition().scrollPositionY,
+      currentScrollPosition,
       this.props,
       this.state,
       this.element

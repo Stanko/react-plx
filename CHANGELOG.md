@@ -1,6 +1,6 @@
 # Changelog
 
-### v1.3.2, v1.3.3 and v1.3.4
+### v1.3.2, v1.3.3, v1.3.4 and v1.3.5 (it was a hard day)
 
 12.07.2018.
 
