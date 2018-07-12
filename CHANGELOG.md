@@ -1,16 +1,12 @@
 # Changelog
 
-### v1.3.3
-
-* Reverting `window-scroll-manager` version due to breaking changes
-
-### v1.3.2
+### v1.3.2, v1.3.3 and v1.3.4
 
 12.07.2018.
 
 **Updated**
 
-* Updated [window-scroll-manager](https://github.com/Stanko/window-scroll-manager) version
+* Updated [window-scroll-manager](https://github.com/Stanko/window-scroll-manager) version.
 * Added version git tags
 
 ### v1.3.0 and v1.3.1

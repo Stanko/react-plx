@@ -759,11 +759,13 @@ export default class Plx extends Component {
 
   update(scrollPosition = null) {
     const newState = getNewState(
-      scrollPosition || this.scrollManager.getScrollPosition(),
+      scrollPosition || this.scrollManager.getScrollPosition().scrollPositionY,
       this.props,
       this.state,
       this.element
     );
+    // TODO add real tests if requestAnimationFrame is more performant in this case
+    // as window-scroll-manager already uses to fire scroll change events
     requestAnimationFrame(() => this.setState(newState));
   }
 
@@ -775,7 +777,7 @@ export default class Plx extends Component {
   }
 
   handleScrollChange(e) {
-    this.update(e.detail.scrollPosition);
+    this.update(e.detail.scrollPositionY);
   }
 
   render() {
