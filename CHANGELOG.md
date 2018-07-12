@@ -1,5 +1,9 @@
 # Changelog
 
+### v1.3.3
+
+* Reverting `window-scroll-manager` version due to breaking changes
+
 ### v1.3.2
 
 12.07.2018.
