@@ -178,11 +178,8 @@ Any other props will be passed to the component (for example this is useful for 
     * CSS Selector (`.my-element`, `#some-id`) to be used with `document.querySelector`.
   * `HTMLElement`, given element will be used.
 
-  For element and selector animation will stop when animated element hits top
-  of the element passed as duration prop.
-
-  Any other string will be considered CSS selector
-  and it will be used with `document.querySelector`.
+  For element and selector, element's height will be used as duration.
+  Any other string will be considered CSS selector and it will be used with `document.querySelector`.
 
   Example:
   ```js
