@@ -24,7 +24,7 @@ Other sites using it:
 
 * [Whittle School & Studios](https://www.whittleschool.org/en/)
 * [Vapor Connoisseur](http://www.vaporconnoisseur.com/about)
-* [David Yurman][https://www.davidyurman.com/products/mens/mens-bands.html]
+* [David Yurman](https://www.davidyurman.com/products/mens/mens-bands.html)
 
 
 ## Quick start
