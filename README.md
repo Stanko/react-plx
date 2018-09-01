@@ -43,10 +43,21 @@ import Plx from 'react-plx';
 
 class Example extends Component {
   render() {
+    const parallaxData = [{
+      start: 0,
+      end: '100vh',
+      properties: [
+        {
+          startValue: 1,
+          endValue: 2,
+          property: 'scale'
+        }
+      ]
+    }] // An array of parallax effects to be applied - see below for details
     return (
       <Plx
         className='MyAwesomeParallax'
-        parallaxData={ ... } // your parallax effects, see beneath
+        parallaxData={parallaxData}
       >
         /* Your content */
       </Plx>
