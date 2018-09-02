@@ -473,7 +473,7 @@ function getClasses(lastSegmentScrolledBy, isInSegment, parallaxData) {
   if (lastSegmentScrolledBy === null) {
     cssClasses = 'Plx--above';
   } else if (lastSegmentScrolledBy === parallaxData.length - 1 && !isInSegment) {
-    cssClasses = 'Plx--bellow';
+    cssClasses = 'Plx--below';
   } else if (lastSegmentScrolledBy !== null && isInSegment) {
     const segmentName = parallaxData[lastSegmentScrolledBy].name || lastSegmentScrolledBy;
 
@@ -527,9 +527,9 @@ function getNewState(scrollPosition, props, state, element) {
   if (!animateWhenNotInViewport) {
     const rect = element.getBoundingClientRect();
     const isTopAboveBottomEdge = rect.top < window.innerHeight + SCROLL_OFFSET;
-    const isBottomBellowTopEdge = rect.top + rect.height > -SCROLL_OFFSET;
+    const isBottomBelowTopEdge = rect.top + rect.height > -SCROLL_OFFSET;
 
-    if (!isTopAboveBottomEdge || !isBottomBellowTopEdge) {
+    if (!isTopAboveBottomEdge || !isBottomBelowTopEdge) {
       return null;
     }
   }
@@ -584,7 +584,7 @@ function getNewState(scrollPosition, props, state, element) {
       endInPx = startInPx + durationInPx;
     }
 
-    // If segment is bellow scroll position skip it
+    // If segment is below scroll position skip it
     if (scrollPosition < startInPx) {
       break;
     }
@@ -619,7 +619,7 @@ function getNewState(scrollPosition, props, state, element) {
     } else {
       // Push non active segments above the scroll position to separate array
       // This way "durationInPx" and "startInPx" are not calculated again
-      // and segments bellow scroll position are skipped in the next step
+      // and segments below scroll position are skipped in the next step
       segments.push({
         easing,
         durationInPx,
