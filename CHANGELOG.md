@@ -1,5 +1,19 @@
 # Changelog
 
+### v1.3.8 and v1.3.9
+
+02.09.2018.
+
+**Changed**
+
+* Breaking change - corrected typo `bellow` -> `below`.
+
+**Updated**
+
+* Updated readme.
+
+-----
+
 ### v1.3.6 and v1.3.7
 
 14.07.2018.

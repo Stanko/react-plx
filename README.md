@@ -12,6 +12,8 @@ Lightweight, yet powerful.
   `start` and `duration` are reworked, and `end` prop is introduced.
   Check updated [parallaxData](#user-content-parallaxdata) documentation.
 
+* **v1.3.8 breaking change** - corrected typo in animation state class `Plx--bellow` -> `Plx--below`.
+
 [Changelog](CHANGELOG.md)
 
 ## Demo
@@ -41,12 +43,27 @@ Import and use it in your React app.
 import React, { Component } from 'react';
 import Plx from 'react-plx';
 
+// An array of parallax effects to be applied - see below for detail
+const parallaxData = [
+  {
+    start: 0,
+    end: 500,
+    properties: [
+      {
+        startValue: 1,
+        endValue: 2,
+        property: 'scale',
+      },
+    ],
+  },
+];
+
 class Example extends Component {
   render() {
     return (
       <Plx
         className='MyAwesomeParallax'
-        parallaxData={ ... } // your parallax effects, see beneath
+        parallaxData={ parallaxData }
       >
         /* Your content */
       </Plx>
