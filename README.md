@@ -408,7 +408,7 @@ Classes are:
 * `Plx--above`
   scroll position is above first start position (animation isn't started yet)
 
-* `Plx--bellow`
+* `Plx--below`
   scroll position is below last end position (animation is finished)
 
 * `Plx--active`

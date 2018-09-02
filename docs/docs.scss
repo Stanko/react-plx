@@ -242,8 +242,8 @@ $phone-ratio: 2.01;
   width: 100%;
   z-index: 0;
 
-  &.Plx--bellow,
-  &.Plx--bellow + .Links-content {
+  &.Plx--below,
+  &.Plx--below + .Links-content {
     opacity: 0;
   }
 }
