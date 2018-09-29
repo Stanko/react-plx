@@ -18,7 +18,7 @@ Lightweight, yet powerful.
 
 ## Demo
 
-Check the [live demo](https://stanko.github.io/react-plx/).
+Check the [live demo](https://stanko.github.io/react-plx/). You can find source for the demo [here](https://github.com/Stanko/react-plx/tree/master/docs).
 
 I would really like to see what you people have built using `Plx` and create a showcase section. So please open an issue titled `Showcase: <your awesome stuff>` so it can be featured. Cheers!
 
