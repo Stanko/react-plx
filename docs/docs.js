@@ -59,7 +59,7 @@ const Example = class extends React.Component {
             <h2>React Parallax component</h2>
             <div>Awesome isn&#39;t it?</div>
             <div className='Footer-links'>
-              <a href='https://stanko.github.io'>My blog</a>
+              <a href='https://muffinman.io'>My blog</a>
               <a href='https://www.npmjs.com/package/react-plx'>npm</a>
               <a href='https://github.com/Stanko/react-plx'>GitHub</a>
             </div>

@@ -57,7 +57,7 @@ export default class Links extends React.Component {
         <div className='Links-content'>
           <a href='https://www.npmjs.com/package/react-plx'>npm</a>
           <a href='https://github.com/Stanko/react-plx'>GitHub</a>
-          <a href='https://stanko.github.io'>My blog</a>
+          <a href='https://muffinman.io'>My blog</a>
         </div>
       </div>
     );

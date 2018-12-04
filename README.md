@@ -18,7 +18,7 @@ Lightweight, yet powerful.
 
 ## Demo
 
-Check the [live demo](https://stanko.github.io/react-plx/). You can find source for the demo [here](https://github.com/Stanko/react-plx/tree/master/docs).
+Check the [live demo](https://muffinman.io/react-plx/). You can find source for the demo [here](https://github.com/Stanko/react-plx/tree/master/docs).
 
 I would really like to see what you people have built using `Plx` and create a showcase section. So please open an issue titled `Showcase: <your awesome stuff>` so it can be featured. Cheers!
 
@@ -84,7 +84,7 @@ class Example extends Component {
 
 ## What is this?
 
-This is React component which makes creating on scroll effects (aka parallax) easy. If you are not sure what it does, [demo](https://stanko.github.io/react-plx/) should help.
+This is React component which makes creating on scroll effects (aka parallax) easy. If you are not sure what it does, [demo](https://muffinman.io/react-plx/) should help.
 
 It is lightweight, and beside `react`, `react-dom` and `prop-types` ~~has no dependencies~~, now it has small `bezier-easing` package. As listening to scroll event is not performant, this component uses different approach. Interval is set (every 16ms to get 60fps) to check if scroll position is changed, and if it is, it broadcasts custom event. All of the `Plx` components are sharing the scroll manager singleton. Interval is set when the first component is created, and cleared when last one is unmounted. Interval time can be changed through the props, but it is shared across the components.
 
@@ -103,7 +103,7 @@ Of course, you can break any of these rules, but test for performance to see if 
 
 Component is written as ES module, so it will work with webpack and other module bundlers (which is standard for React apps anyway). Tested with `react-create-app` and my boilerplate, [Marvin](https://github.com/workco/marvin).
 
-Read more about how it works in [this blog post](https://stanko.github.io/plx-react-parallax-component/).
+Read more about how it works in [this blog post](https://muffinman.io/plx-react-parallax-component/).
 
 ## Props
 
