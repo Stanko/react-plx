@@ -52,7 +52,7 @@ const EASINGS = {
   easeInOutCirc: [0.785, 0.135, 0.15, 0.86],
 };
 
-// Color regexs
+// Color regexes
 
 // 0 - 199 | 200 - 249 | 250 - 255
 const REGEX_0_255 = '(1?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])';
@@ -769,8 +769,6 @@ export default class Plx extends Component {
     );
 
     if (newState) {
-      // TODO add real tests if requestAnimationFrame is more performant in this case
-      // as window-scroll-manager already uses to fire scroll change events
       requestAnimationFrame(() => this.setState(newState));
     }
   }
