@@ -49,7 +49,10 @@
 
 10.06.2018.
 
-**Refactored**
+**Changed**
+
+* Refactored a little bit, moved update logic outside of the component. Updated dependencie.
+* Moved 'animated-scroll-to' to dev dependencies
 
 -----
 
