@@ -167,7 +167,11 @@ const PROPS_TO_OMIT = [
   'parallaxData',
   'style',
   'tagName',
+  'onPlxStart',
+  'onPlxEnd',
 ];
+
+const emptyFunction = () => {};
 
 // Get element's top offset
 function getElementTop(el) {
@@ -488,6 +492,12 @@ function getClasses(lastSegmentScrolledBy, isInSegment, parallaxData) {
   return cssClasses;
 }
 
+// Checks if class contains 'active'
+function checkIfActive(classes) {
+  return classes.includes('Plx--active');
+}
+
+
 // Omits "keysToOmit" from "object"
 function omit(object, keysToOmit) {
   const result = {};
@@ -723,6 +733,9 @@ export default class Plx extends Component {
       plxStateClasses: '',
       plxStyle: {},
     };
+
+    // Skipping type checking as PropTypes will give a warning if the props aren't functions
+    this.callbacksEnabled = this.props.onPlxStart !== emptyFunction || this.props.onPlxEnd !== emptyFunction;
   }
 
   componentDidMount() {
@@ -735,9 +748,19 @@ export default class Plx extends Component {
     this.update();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
+    const wasActive = checkIfActive(prevState.plxStateClasses);
+    const isActive = checkIfActive(this.state.plxStateClasses);
     if (prevProps !== this.props) {
       this.update();
+    }
+    if (this.callbacksEnabled && prevState.plxStateClasses !== this.state.plxStateClasses) {
+      if (!wasActive && isActive) {
+        this.props.onPlxStart();
+      }
+      if (wasActive && !isActive) {
+        this.props.onPlxEnd();
+      }
     }
   }
 
@@ -886,6 +909,8 @@ Plx.propTypes = {
   parallaxData: PropTypes.arrayOf(parallaxDataType),
   style: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object])),
   tagName: PropTypes.string,
+  onPlxStart: PropTypes.func,
+  onPlxEnd: PropTypes.func,
 };
 
 Plx.defaultProps = {
@@ -897,4 +922,6 @@ Plx.defaultProps = {
   parallaxData: [],
   style: {},
   tagName: 'div',
+  onPlxStart: emptyFunction,
+  onPlxEnd: emptyFunction,
 };
