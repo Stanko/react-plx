@@ -136,6 +136,14 @@ Read more about how it works in [this blog post](https://muffinman.io/plx-react-
 
   Main data, describes parallax segments.
 
+* **onPlxStart** function
+
+  If set, the Plx component will call this function each time the animation state changes to active. (refer to [animation state CSS classes](#user-content-animation-state-css-classes))
+
+* **onPlxEnd** function
+
+  If set, the Plx component will call this function each time the animation state changes from active to another state. (refer to [animation state CSS classes](#user-content-animation-state-css-classes))
+
 Any other props will be passed to the component (for example this is useful for `aria-*` props).
 
 ### parallaxData
