@@ -43,9 +43,9 @@ const Example = class extends React.Component {
             className='Examples'
             parallaxData={ titleData }
             // eslint-disable-next-line no-console
-            onPlxStart={ () => console.log('Example text Plx started!') }
+            onPlxStart={ () => console.log('Plx - onPlxStart callback ') }
             // eslint-disable-next-line no-console
-            onPlxEnd={ () => console.log('Example text Plx ended!') }
+            onPlxEnd={ () => console.log('Plx - onPlxEnd callback') }
           >
             Examples
           </Plx>

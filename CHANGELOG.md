@@ -1,5 +1,15 @@
 # Changelog
 
+### v1.3.11
+
+17.12.2018.
+
+**Added**
+
+* Added `onPlxStart` and `onPlxEnd` [callbacks](https://github.com/Stanko/react-plx/pull/48)
+
+-----
+
 ### v1.3.10
 
 13.12.2018.
