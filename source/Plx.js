@@ -71,21 +71,21 @@ const RESIZE_DEBOUNCE_TIMEOUT = 150;
 
 // CSS transform map
 const TRANSFORM_MAP = {
-  rotate: (value, unit: DEFAULT_ANGLE_UNIT) => `rotate(${ value }${ unit })`,
-  rotateX: (value, unit: DEFAULT_ANGLE_UNIT) => `rotateX(${ value }${ unit })`,
-  rotateY: (value, unit: DEFAULT_ANGLE_UNIT) => `rotateY(${ value }${ unit })`,
-  rotateZ: (value, unit: DEFAULT_ANGLE_UNIT) => `rotateZ(${ value }${ unit })`,
+  rotate: (value, unit = DEFAULT_ANGLE_UNIT) => `rotate(${ value }${ unit })`,
+  rotateX: (value, unit = DEFAULT_ANGLE_UNIT) => `rotateX(${ value }${ unit })`,
+  rotateY: (value, unit = DEFAULT_ANGLE_UNIT) => `rotateY(${ value }${ unit })`,
+  rotateZ: (value, unit = DEFAULT_ANGLE_UNIT) => `rotateZ(${ value }${ unit })`,
   scale: value => `scale(${ value })`,
   scaleX: value => `scaleX(${ value })`,
   scaleY: value => `scaleY(${ value })`,
   scaleZ: value => `scaleZ(${ value })`,
-  skew: (value, unit: DEFAULT_UNIT) => `skew(${ value }${ unit })`,
-  skewX: (value, unit: DEFAULT_UNIT) => `skewX(${ value }${ unit })`,
-  skewY: (value, unit: DEFAULT_UNIT) => `skewY(${ value }${ unit })`,
-  skewZ: (value, unit: DEFAULT_UNIT) => `skewZ(${ value }${ unit })`,
-  translateX: (value, unit: DEFAULT_UNIT) => `translateX(${ value }${ unit })`,
-  translateY: (value, unit: DEFAULT_UNIT) => `translateY(${ value }${ unit })`,
-  translateZ: (value, unit: DEFAULT_UNIT) => `translateZ(${ value }${ unit })`,
+  skew: (value, unit = DEFAULT_UNIT) => `skew(${ value }${ unit })`,
+  skewX: (value, unit = DEFAULT_UNIT) => `skewX(${ value }${ unit })`,
+  skewY: (value, unit = DEFAULT_UNIT) => `skewY(${ value }${ unit })`,
+  skewZ: (value, unit = DEFAULT_UNIT) => `skewZ(${ value }${ unit })`,
+  translateX: (value, unit = DEFAULT_UNIT) => `translateX(${ value }${ unit })`,
+  translateY: (value, unit = DEFAULT_UNIT) => `translateY(${ value }${ unit })`,
+  translateZ: (value, unit = DEFAULT_UNIT) => `translateZ(${ value }${ unit })`,
 };
 
 // Order of CSS transforms matters
@@ -135,11 +135,11 @@ const COLOR_PROPERTIES = [
 // drop-shadow()
 // url()
 const FILTER_MAP = {
-  blur: (value, unit: DEFAULT_UNIT) => `blur(${ value }${ unit })`,
+  blur: (value, unit = DEFAULT_UNIT) => `blur(${ value }${ unit })`,
   brightness: value => `brightness(${ value })`,
   contrast: value => `contrast(${ value })`,
   grayscale: value => `grayscale(${ value })`,
-  hueRotate: (value, unit: DEFAULT_ANGLE_UNIT) => `hue-rotate(${ value }${ unit })`,
+  hueRotate: (value, unit = DEFAULT_ANGLE_UNIT) => `hue-rotate(${ value }${ unit })`,
   invert: value => `invert(${ value })`,
   opacityFilter: value => `opacity(${ value })`,
   saturate: value => `saturate(${ value })`,

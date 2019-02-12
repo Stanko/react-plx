@@ -1,5 +1,15 @@
 # Changelog
 
+### v1.3.12
+
+12.02.2019.
+
+**Fixed**
+
+* Fixed default params in transform methods.
+
+-----
+
 ### v1.3.11
 
 17.12.2018.
