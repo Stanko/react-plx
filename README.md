@@ -31,6 +31,11 @@ Other sites using it:
 * [Ekaya Store](https://www.ekaya.in/)
 
 
+<a id="simplx"></a>
+Group of [junior developers](https://github.com/Stanko/react-plx/issues/50) created a nifty app, where you can preview all of the effects Plx supports. Not just that, but you can customize the effects and it will generate code for you.
+
+* [Simplx](https://simplx-web.herokuapp.com)
+
 ## Quick start
 
 Get it from npm
@@ -75,12 +80,18 @@ class Example extends Component {
 ```
 
 ## Table of contents
-* [What is this?](#user-content-what-is-this)
-* [Props](#user-content-props)
-* [Example of props](#user-content-example-of-props)
-* [Animation state CSS classes](#user-content-animation-state-css-classes)
-* [Browser support](#user-content-browser-support)
-* [License](#user-content-license)
+- [Plx - React Parallax component](#plx---react-parallax-component)
+  - [Demo](#demo)
+  - [Quick start](#quick-start)
+  - [Table of contents](#table-of-contents)
+  - [What is this?](#what-is-this)
+  - [Props](#props)
+    - [parallaxData](#parallaxdata)
+    - [properties](#properties)
+  - [Example of props](#example-of-props)
+  - [Animation state CSS classes](#animation-state-css-classes)
+  - [Browser support](#browser-support)
+  - [License](#license)
 
 ## What is this?
 
