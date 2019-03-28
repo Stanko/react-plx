@@ -117,7 +117,7 @@ const COLOR_PROPERTIES = [
   'borderTopColor',
   'color',
   'fill',
-  'strokeColor',
+  'stroke',
 ];
 
 // CSS filter map

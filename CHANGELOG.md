@@ -1,5 +1,15 @@
 # Changelog
 
+### v1.3.13
+
+28.03.2019.
+
+**Fixed**
+
+* Fixed SVG stroke color property name (from `strokColor` to `color`)
+
+-----
+
 ### v1.3.12
 
 12.02.2019.
