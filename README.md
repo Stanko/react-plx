@@ -326,7 +326,7 @@ Any other props will be passed to the component (for example this is useful for 
   * borderTopColor
   * color
   * fill
-  * strokeColor
+  * stroke
 
   Supported CSS filters are:
 
