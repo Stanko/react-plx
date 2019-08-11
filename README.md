@@ -29,7 +29,7 @@ Other sites using it:
 * [David Yurman](https://www.davidyurman.com/products/mens/mens-bands.html)
 * [Alex Widner's portfolio](http://alex-widner.surge.sh/) I love this one as Alex used Plx for pretty much everything in a very unexpected and creative way.
 * [Ekaya Store](https://www.ekaya.in/)
-* [V!RTL's personal site](https://v1rtl.surge.sh)
+* [V!RTL's personal site](https://v1rtl.site)
 
 
 <a id="simplx"></a>
