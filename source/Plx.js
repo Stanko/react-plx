@@ -763,18 +763,14 @@ export default class Plx extends Component {
   }
 
   componentWillUnmount() {
-    const {
-      scrollManager,
-    } = this.state;
-
     window.removeEventListener('window-scroll', this.handleScrollChange);
     window.removeEventListener('resize', this.handleResize);
 
     clearTimeout(this.resizeDebounceTimeoutID);
     this.resizeDebounceTimeoutID = null;
 
-    if (scrollManager) {
-      scrollManager.removeListener();
+    if (this.scrollManager) {
+      this.scrollManager.removeListener();
     }
   }
 

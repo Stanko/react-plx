@@ -6,3 +6,4 @@ dist
 _nogit
 lib
 dist-docs
+.cache

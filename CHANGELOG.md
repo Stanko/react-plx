@@ -1,5 +1,15 @@
 # Changelog
 
+### v1.3.14
+
+01.09.2019.
+
+**Fixed**
+
+* Made sure `ScrollManager`'s event listeners are removed.
+
+-----
+
 ### v1.3.13
 
 28.03.2019.

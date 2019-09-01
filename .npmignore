@@ -8,3 +8,4 @@ publish-docs.sh
 *.log*
 _nogit
 NOTES.md
+.cache
