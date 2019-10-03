@@ -26,6 +26,7 @@ Other sites using it:
 
 * [Whittle School & Studios](https://www.whittleschool.org/en/)
 * [Vapor Connoisseur](http://www.vaporconnoisseur.com/about)
+* [Toyota Trucks](https://www.exploretoyotatrucks.com)
 * [David Yurman](https://www.davidyurman.com/products/mens/mens-bands.html)
 * [Alex Widner's portfolio](http://alex-widner.surge.sh/) I love this one as Alex used Plx for pretty much everything in a very unexpected and creative way.
 * [Ekaya Store](https://www.ekaya.in/)
