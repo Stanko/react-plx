@@ -159,7 +159,7 @@ const FILTER_PROPERTIES = [
 ];
 
 // Props to be removed from passing directly to the component element
-const PROPS_TO_OMIT = [
+const PROPS_TO_OMIT = new Set([
   'animateWhenNotInViewport',
   'children',
   'className',
@@ -169,7 +169,7 @@ const PROPS_TO_OMIT = [
   'tagName',
   'onPlxStart',
   'onPlxEnd',
-];
+]);
 
 // Get element's top offset
 function getElementTop(el) {
@@ -384,7 +384,7 @@ function parallax(scrollPosition, start, duration, startValue, endValue, easing)
     value += min;
   }
 
-  return parseFloat(value.toFixed(3));
+  return Math.floor(value * 1000) / 1000;
 }
 
 // Calculates current value for color parallax
@@ -501,7 +501,7 @@ function omit(object, keysToOmit) {
   const result = {};
 
   Object.keys(object).forEach(key => {
-    if (keysToOmit.indexOf(key) === -1) {
+    if (!keysToOmit.has(key)) {
       result[key] = object[key];
     }
   });
@@ -561,10 +561,10 @@ function getNewState(scrollPosition, props, state, element) {
   let lastSegmentScrolledBy = null;
   const maxScroll = Math.max(
     document.body.scrollHeight,
-    document.body.offsetHeight,
-    document.documentElement.clientHeight,
+    // document.body.offsetHeight,
+    // document.documentElement.clientHeight,
     document.documentElement.scrollHeight,
-    document.documentElement.offsetHeight
+    // document.documentElement.offsetHeight
   ) - window.innerHeight;
 
   for (let i = 0; i < parallaxData.length; i++) {
@@ -698,10 +698,7 @@ function getNewState(scrollPosition, props, state, element) {
   newStyle.OFilter = newStyle.filter;
   newStyle.msFilter = newStyle.filter;
 
-  // "Stupid" check if style should be updated
-  if (JSON.stringify(plxStyle) !== JSON.stringify(newStyle)) {
-    newState.plxStyle = newStyle;
-  }
+  newState.plxStyle = newStyle
 
   // Adding state class
   const newPlxStateClasses = getClasses(lastSegmentScrolledBy, isInSegment, parallaxData);
