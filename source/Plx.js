@@ -520,7 +520,6 @@ function getNewState(scrollPosition, props, state, element) {
   } = props;
   const {
     showElement,
-    plxStyle,
     plxStateClasses,
   } = state;
 
@@ -559,13 +558,8 @@ function getNewState(scrollPosition, props, state, element) {
   const segments = [];
   let isInSegment = false;
   let lastSegmentScrolledBy = null;
-  const maxScroll = Math.max(
-    document.body.scrollHeight,
-    // document.body.offsetHeight,
-    // document.documentElement.clientHeight,
-    document.documentElement.scrollHeight,
-    // document.documentElement.offsetHeight
-  ) - window.innerHeight;
+  const bodyHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+  const maxScroll = bodyHeight - window.innerHeight;
 
   for (let i = 0; i < parallaxData.length; i++) {
     const {
@@ -698,7 +692,7 @@ function getNewState(scrollPosition, props, state, element) {
   newStyle.OFilter = newStyle.filter;
   newStyle.msFilter = newStyle.filter;
 
-  newState.plxStyle = newStyle
+  newState.plxStyle = newStyle;
 
   // Adding state class
   const newPlxStateClasses = getClasses(lastSegmentScrolledBy, isInSegment, parallaxData);
