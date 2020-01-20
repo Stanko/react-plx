@@ -16,7 +16,7 @@ const titleData = [
   {
     start: 'self',
     startOffset: 50,
-    duration: 200,
+    duration: 220,
     properties: [
       {
         startValue: 1,

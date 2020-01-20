@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "parcel docs/index.html",
     "build": "rm -rf ./lib && NODE_ENV=\"production\" babel ./source --out-dir ./lib",
-    "build-docs": "rm -rf ./dist-docs && EXAMPLE=\"true\" parcel build docs/index.html --out-dir ./dist-docs",
+    "build-docs": "rm -rf ./dist-docs && EXAMPLE=\"true\" parcel build docs/index.html --out-dir ./dist-docs --public-url /react-plx",
     "prepare": "npm run build",
     "publish-docs": "sh publish-docs.sh",
     "publish-all": "npm publish && npm run publish-docs",
