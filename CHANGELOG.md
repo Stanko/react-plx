@@ -1,5 +1,16 @@
 # Changelog
 
+### v1.3.15
+
+20.01.2020.
+
+**Changed**
+
+* Performance improvements [#59](https://github.com/Stanko/react-plx/pull/59).
+* Better development setup using Parcel.
+
+-----
+
 ### v1.3.14
 
 01.09.2019.

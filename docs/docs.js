@@ -1,3 +1,6 @@
+import 'core-js/es6/map';
+import 'core-js/es6/set';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import animateScroll from 'animated-scroll-to';
@@ -6,6 +9,7 @@ import Phone from './phone';
 import Links from './links';
 import StickyText from './sticky-text';
 import Plx from '../source/index';
+
 import './docs.scss';
 
 const titleData = [

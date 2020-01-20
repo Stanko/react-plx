@@ -159,7 +159,7 @@ const FILTER_PROPERTIES = [
 ];
 
 // Props to be removed from passing directly to the component element
-const PROPS_TO_OMIT = new Set([
+const PROPS_TO_OMIT = [
   'animateWhenNotInViewport',
   'children',
   'className',
@@ -169,7 +169,7 @@ const PROPS_TO_OMIT = new Set([
   'tagName',
   'onPlxStart',
   'onPlxEnd',
-]);
+];
 
 // Get element's top offset
 function getElementTop(el) {
@@ -384,7 +384,7 @@ function parallax(scrollPosition, start, duration, startValue, endValue, easing)
     value += min;
   }
 
-  return Math.floor(value * 1000) / 1000;
+  return Math.floor(value * 100) / 100;
 }
 
 // Calculates current value for color parallax
@@ -492,7 +492,7 @@ function getClasses(lastSegmentScrolledBy, isInSegment, parallaxData) {
 
 // Checks if class contains 'active'
 function checkIfActive(classes) {
-  return classes.includes('Plx--active');
+  return classes.indexOf('Plx--active') > -1;
 }
 
 
@@ -501,7 +501,7 @@ function omit(object, keysToOmit) {
   const result = {};
 
   Object.keys(object).forEach(key => {
-    if (!keysToOmit.has(key)) {
+    if (keysToOmit.indexOf(key) === -1) {
       result[key] = object[key];
     }
   });
@@ -520,6 +520,7 @@ function getNewState(scrollPosition, props, state, element) {
   } = props;
   const {
     showElement,
+    plxStyle,
     plxStateClasses,
   } = state;
 
@@ -671,12 +672,9 @@ function getNewState(scrollPosition, props, state, element) {
     }
   });
 
-  // Concat transforms and add browser prefixes
+  // Concat transforms and add webkit prefix
   newStyle.transform = transformsOrdered.join(' ');
   newStyle.WebkitTransform = newStyle.transform;
-  newStyle.MozTransform = newStyle.transform;
-  newStyle.OTransform = newStyle.transform;
-  newStyle.msTransform = newStyle.transform;
 
   const filtersArray = [];
   FILTER_PROPERTIES.forEach(filterKey => {
@@ -685,14 +683,14 @@ function getNewState(scrollPosition, props, state, element) {
     }
   });
 
-  // Concat filters and add browser prefixes
+  // Concat filters and add webkit prefix
   newStyle.filter = filtersArray.join(' ');
   newStyle.WebkitFilter = newStyle.filter;
-  newStyle.MozFilter = newStyle.filter;
-  newStyle.OFilter = newStyle.filter;
-  newStyle.msFilter = newStyle.filter;
 
-  newState.plxStyle = newStyle;
+  // "Stupid" check if style should be updated
+  if (JSON.stringify(plxStyle) !== JSON.stringify(newStyle)) {
+    newState.plxStyle = newStyle;
+  }
 
   // Adding state class
   const newPlxStateClasses = getClasses(lastSegmentScrolledBy, isInSegment, parallaxData);
