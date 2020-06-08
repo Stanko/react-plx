@@ -31,6 +31,7 @@ Other sites using it:
 * [Alex Widner's portfolio](http://alex-widner.surge.sh/) I love this one as Alex used Plx for pretty much everything in a very unexpected and creative way.
 * [Ekaya Store](https://www.ekaya.in/)
 * [V!RTL's personal site](https://v1rtl.site)
+* [Antonio Cosentino personal website](https://antoniocosentino.com/) - he even mentions Plx in one of the [project articles](https://antoniocosentino.com/projects/ac-2020)
 
 
 <a id="simplx"></a>
