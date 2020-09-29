@@ -2,6 +2,20 @@
 
 ### v1.3.15
 
+28.09.2020.
+
+**Fixed**
+
+* Fixed [#60](https://github.com/Stanko/react-plx/pull/60).
+
+**Changed**
+
+* Minor code cleanup.
+
+-----
+
+### v1.3.15
+
 20.01.2020.
 
 **Changed**

@@ -708,7 +708,7 @@ function getNewState(scrollPosition, props, state, element) {
 
 export default class Plx extends Component {
   constructor(props) {
-    super(props);
+    super();
 
     // Binding handlers
     this.handleScrollChange = this.handleScrollChange.bind(this);
@@ -722,13 +722,14 @@ export default class Plx extends Component {
     };
 
     // Skipping type checking as PropTypes will give a warning if the props aren't functions
-    this.plxStartEnabled = this.props.onPlxStart !== null;
-    this.plxEndEnabled = this.props.onPlxEnd !== null;
+    this.plxStartEnabled = props.onPlxStart !== null;
+    this.plxEndEnabled = props.onPlxEnd !== null;
   }
 
   componentDidMount() {
     // Get scroll manager singleton
     this.scrollManager = new ScrollManager();
+
     // Add listeners
     window.addEventListener('window-scroll', this.handleScrollChange);
     window.addEventListener('resize', this.handleResize);
@@ -739,9 +740,13 @@ export default class Plx extends Component {
   componentDidUpdate(prevProps, prevState) {
     const wasActive = checkIfActive(prevState.plxStateClasses);
     const isActive = checkIfActive(this.state.plxStateClasses);
+
+    // Update only if props changed
     if (prevProps !== this.props) {
       this.update();
     }
+
+    // Callbacks
     if ((this.plxStartEnabled || this.plxEndEnabled) && prevState.plxStateClasses !== this.state.plxStateClasses) {
       if (this.plxStartEnabled && !wasActive && isActive) {
         this.props.onPlxStart();
@@ -775,7 +780,7 @@ export default class Plx extends Component {
     );
 
     if (newState) {
-      requestAnimationFrame(() => this.setState(newState));
+      this.setState(newState);
     }
   }
 

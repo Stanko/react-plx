@@ -20,6 +20,8 @@ Lightweight, yet powerful.
 
 Check the [live demo](https://muffinman.io/react-plx/). You can find source for the demo [here](https://github.com/Stanko/react-plx/tree/master/docs).
 
+[![Plx example, exploding elements](plx.gif)](https://muffinman.io/react-plx/)
+
 I would really like to see what you people have built using `Plx` and create a showcase section. So please open an issue titled `Showcase: <your awesome stuff>` so it can be featured. Cheers!
 
 Other sites using it:
