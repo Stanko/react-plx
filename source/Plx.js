@@ -384,7 +384,8 @@ function parallax(scrollPosition, start, duration, startValue, endValue, easing)
     value += min;
   }
 
-  return Math.floor(value * 100) / 100;
+  // Rounding to 4 decimals (.toFixed(4) returns a string)
+  return Math.floor(value * 10000) / 10000;
 }
 
 // Calculates current value for color parallax
@@ -450,14 +451,26 @@ function applyProperty(scrollPosition, propertyData, startPosition, duration, st
     const propertyUnit = getUnit(property, unit);
     // Transforms, apply value to transform function
     newStyle.transform[property] = transformMethod(value, propertyUnit);
+
+    if (!newStyle.willChange.includes('transform')) {
+      newStyle.willChange.push('transform');
+    }
   } else if (filterMethod) {
     // Get CSS unit
     const propertyUnit = getUnit(property, unit);
     // Filters, apply value to filter function
     newStyle.filter[property] = filterMethod(value, propertyUnit);
+
+    if (!newStyle.willChange.includes('filter')) {
+      newStyle.willChange.push('filter');
+    }
   } else {
     // All other properties
     newStyle[property] = value;
+
+    if (!newStyle.willChange.includes(property)) {
+      newStyle.willChange.push(property);
+    }
 
     // Add unit if it is passed
     if (unit) {
@@ -546,6 +559,7 @@ function getNewState(scrollPosition, props, state, element) {
 
   // Style to be applied to our element
   let newStyle = {
+    willChange: [],
     transform: {},
     filter: {},
   };

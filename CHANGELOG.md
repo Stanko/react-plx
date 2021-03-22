@@ -1,5 +1,15 @@
 # Changelog
 
+### v1.3.17
+
+22.03.2020.
+
+**Improved**
+
+* Performance improvements suggested in [#79](https://github.com/Stanko/react-plx/pull/79).
+
+-----
+
 ### v1.3.16
 
 29.09.2020.
