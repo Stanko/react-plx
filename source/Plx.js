@@ -703,14 +703,18 @@ function getNewState(scrollPosition, props, state, element) {
 
   // "Stupid" check if style should be updated
   if (JSON.stringify(plxStyle) !== JSON.stringify(newStyle)) {
-    newState.plxStyle = newStyle;
+    requestAnimationFrame(() => {
+      for (const property in newStyle) {
+        element.style[property] = newStyle[property]
+      }
+    })
   }
 
   // Adding state class
   const newPlxStateClasses = getClasses(lastSegmentScrolledBy, isInSegment, parallaxData);
 
   if (newPlxStateClasses !== plxStateClasses) {
-    newState.plxStateClasses = newPlxStateClasses;
+    element.classList.add(newPlxStateClasses.split(' '))
   }
 
   if (Object.keys(newState).length) {
@@ -830,7 +834,6 @@ export default class Plx extends Component {
     if (!disabled) {
       elementStyle = {
         ...style,
-        ...plxStyle,
         // Hide element before until it is rendered
         // This prevents jumps if page is scrolled and then refreshed
         visibility: showElement ? null : 'hidden',
@@ -840,7 +843,7 @@ export default class Plx extends Component {
     return (
       <Tag
         { ...omit(this.props, PROPS_TO_OMIT) }
-        className={ `Plx ${ plxStateClasses } ${ className }` }
+        className={ `Plx ${ className }` }
         style={ elementStyle }
         ref={ el => this.element = el }
       >
