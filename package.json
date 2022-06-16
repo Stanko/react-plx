@@ -1,43 +1,43 @@
 {
   "name": "react-plx",
-  "version": "1.3.17",
+  "version": "2.0.0",
   "private": false,
   "license": "MIT",
-  "main": "lib/index.js",
   "description": "React parallax (on scroll effects) component. Lightweight, yet powerful.",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "parcel docs/index.html",
-    "build": "rm -rf ./lib && NODE_ENV=\"production\" babel ./source --out-dir ./lib",
-    "build-docs": "rm -rf ./dist-docs && EXAMPLE=\"true\" parcel build docs/index.html --out-dir ./dist-docs --public-url /react-plx",
-    "prepare": "npm run build",
-    "publish-docs": "sh publish-docs.sh",
-    "publish-all": "npm publish && npm run publish-docs",
-    "postpublish": "PACKAGE_VERSION=$(cat package.json | grep \\\"version\\\" | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && git tag v$PACKAGE_VERSION && git push --tags",
-    "lint-break-on-errors": "eslint ./source/js ./webpack.config.js -f table --ext .js --ext .jsx",
-    "lint": "eslint ./source/js ./webpack.config.js -f table --ext .js --ext .jsx || true"
+    "clean": "rm -rf dist",
+    "build:esm": "tsc -p tsconfig.json && echo '{ \"type\": \"module\" }' > dist/esm/package.json",
+    "build:cjs": "tsc -p tsconfig-cjs.json && echo '{ \"type\": \"commonjs\" }' > dist/cjs/package.json",
+    "build": "npm run clean && npm run build:esm && npm run build:cjs && npm run build:docs",
+    "start": "esbuild docs/docs.tsx docs/docs.css --bundle --tsconfig=tsconfig-demo.json --servedir=docs --outdir=docs/react-plx",
+    "build:docs": "esbuild docs/docs.tsx --bundle --tsconfig=tsconfig-demo.json --outdir=docs --minify --sourcemap",
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "animated-scroll-to": "^2.0.10",
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
-    "cssnano": "^4.1.10",
-    "node-sass": "^7.0.0",
-    "parcel-bundler": "^1.12.4",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "animated-scroll-to": "^2.2.0",
+    "@types/react": "^18.0.12",
+    "@types/react-dom": "^18.0.5",
+    "esbuild": "^0.14.43",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^4.7.3"
   },
   "dependencies": {
     "bezier-easing": "^2.1.0",
-    "prop-types": "^15.7.2",
     "window-scroll-manager": "^1.1.4"
   },
   "peerDependencies": {
-    "react": ">=15.6.2",
-    "react-dom": ">=15.6.2"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "repository": {
     "type": "git",
@@ -51,5 +51,9 @@
   "bugs": {
     "url": "https://github.com/Stanko/react-plx/issues"
   },
-  "homepage": "https://github.com/Stanko/react-plx#readme"
+  "homepage": "https://github.com/Stanko/react-plx#readme",
+  "files": [
+    "dist/",
+    "CHANGELOG.md"
+  ]
 }

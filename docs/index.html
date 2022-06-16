@@ -1,10 +1,13 @@
 <!doctype html>
 <html>
+
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 
   <link rel="stylesheet" href="https://muffinman.io/skyblue/css/skyblue.css">
+  <link rel="stylesheet" href="/react-plx/docs.css">
   <title>Plx - React parallax component</title>
 
   <meta name="description" content="Plx - React parallax component. Lightweight, yet powerful.">
@@ -18,38 +21,50 @@
   <meta name="twitter:description" content="Plx - React parallax component. Lightweight, yet powerful.">
 
   <!-- Icons -->
-  <link rel="apple-touch-icon" sizes="180x180" href="https://muffinman.io//public/favicon/apple-touch-icon.png?v=v3">
-  <link rel="icon" type="image/png" sizes="32x32" href="https://muffinman.io//public/favicon/favicon-32x32.png?v=v3">
-  <link rel="icon" type="image/png" sizes="16x16" href="https://muffinman.io//public/favicon/favicon-16x16.png?v=v3">
-  <link rel="manifest" href="https://muffinman.io//public/favicon/manifest.json?v=v3">
-  <link rel="mask-icon" href="https://muffinman.io//public/favicon/safari-pinned-tab.svg?v=v3" color="#e04856">
-  <link rel="shortcut icon" href="https://muffinman.io//public/favicon/favicon.ico?v=v3">
-  <meta name="msapplication-config" content="https://muffinman.io//public/favicon/browserconfig.xml?v=v3">
-  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="https://muffinman.io/favicon/red/icon-32.ico" sizes="any" />
+  <link rel="icon" href="https://muffinman.io/favicon/red/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="https://muffinman.io/favicon/red/icon-180.png" />
+  <link rel="manifest" href="https://muffinman.io/favicon/red/manifest.webmanifest" />
 </head>
+
 <body>
   <div class="Content">
-    <h1>React Plx</h1>
+    <h1>React Plx <span>v2</span></h1>
 
     <p>
       Scroll down to get things moving!
     </p>
 
     <p>
-      Plx - React parallax component, lightweight and powerful.
+      React parallax component, lightweight and powerful.
       Supports animating CSS properties that accept numerical values
       (<code>opacity</code>, <code>transform</code>, <code>height</code>...) and colors.
-      It has built-in easing functions, or you can pass your own function or custom cubic bezier.
+      It has built-in easing functions or you can provide custom ones.
     </p>
 
     <p>
-      Detailed documentation available on
+      Detailed documentation is available on
       <a href="https://github.com/Stanko/react-plx">GitHub</a>.
     </p>
   </div>
 
-  <div id="demo"></div>
+  <div id="demo" role="main"></div>
 
-  <script src="./docs.js"></script>
+  <footer class="Footer">
+    <div class="Content">
+      <h2>Plx <span>v2</span></h2>
+      <h3>React Parallax component</h3>
+      <div>Awesome isn&#39;t it?</div>
+      <div class="Footer-links">
+        <a href="https://muffinman.io">My blog</a>
+        <a href="https://www.npmjs.com/package/react-plx">npm</a>
+        <a href="https://github.com/Stanko/react-plx">GitHub</a>
+      </div>
+      <button class="ScrollToTop">Back to top</button>
+    </div>
+  </footer>
+
+  <script src="/react-plx/docs.js"></script>
 </body>
+
 </html>
