@@ -13,6 +13,90 @@ import BezierEasing from "bezier-easing";
 // @ts-ignore
 import ScrollManager from "window-scroll-manager";
 
+// ------------ Types
+
+type Color = {
+  r: number;
+  g: number;
+  b: number;
+  a: number;
+};
+
+export type PlxProperty = {
+  startValue: string | number;
+  endValue: string | number;
+  property: string;
+  unit?: string;
+};
+
+type EasingNames =
+  | "ease"
+  | "easeIn"
+  | "easeOut"
+  | "easeInOut"
+  | "easeInSine"
+  | "easeOutSine"
+  | "easeInOutSine"
+  | "easeInQuad"
+  | "easeOutQuad"
+  | "easeInOutQuad"
+  | "easeInCubic"
+  | "easeOutCubic"
+  | "easeInOutCubic"
+  | "easeInQuart"
+  | "easeOutQuart"
+  | "easeInOutQuart"
+  | "easeInQuint"
+  | "easeOutQuint"
+  | "easeInOutQuint"
+  | "easeInExpo"
+  | "easeOutExpo"
+  | "easeInOutExpo"
+  | "easeInCirc"
+  | "easeOutCirc"
+  | "easeInOutCirc";
+
+type Easing = EasingNames | [number, number, number, number] | ((t: number) => number);
+
+type CSSValueString = `{number}px` | `{number}%` | `{number}vh`;
+
+type StartEnd = CSSValueString | "self" | string | number | HTMLElement;
+
+type Duration = CSSValueString | string | number | HTMLElement;
+
+export type PlxItem = {
+  start: StartEnd;
+  startOffset?: CSSValueString | number;
+  duration?: Duration;
+  end?: StartEnd;
+  endOffset?: CSSValueString | number;
+  properties: PlxProperty[];
+  easing?: Easing;
+  name?: string;
+};
+
+export interface PlxProps extends React.HTMLAttributes<HTMLDivElement> {
+  animateWhenNotInViewport?: boolean;
+  children?: ReactNode;
+  className?: string;
+  disabled?: boolean;
+  freeze?: boolean;
+  parallaxData: PlxItem[];
+  style?: CSSProperties;
+  onPlxStart?: () => void;
+  onPlxEnd?: () => void;
+}
+
+type Segment = {
+  easing?: Easing;
+  durationInPx: number;
+  properties: PlxProperty[];
+  startInPx: number;
+};
+
+type GenericObject = { [name: string]: number | string };
+type GenericStringObject = { [name: string]: string };
+
 // ------------ Constants
 
 // Regex that checks for numbers in string
@@ -23,7 +107,7 @@ const DEFAULT_UNIT = "px";
 const DEFAULT_ANGLE_UNIT = "deg";
 const ANGLE_PROPERTIES = ["rotate", "rotateX", "rotateY", "rotateZ", "skew", "skewX", "skewY", "skewZ", "hueRotate"];
 
-const EASINGS = {
+const EASINGS: { [name in EasingNames]: [number, number, number, number] } = {
   ease: [0.25, 0.1, 0.25, 1.0],
   easeIn: [0.42, 0.0, 1.0, 1.0],
   easeOut: [0.0, 0.0, 0.58, 1.0],
@@ -160,92 +244,10 @@ const FILTER_PROPERTIES = [
   "sepia",
 ];
 
-// ------------ Types
-
-type Color = {
-  r: number;
-  g: number;
-  b: number;
-  a: number;
-};
-
-export type PlxProperty = {
-  startValue: string | number;
-  endValue: string | number;
-  property: string;
-  unit?: string;
-};
-
-type EasingNames =
-  | "ease"
-  | "easeIn"
-  | "easeOut"
-  | "easeInOut"
-  | "easeInSine"
-  | "easeOutSine"
-  | "easeInOutSine"
-  | "easeInQuad"
-  | "easeOutQuad"
-  | "easeInOutQuad"
-  | "easeInCubic"
-  | "easeOutCubic"
-  | "easeInOutCubic"
-  | "easeInQuart"
-  | "easeOutQuart"
-  | "easeInOutQuart"
-  | "easeInQuint"
-  | "easeOutQuint"
-  | "easeInOutQuint"
-  | "easeInExpo"
-  | "easeOutExpo"
-  | "easeInOutExpo"
-  | "easeInCirc"
-  | "easeOutCirc"
-  | "easeInOutCirc";
-
-type Easing = EasingNames | [number, number, number, number] | ((t: number) => number);
-
-type StartEnd = `{number}px` | `{number}%` | `{number}vh` | "self" | string | number | HTMLElement;
-
-type Duration = `{number}px` | `{number}%` | `{number}vh` | string | number | HTMLElement;
-
-export type PlxItem = {
-  start: StartEnd;
-  startOffset?: string | number;
-  duration?: Duration;
-  end?: StartEnd;
-  endOffset?: string | number;
-  properties: PlxProperty[];
-  easing?: Easing;
-  name?: string;
-};
-
-export interface PlxProps extends React.HTMLAttributes<HTMLDivElement> {
-  animateWhenNotInViewport?: boolean;
-  children?: ReactNode;
-  className?: string;
-  disabled?: boolean;
-  freeze?: boolean;
-  parallaxData: PlxItem[];
-  style?: CSSProperties;
-  onPlxStart?: () => void;
-  onPlxEnd?: () => void;
-}
-
-type Segment = {
-  easing?: Easing;
-  durationInPx: number;
-  properties: PlxProperty[];
-  startInPx: number;
-};
-
-type GenericObject = { [name: string]: number | string };
-type GenericStringObject = { [name: string]: string };
-
 // ------------ Helpers
 
 // Get element's top offset
-function getElementTop(el: HTMLElement) {
+function getElementTop(el: HTMLElement): number {
   let top = 0;
   let element: HTMLElement | null = el;
 
@@ -436,7 +438,7 @@ function parallax(
 
   // Apply easing
   if (easing) {
-    if (Array.isArray(easing) && easing.length === 4) {
+    if (Array.isArray(easing)) {
       percentage = BezierEasing(easing[0], easing[1], easing[2], easing[3])(percentage);
     } else if (typeof easing === "string" && EASINGS[easing]) {
       percentage = BezierEasing(
@@ -869,12 +871,31 @@ const Plx: React.FC<PlxProps> = (props) => {
     resizeTimeout.current = setTimeout(() => {
       update();
     }, RESIZE_DEBOUNCE_TIMEOUT);
-  }, []);
+  }, [props]);
+
+  useEffect(() => {
+    if (scrollManager.current) {
+      if (disabled) {
+        // When disabled leave only user styles
+        propsUsedInParallax.forEach((property) => {
+          if (element.current) {
+            // @ts-ignore
+            element.current.style[property] = "";
+          }
+        });
+      } else {
+        update();
+      }
+    }
+  }, [disabled]);
 
   // Window scroll
-  const handleScrollChange = useCallback((e: any) => {
-    update(e.detail.scrollPositionY);
-  }, []);
+  const handleScrollChange = useCallback(
+    (e: any) => {
+      update(e.detail.scrollPositionY);
+    },
+    [props]
+  );
 
   useEffect(() => {
     // Get scroll manager singleton
@@ -896,12 +917,12 @@ const Plx: React.FC<PlxProps> = (props) => {
 
       scrollManager.current.removeListener();
     };
-  }, []);
+  }, [props]);
 
   // Update DOM on props change
   useEffect(() => {
     update();
-  }, [props]);
+  }, []);
 
   let elementStyle = style;
 

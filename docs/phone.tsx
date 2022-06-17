@@ -38,18 +38,12 @@ const contentData = [
   },
 ];
 
-export default class Phone extends React.Component {
-  render() {
-    return (
-      <Plx className="Phone" parallaxData={phoneData}>
-        <svg
-          width="221px"
-          height="464px"
-          viewBox="0 0 221 464"
-          className="Phone-svg"
-        >
-          <path
-            d="M3,164 L0,164 L0,147 L3,147 L3,126 L0,126 L0,109 L3,109 L3,87 L0,87 L0,66 L3,66 L3,34.0058827
+const Phone = (props) => {
+  return (
+    <Plx {...props} className="Phone" parallaxData={phoneData}>
+      <svg width="221px" height="464px" viewBox="0 0 221 464" className="Phone-svg">
+        <path
+          d="M3,164 L0,164 L0,147 L3,147 L3,126 L0,126 L0,109 L3,109 L3,87 L0,87 L0,66 L3,66 L3,34.0058827
             C3,16.3333538 17.3228613,2 34.9910061,2 L149,2 L149,0 L185,0 L185,2 L189.008994,2 C206.675354,2
             221,16.3295218 221,34.0058827 L221,431.994117 C221,449.666646 206.677139,464 189.008994,464
             L34.9910061,464 C17.3246455,464 3,449.670478 3,431.994117 L3,164 Z M94.0088498,40 C93.4516774,40
@@ -64,17 +58,18 @@ export default class Phone extends React.Component {
             C82.6568543,45 84,43.6568543 84,42 C84,40.3431457 82.6568543,39 81,39 C79.3431457,39 78,40.3431457 78,42
             C78,43.6568543 79.3431457,45 81,45 Z M112,448 C121.388841,448 129,440.388841 129,431 C129,421.611159
             121.388841,414 112,414 C102.611159,414 95,421.611159 95,431 C95,440.388841 102.611159,448 112,448 Z"
-            fill="#000000"
-          />
-        </svg>
-        <div className="Phone-content">
-          <Plx className="Phone-contentPlx" parallaxData={contentData}>
-            <div className="Phone-contentSection">Plx</div>
-            <div className="Phone-contentSection">says</div>
-            <div className="Phone-contentSection">Hello!</div>
-          </Plx>
-        </div>
-      </Plx>
-    );
-  }
-}
+          fill="#000000"
+        />
+      </svg>
+      <div className="Phone-content">
+        <Plx {...props} className="Phone-contentPlx" parallaxData={contentData}>
+          <div className="Phone-contentSection">Plx</div>
+          <div className="Phone-contentSection">says</div>
+          <div className="Phone-contentSection">Hello!</div>
+        </Plx>
+      </div>
+    </Plx>
+  );
+};
+
+export default Phone;

@@ -42,21 +42,21 @@ const linksData = [
   },
 ];
 
-export default class Links extends React.Component {
-  render() {
-    return (
-      <div className="Links">
-        <Plx className="Links-plx" parallaxData={linksData}>
-          <div className="Links-circle" />
-          <div className="Links-circle" />
-          <div className="Links-circle" />
-        </Plx>
-        <div className="Links-content">
-          <a href="https://www.npmjs.com/package/react-plx">npm</a>
-          <a href="https://github.com/Stanko/react-plx">GitHub</a>
-          <a href="https://muffinman.io">My blog</a>
-        </div>
+const Links = (props) => {
+  return (
+    <div className="Links">
+      <Plx {...props} className="Links-plx" parallaxData={linksData}>
+        <div className="Links-circle" />
+        <div className="Links-circle" />
+        <div className="Links-circle" />
+      </Plx>
+      <div className="Links-content">
+        <a href="https://www.npmjs.com/package/react-plx">npm</a>
+        <a href="https://github.com/Stanko/react-plx">GitHub</a>
+        <a href="https://muffinman.io">My blog</a>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
+
+export default Links;

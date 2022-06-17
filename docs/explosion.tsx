@@ -79,27 +79,34 @@ for (let i = 0; i < ROWS; i++) {
       ],
       style: {
         backgroundColor: color,
+        transform: "rotate(45deg)",
       },
     });
   }
 }
 
-export default class Explosion extends React.Component {
-  renderBoxes() {
-    const boxes: any[] = [];
+const renderBoxes = (props) => {
+  const boxes: any[] = [];
 
-    BOXES.forEach((row, index) => {
-      row.forEach((box, boxIndex) => {
-        return boxes.push(
-          <Plx key={`${index} ${boxIndex}`} className="Explosion-box" parallaxData={box.data} style={box.style} />
-        );
-      });
+  BOXES.forEach((row, index) => {
+    row.forEach((box, boxIndex) => {
+      return boxes.push(
+        <Plx
+          {...props}
+          key={`${index} ${boxIndex}`}
+          className="Explosion-box"
+          parallaxData={box.data}
+          style={box.style}
+        />
+      );
     });
+  });
 
-    return boxes;
-  }
+  return boxes;
+};
 
-  render() {
-    return <div className="Explosion">{this.renderBoxes()}</div>;
-  }
-}
+const Explosion = (props) => {
+  return <div className="Explosion">{renderBoxes(props)}</div>;
+};
+
+export default Explosion;

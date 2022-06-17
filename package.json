@@ -23,15 +23,16 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "animated-scroll-to": "^2.2.0",
-    "@types/react": "^18.0.12",
+    "@types/react": "^18.0.13",
     "@types/react-dom": "^18.0.5",
-    "esbuild": "^0.14.43",
+    "animated-scroll-to": "^2.2.0",
+    "esbuild": "^0.14.44",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^4.7.3"
   },
   "dependencies": {
+    "@types/bezier-easing": "^2.1.2",
     "bezier-easing": "^2.1.0",
     "window-scroll-manager": "^1.1.4"
   },

@@ -1,4 +1,4 @@
-import React, { StrictMode, useEffect } from "react";
+import React, { StrictMode, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import animateScroll from "animated-scroll-to";
 import Explosion from "./explosion";
@@ -29,6 +29,10 @@ const titleData: PlxItem[] = [
 ];
 
 const Example = () => {
+  const [isFrozen, setIsFrozen] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  useState(false);
   useEffect(() => {
     const button = document.querySelector(".ScrollToTop");
     const handler = () => {
@@ -43,7 +47,7 @@ const Example = () => {
 
   return (
     <div className="Demo">
-      <Links />
+      <Links freeze={isFrozen} disabled={isDisabled} />
       <div className="Content">
         <h2>
           <Plx
@@ -51,16 +55,23 @@ const Example = () => {
             parallaxData={titleData}
             onPlxStart={() => console.log("Plx - onPlxStart callback ")}
             onPlxEnd={() => console.log("Plx - onPlxEnd callback")}
+            freeze={isFrozen}
+            disabled={isDisabled}
           >
             Examples
           </Plx>
         </h2>
         <h3>Make things explode</h3>
-        <Explosion />
+        <Explosion freeze={isFrozen} disabled={isDisabled} />
         <h3>Animate nested elements</h3>
-        <Phone />
+        <Phone freeze={isFrozen} disabled={isDisabled} />
         <div className="StickyText-trigger" />
-        <StickyText />
+        <StickyText freeze={isFrozen} disabled={isDisabled} />
+      </div>
+
+      <div className="Controls">
+        <button onClick={() => setIsFrozen(!isFrozen)}>{isFrozen ? "Unfreeze" : "Freeze"}</button>
+        <button onClick={() => setIsDisabled(!isDisabled)}>{isDisabled ? "Enable" : "Disable"}</button>
       </div>
     </div>
   );

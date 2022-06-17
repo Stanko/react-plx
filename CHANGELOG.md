@@ -1,14 +1,33 @@
 # Changelog
 
+### v2.0.0
+
+17.06.2022.
+
+**Improved**
+
+- 30-50% performance improvements
+- Rewritten to TypeScript and hooks.
+- TypeScript types provides.
+- ESM and CJS modules available.
+- Reduced the number of dev dependencies.
+
+**Changed**
+
+- `tagName` prop was removed
+- `px` units are not assumed and need to be provided manually
+
+---
+
 ### v1.3.17
 
 22.03.2020.
 
 **Improved**
 
-* Performance improvements suggested in [#79](https://github.com/Stanko/react-plx/pull/79).
+- Performance improvements suggested in [#79](https://github.com/Stanko/react-plx/pull/79).
 
------
+---
 
 ### v1.3.16
 
@@ -16,13 +35,13 @@
 
 **Fixed**
 
-* Fixed [#60](https://github.com/Stanko/react-plx/pull/60).
+- Fixed [#60](https://github.com/Stanko/react-plx/pull/60).
 
 **Changed**
 
-* Minor code cleanup.
+- Minor code cleanup.
 
------
+---
 
 ### v1.3.15
 
@@ -30,10 +49,10 @@
 
 **Changed**
 
-* Performance improvements [#59](https://github.com/Stanko/react-plx/pull/59).
-* Better development setup using Parcel.
+- Performance improvements [#59](https://github.com/Stanko/react-plx/pull/59).
+- Better development setup using Parcel.
 
------
+---
 
 ### v1.3.14
 
@@ -41,9 +60,9 @@
 
 **Fixed**
 
-* Made sure `ScrollManager`'s event listeners are removed.
+- Made sure `ScrollManager`'s event listeners are removed.
 
------
+---
 
 ### v1.3.13
 
@@ -51,9 +70,9 @@
 
 **Fixed**
 
-* Fixed SVG stroke color property name (from `strokColor` to `color`)
+- Fixed SVG stroke color property name (from `strokeColor` to `color`)
 
------
+---
 
 ### v1.3.12
 
@@ -61,9 +80,9 @@
 
 **Fixed**
 
-* Fixed default params in transform methods.
+- Fixed default params in transform methods.
 
------
+---
 
 ### v1.3.11
 
@@ -71,9 +90,9 @@
 
 **Added**
 
-* Added `onPlxStart` and `onPlxEnd` [callbacks](https://github.com/Stanko/react-plx/pull/48)
+- Added `onPlxStart` and `onPlxEnd` [callbacks](https://github.com/Stanko/react-plx/pull/48)
 
------
+---
 
 ### v1.3.10
 
@@ -81,9 +100,9 @@
 
 **Changed**
 
-* Updated `window-scroll-manager` dependency.
+- Updated `window-scroll-manager` dependency.
 
------
+---
 
 ### v1.3.8 and v1.3.9
 
@@ -91,13 +110,13 @@
 
 **Changed**
 
-* Breaking change - corrected typo `bellow` -> `below`.
+- Breaking change - corrected typo `bellow` -> `below`.
 
 **Updated**
 
-* Updated readme.
+- Updated readme.
 
------
+---
 
 ### v1.3.6 and v1.3.7
 
@@ -105,9 +124,9 @@
 
 **Fixed**
 
-* Fixed `setState` getting called with `null` as a param
+- Fixed `setState` getting called with `null` as a param
 
------
+---
 
 ### v1.3.2, v1.3.3, v1.3.4 and v1.3.5 (it was a hard day)
 
@@ -115,10 +134,10 @@
 
 **Updated**
 
-* Updated [window-scroll-manager](https://github.com/Stanko/window-scroll-manager) version.
-* Added version git tags
+- Updated [window-scroll-manager](https://github.com/Stanko/window-scroll-manager) version.
+- Added version git tags
 
------
+---
 
 ### v1.3.0 and v1.3.1
 
@@ -126,12 +145,12 @@
 
 **Changed**
 
-* Refactored a little bit, moved update logic outside of the component. Updated dependencie.
-* Moved 'animated-scroll-to' to dev dependencies
+- Refactored a little bit, moved update logic outside of the component. Updated dependencies.
+- Moved 'animated-scroll-to' to dev dependencies
 
------
+---
 
-* Moved main update method outside of the component class. Updated dependencies.
+- Moved main update method outside of the component class. Updated dependencies.
 
 ### v1.2.2
 
@@ -139,10 +158,9 @@
 
 **Added**
 
-* Added `fill` and `strokeColor` to the list of the color properties that can be animated.
+- Added `fill` and `strokeColor` to the list of the color properties that can be animated.
 
-
------
+---
 
 ### v1.2.0
 
@@ -150,11 +168,9 @@
 
 **Changed**
 
-* Replaced `componentWillReceiveProps` with `componentDidUpdate` to address changes introduced with React v16.3
+- Replaced `componentWillReceiveProps` with `componentDidUpdate` to address changes introduced with React v16.3
 
-
------
-
+---
 
 ### v1.1.3
 
@@ -162,13 +178,12 @@
 
 **Added**
 
-* This changelog.
+- This changelog.
 
 **Fixed**
 
-* Added a check if element is rendered before doing animation, related [issue](https://github.com/Stanko/react-plx/issues/17).
+- Added a check if element is rendered before doing animation, related [issue](https://github.com/Stanko/react-plx/issues/17).
 
-
------
+---
 
 For changes prior version 1.1.3 please check the [commit list](https://github.com/Stanko/react-plx/commits/master).

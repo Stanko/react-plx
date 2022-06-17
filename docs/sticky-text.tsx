@@ -39,14 +39,12 @@ const textData = [
   },
 ];
 
-export default class StickyText extends React.Component {
-  render() {
-    return (
-      <Plx className="StickyText" parallaxData={textData}>
-        <h2>
-          Make elements fly in and stick for some time before they fly out
-        </h2>
-      </Plx>
-    );
-  }
-}
+const StickyText = (props) => {
+  return (
+    <Plx {...props} className="StickyText" parallaxData={textData}>
+      <h2>Make elements fly in and stick for some time before they fly out</h2>
+    </Plx>
+  );
+};
+
+export default StickyText;
