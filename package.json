@@ -1,6 +1,6 @@
 {
   "name": "react-plx",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": false,
   "license": "MIT",
   "description": "React parallax (on scroll effects) component. Lightweight, yet powerful.",
@@ -23,13 +23,13 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@types/react": "^18.0.13",
+    "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
     "animated-scroll-to": "^2.2.0",
-    "esbuild": "^0.14.44",
+    "esbuild": "^0.14.46",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "typescript": "^4.7.3"
+    "typescript": "^4.7.4"
   },
   "dependencies": {
     "@types/bezier-easing": "^2.1.2",

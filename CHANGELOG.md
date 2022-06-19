@@ -1,5 +1,15 @@
 # Changelog
 
+### v2.0.1
+
+19.06.2022.
+
+**Changed**
+
+- Swapped ESM module target from `esnext` to `ES2015` (aka `es6`).
+
+---
+
 ### v2.0.0
 
 17.06.2022.
