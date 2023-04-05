@@ -75,7 +75,7 @@ export type PlxItem = {
   name?: string;
 };
 
-export interface PlxProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface PlxProps extends React.HTMLAttributes<HTMLOrSVGElement> {
   animateWhenNotInViewport?: boolean;
   children?: ReactNode;
   className?: string;
@@ -85,6 +85,7 @@ export interface PlxProps extends React.HTMLAttributes<HTMLDivElement> {
   style?: CSSProperties;
   onPlxStart?: () => void;
   onPlxEnd?: () => void;
+  tagName?: React.ElementType;
 }
 
 type Segment = {
@@ -804,7 +805,8 @@ const Plx: React.FC<PlxProps> = (props) => {
     style = {},
     onPlxStart,
     onPlxEnd,
-    ...divProps
+    tagName: ElementTag = "div",
+    ...elementProps
   } = props;
 
   const scrollManager = useRef<any>();
@@ -936,9 +938,9 @@ const Plx: React.FC<PlxProps> = (props) => {
   }
 
   return (
-    <div {...divProps} className={`${className} Plx`} style={elementStyle} ref={element}>
+    <ElementTag {...elementProps} className={`${className} Plx`} style={elementStyle} ref={element}>
       {children}
-    </div>
+    </ElementTag>
   );
 };
 

@@ -49,18 +49,17 @@ const Example = () => {
     <div className="Demo">
       <Links freeze={isFrozen} disabled={isDisabled} />
       <div className="Content">
-        <h2>
-          <Plx
-            className="ExamplesTitle"
-            parallaxData={titleData}
-            onPlxStart={() => console.log("Plx - onPlxStart callback ")}
-            onPlxEnd={() => console.log("Plx - onPlxEnd callback")}
-            freeze={isFrozen}
-            disabled={isDisabled}
-          >
-            Examples
-          </Plx>
-        </h2>
+        <Plx
+          tagName="h2"
+          className="ExamplesTitle"
+          parallaxData={titleData}
+          onPlxStart={() => console.log("Plx - onPlxStart callback ")}
+          onPlxEnd={() => console.log("Plx - onPlxEnd callback")}
+          freeze={isFrozen}
+          disabled={isDisabled}
+        >
+          Examples
+        </Plx>
         <h3>Make things explode</h3>
         <Explosion freeze={isFrozen} disabled={isDisabled} />
         <h3>Animate nested elements</h3>

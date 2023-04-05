@@ -10,8 +10,8 @@ Version 2 brings even more performance improvements and TypeScript support.
 
 - **v2.0.0 breaking changes**
 
-  - `tagName` prop was removed
   - `px` units are not assumed and need to be provided manually
+  - ~`tagName` prop was removed~ it was returned in v2.1.0
 
 [Changelog](CHANGELOG.md)
 
@@ -135,6 +135,10 @@ Read more about how it works in [this blog post](https://muffinman.io/plx-react-
 - **onPlxEnd** function
 
   If set, the Plx component will call this function each time the animation state changes from active to another state. (refer to [animation state CSS classes](#user-content-animation-state-css-classes))
+
+- **tagName** string, default `"div"`
+
+  HTML or SVG element tag name to be used.
 
 Any other props will be passed to the component (for example this is useful for `aria-*` props).
 

@@ -1,5 +1,15 @@
 # Changelog
 
+### v2.1.0
+
+05.04.2023.
+
+**Added**
+
+- Added `tagName` prop back.
+
+---
+
 ### v2.0.1
 
 19.06.2022.

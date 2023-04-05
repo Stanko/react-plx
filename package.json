@@ -1,6 +1,6 @@
 {
   "name": "react-plx",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "private": false,
   "license": "MIT",
   "description": "React parallax (on scroll effects) component. Lightweight, yet powerful.",
