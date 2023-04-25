@@ -58,7 +58,7 @@ type EasingNames =
 
 type Easing = EasingNames | [number, number, number, number] | ((t: number) => number);
 
-type CSSValueString = `{number}px` | `{number}%` | `{number}vh`;
+type CSSValueString = `${number}px` | `${number}%` | `${number}vh`;
 
 type StartEnd = CSSValueString | "self" | string | number | HTMLElement;
 
