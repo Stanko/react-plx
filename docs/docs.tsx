@@ -13,6 +13,7 @@ const titleData: PlxItem[] = [
   {
     start: 5,
     duration: 220,
+    startOffset: "100vh",
     properties: [
       {
         startValue: 1,

@@ -1,5 +1,15 @@
 # Changelog
 
+### v2.1.1 and 2.1.2
+
+27.04.2023.
+
+**Fixed**
+
+- Fixed types [#95](https://github.com/Stanko/react-plx/pull/95)
+
+---
+
 ### v2.1.0
 
 05.04.2023.
