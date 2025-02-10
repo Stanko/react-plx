@@ -26,7 +26,7 @@
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
     "animated-scroll-to": "^2.2.0",
-    "esbuild": "^0.14.46",
+    "esbuild": "^0.25.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^4.7.4"
